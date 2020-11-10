@@ -1,101 +1,73 @@
-import styled from 'styled-components'
+// GraphQL
+import { useMutation } from '@apollo/client'
 
 // Common Components
 import { Button } from 'components/common/Button'
 import Field from 'components/common/Field'
-import { CurrencyField } from 'components/common/CurrencyField'
-
-// Components
 import useForm from 'components/common/hooks/useForm'
 import { useUI } from 'components/Context'
-
-const StyledCreateMenuForm = styled.form`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  padding: 2rem;
-  width: 550px;
-`
-
-const StyledButtonContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 1rem;
-`
+import { Form } from 'components/UI'
+import { ADD_MENU_CHOICE } from 'graphql/mutations/menu-choice/addMenuChoice'
+import { handleCreateChoice } from 'components/Services/Choice'
+import { handleCreateSelection } from 'components/Services/Selection'
+import { ADD_MENU_SELECTION } from 'graphql/mutations/menu-selection/addMenuSelection'
 
 export const CreateSelection = () => {
-  // const [addMenuItem, { data }] = useMutation(addMenuItemMutation)
+  const [addMenuSelection, { data }] = useMutation(ADD_MENU_SELECTION)
 
-  const { organizationId } = useUI()
+  const { organizationId, menuId, setFormView } = useUI()
 
   const { values, errors, handleChange, handleBlur, handleSubmit } = useForm({
     onSubmit: async ({ errors, values }) => {
-      console.log(values)
-      // const header = event.currentTarget.elements.menuHeader.value
-      // const subHeader = event.currentTarget.elements.menuSubHeader.value
+      const variables = {
+        organization_id: organizationId,
+        name: values.name,
+        value_add: values.value_add,
+      }
+      const args = { variables, organizationId }
+      const { data } = await handleCreateSelection(addMenuSelection, args)
 
-      // addMenuHeader({
-      //   variables: { name: header, sub_header: subHeader, menu_id: menu_id },
-      //   update: (store, { data }) => {
-      //     const menuHeaderData = store.readQuery({
-      //       query: MENU_HEADERS_BY_MENU,
-      //       variables: { menu_id: menu_id },
-      //     })
-
-      //     store.writeQuery({
-      //       query: MENU_HEADERS_BY_MENU,
-      //       variables: { menu_id: menu_id },
-      //       data: {
-      //         menuHeadersByMenu: [
-      //           ...menuHeaderData.menuHeadersByMenu,
-      //           data.addMenuHeader,
-      //         ],
-      //       },
-      //     })
-      //   },
-      // })
+      setFormView('CREATE_ITEM_VIEW')
     },
+
+    // $organization_id: ID!
+    // $menu_choice_id: ID
+    // $menu_item_id: ID
+    // $name: String!
+    // $value_add: String
   })
 
-  const cancel = (event) => {
-    console.log(`clicked`)
-    event.preventDefault()
-  }
-
   return (
-    <StyledCreateMenuForm onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit}>
       <Field
-        id="name"
-        name="name"
-        required
-        label="Selection Name"
+        id="header"
+        name="header"
+        required={true}
+        type="text"
+        label="Header"
         placeholder=""
         onBlur={handleBlur}
         onChange={handleChange}
-        value={values.name}
-        error={errors.name}
+        value={values.header}
+        error={errors.header}
       />
-      <CurrencyField
-        placeholder="$0.00"
+      <Field
+        id="sub_header"
         type="text"
-        label="Added Value"
-        id="value"
-        name="value"
-        onChange={handleChange}
+        name="sub_header"
+        label="Sub Header"
+        placeholder=""
         onBlur={handleBlur}
-        value={values.value}
-        error={errors.value}
+        onChange={handleChange}
+        value={values.sub_header}
+        error={errors.sub_header}
       />
-
-      <StyledButtonContainer>
-        <Button onClick={cancel} type="button">
-          Cancel
+      <div className="form-btns">
+        <div />
+        <Button type="button" value="Create">
+          Create
         </Button>
-        <Button>Save</Button>
-      </StyledButtonContainer>
-    </StyledCreateMenuForm>
+      </div>
+    </Form>
   )
 }
-
-export default CreateSelection

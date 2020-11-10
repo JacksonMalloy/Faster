@@ -11,6 +11,7 @@ import DropdownSelectSelections from 'components/Menu/selection/DropdownSelectSe
 import { useQuery } from '@apollo/client'
 import { MENU_CHOICES_BY_ORGANIZATION } from 'graphql/queries/menu-choice/menuChoiceByOrganization'
 import { useUI } from 'components/Context'
+import DropDownSelect from '../header/DropdownSelect'
 
 const StyledChoice = styled.div`
   display: flex;
@@ -24,18 +25,18 @@ const StyledChoice = styled.div`
 `
 
 export const ChoiceGroup = ({ selectionData }) => {
-  const { organizationId, formAddOns } = useUI()
+  const { organizationId, formAddOns, removeFormAddOn, bulkRemoveFormChoices, bulkRemoveFormSelections } = useUI()
 
   const { data: choicesData, loading, error } = useQuery(MENU_CHOICES_BY_ORGANIZATION, {
     variables: { organization_id: organizationId },
     fetchPolicy: 'cache-first',
   })
 
-  const handleClick = (choice, id) => {
-    console.log('click')
-    // dispatch(removeChoiceGroup(choice))
-    // dispatch(bulkRemoveChoices(id))
-    // dispatch(bulkRemoveSelections(id))
+  const handleClick = (choice) => {
+    const { UUID } = choice
+    bulkRemoveFormChoices(UUID)
+    removeFormAddOn(UUID)
+    bulkRemoveFormSelections(UUID)
   }
 
   return (
@@ -45,25 +46,29 @@ export const ChoiceGroup = ({ selectionData }) => {
           return (
             <StyledChoice key={choice.id}>
               <span>
-                <Button onClick={() => handleClick(choice, choice.id)}>&times;</Button>
+                <Button onClick={() => handleClick(choice)} type="button" value="close">
+                  &times;
+                </Button>
               </span>
               {choicesData && choicesData.menuChoicesByOrganization && (
-                <DropdownSelectChoices
+                <DropDownSelect
                   items={choicesData.menuChoicesByOrganization}
                   title="Select one"
                   label={'Choices'}
                   multiSelect={false}
                   id={choice.id}
+                  variant="CHOICE"
                 />
               )}
 
               {selectionData && selectionData.menuSelectionsByOrganization && (
-                <DropdownSelectSelections
+                <DropDownSelect
                   items={selectionData.menuSelectionsByOrganization}
                   title="You can select more than one"
                   label={'Selections'}
                   multiSelect={true}
                   id={choice.id}
+                  variant="SELECTION"
                 />
               )}
             </StyledChoice>

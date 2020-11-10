@@ -13,7 +13,7 @@ import { Button } from 'components/common/Button'
 import { CurrencyField } from 'components/common/CurrencyField'
 
 // Components
-import DropdownSelectHeader from 'components/Menu/header/DropdownSelectHeaders'
+import DropdownSelectHeader from 'components/Menu/header/DropdownSelect'
 import { ChoiceGroup } from 'components/Menu/choice/ChoiceGroup'
 
 type ItemFormProps = {

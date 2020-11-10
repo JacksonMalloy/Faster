@@ -20,7 +20,7 @@ import { useUI } from '../Context'
 import { MENU_HEADERS_BY_MENU } from 'graphql/queries/menu-header/menuHeadersByMenu'
 import { MENU_SELECTIONS_BY_ORGANIZATION } from 'graphql/queries/menu-selection/menuSelectionsByOrganization'
 
-import DropdownSelectHeader from '../Menu/header/DropdownSelectHeaders'
+import DropdownSelectHeader from '../Menu/header/DropdownSelect'
 
 export const CreateItem = () => {
   const [addMenuItem] = useMutation(ADD_MENU_ITEM)
@@ -176,8 +176,6 @@ export const CreateItem = () => {
     console.log('clicked')
     setFormAddOns()
   }
-
-  console.log({ headerData })
 
   return (
     <Form onSubmit={handleSubmit}>
