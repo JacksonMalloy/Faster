@@ -1,0 +1,13 @@
+{
+  "recommendations": [
+    // Git
+    "eamodio.gitlens",
+    // Nginx formatting
+    "raynigon.nginx-formatter",
+    // HTML/CSS/JSON/YAML formatting
+    "esbenp.prettier-vscode",
+    // React formatting
+    "dbaeumer.vscode-eslint",
+    "dsznajder.es7-react-js-snippets"
+  ]
+}

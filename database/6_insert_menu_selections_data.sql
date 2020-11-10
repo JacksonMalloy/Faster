@@ -1,0 +1,7 @@
+-- INSERT INTO "fm"."menuselections" ("organization_id", "menu_item_id", "name", "value_add" ) VALUES ('5', '5', 'Original Crust(1st Pizza)', '');
+-- INSERT INTO "fm"."menuselections" ("organization_id", "menu_item_id", "name", "value_add" ) VALUES ('5', '5', 'Thin Crust(1st Pizza)', '');
+-- INSERT INTO "fm"."menuselections" ("organization_id", "menu_item_id", "name", "value_add" ) VALUES ('5', '5', 'Add Feta Cheese', '1.75');
+-- INSERT INTO "fm"."menuselections" ("organization_id", "menu_item_id", "name", "value_add" ) VALUES ('5', '5', 'Add gorgonzola Cheese', '1.75');
+-- INSERT INTO "fm"."menuselections" ("organization_id", "menu_item_id", "name", "value_add" ) VALUES ('5', '5', 'Add Red Onions', '1.75');
+-- INSERT INTO "fm"."menuselections" ("organization_id", "menu_item_id", "name", "value_add" ) VALUES ('5', '5', 'Steak', '');
+-- INSERT INTO "fm"."menuselections" ("organization_id", "menu_item_id", "name", "value_add" ) VALUES ('5', '5', 'Chicken', '');

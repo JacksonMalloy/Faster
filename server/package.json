@@ -1,0 +1,37 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon --inspect=0.0.0.0 src/server.js",
+    "prod": "node src/server.js",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-graphql": "^0.11.0",
+    "graphql": "^15.3.0",
+    "pg": "^8.3.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^8.5.1",
+    "graphql-shield": "^7.3.2",
+    "graphql-middleware": "^4.0.2",
+    "cloudinary": "^1.22.0",
+    "graphql-upload": "^11.0.0",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "dataloader": "^2.0.0",
+    "graphql-subscriptions": "^0.5.8",
+    "subscriptions-transport-ws": "^0.9.18"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2",
+    "graphql-playground-middleware-express": "^1.7.18",
+    "jest": "^26.4.1",
+    "faker": "^4.1.0"
+  }
+}

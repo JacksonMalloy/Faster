@@ -1,0 +1,6 @@
+-- INSERT INTO "fm"."menuheaders" ("menu_id", "name", "sub_header") VALUES ('5', 'Beef', 'subheader goes here');
+-- INSERT INTO "fm"."menuheaders" ("menu_id", "name", "sub_header") VALUES ('5', 'Burgers', 'subheader goes here');
+-- INSERT INTO "fm"."menuheaders" ("menu_id", "name", "sub_header") VALUES ('5', 'Goulash', 'subheader goes here');
+-- INSERT INTO "fm"."menuheaders" ("menu_id", "name", "sub_header") VALUES ('5', 'Pasta', 'subheader goes here');
+-- INSERT INTO "fm"."menuheaders" ("menu_id", "name", "sub_header") VALUES ('5', 'Cheese', 'subheader goes here');
+-- INSERT INTO "fm"."menuheaders" ("menu_id", "name", "sub_header") VALUES ('5', 'Casseroles', 'subheader goes here');
