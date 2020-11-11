@@ -38,6 +38,8 @@ const StyledDropdown = styled.div`
       padding: 0;
       margin: 0;
       width: 100%;
+      max-height: 200px;
+      overflow-y: scroll;
 
       .dd-list-item {
         display: flex;

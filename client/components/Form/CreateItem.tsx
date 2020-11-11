@@ -14,13 +14,13 @@ import Field from '../common/Field'
 import { CurrencyField } from '../common/CurrencyField'
 import UploadFile from '../UploadFile'
 import { Button } from '../common/Button'
-import { ChoiceGroup } from '../Menu/choice/ChoiceGroup'
+import { AddOn } from './AddOn'
 import { Form } from '../UI'
 import { useUI } from '../Context'
 import { MENU_HEADERS_BY_MENU } from 'graphql/queries/menu-header/menuHeadersByMenu'
 import { MENU_SELECTIONS_BY_ORGANIZATION } from 'graphql/queries/menu-selection/menuSelectionsByOrganization'
 
-import DropdownSelectHeader from '../Menu/header/DropdownSelect'
+import DropdownSelectHeader from './DropdownSelect'
 
 export const CreateItem = () => {
   const [addMenuItem] = useMutation(ADD_MENU_ITEM)
@@ -232,7 +232,7 @@ export const CreateItem = () => {
           />
         )}
 
-        <ChoiceGroup selectionData={selectionData} />
+        <AddOn selectionData={selectionData} />
 
         <div className="form-btns">
           <div />

@@ -224,7 +224,6 @@ function uiReducer(state: State, action: Action) {
       return {
         ...state,
         formChoices: [
-          // Need to double check this logic ****
           ...state.formChoices.filter((choice: any) => choice.UUID !== action.formChoices.UUID),
           action.formChoices,
         ],
@@ -233,8 +232,7 @@ function uiReducer(state: State, action: Action) {
     case 'REMOVE_FORM_CHOICE': {
       return {
         ...state,
-        // Need to double check this logic ****
-        formChoices: state.formChoices.filter((choice: any) => choice.UUID !== action.UUID && choice.id !== action.id),
+        formChoices: state.formChoices.filter((choice: any) => choice.UUID !== action.UUID),
       }
     }
     case 'BULK_REMOVE_FORM_CHOICES': {
@@ -247,8 +245,12 @@ function uiReducer(state: State, action: Action) {
       return {
         ...state,
         formSelections: [
-          // Need to double check this logic ****
-          ...state.formChoices.filter((choice: any) => choice.UUID !== action.formSelections.UUID),
+          ...state.formSelections.filter((selection: any) => {
+            return (
+              selection.menu_selection_id !== action.formSelections.menu_selection_id ||
+              selection.UUID !== action.formSelections.UUID
+            )
+          }),
           action.formSelections,
         ],
       }
@@ -256,10 +258,9 @@ function uiReducer(state: State, action: Action) {
     case 'REMOVE_FORM_SELECTION': {
       return {
         ...state,
-        // Need to double check this logic ****
-        formSelections: state.formSelections.filter(
-          (selection: any) => selection.UUID !== action.UUID && selection.id !== action.id
-        ),
+        formSelections: state.formSelections.filter((selection: any) => {
+          return selection.menu_selection_id !== action.id || selection.UUID !== action.UUID
+        }),
       }
     }
     case 'BULK_REMOVE_FORM_SELECTIONS': {
@@ -322,36 +323,25 @@ export const UIProvider: FC = (props) => {
   const [state, dispatch] = React.useReducer(uiReducer, initialState)
 
   const reset = () => dispatch({ type: 'RESET' })
-
   const setOrganizationId = (id: number) => dispatch({ type: 'SET_ORGANIZATION_ID', id })
   const setMenuId = (id: number) => dispatch({ type: 'SET_MENU_ID', id })
-
   const setOrganizationToken = (token: string) => dispatch({ type: 'SET_ORGANIZATION_TOKEN', token })
   const setSelectedMenuName = (name: string) => dispatch({ type: 'SET_SELECTED_MENU_NAME', name })
-
   const closeToast = () => dispatch({ type: 'CLOSE_TOAST' })
   const openToast = (message: string, variant: TOAST_VARIANTS) => dispatch({ type: 'OPEN_TOAST', message, variant })
-
   const setFormView = (view: FORM_VIEWS) => dispatch({ type: 'SET_FORM_VIEW', view })
-
   const setFormHeader = (header: any) => dispatch({ type: 'SET_FORM_HEADER', header })
-
   const setFormImage = (image: any) => dispatch({ type: 'SET_UPLOADED_FORM_IMAGE', image })
-
   const setFormAddOns = (formAddOn: any) =>
     dispatch({ type: 'SET_FORM_ADD_ONS', formAddOns: { ...formAddOn, UUID: uuidv4() } })
   const removeFormAddOn = (UUID: string) => dispatch({ type: 'REMOVE_FORM_ADD_ON', UUID })
-
-  const setFormChoices = (formChoice: any) =>
-    dispatch({ type: 'SET_FORM_CHOICES', formChoices: { ...formChoice, UUID: uuidv4() } })
+  const setFormChoices = (formChoice: any) => dispatch({ type: 'SET_FORM_CHOICES', formChoices: { ...formChoice } })
   const removeFormChoice = (id: number, UUID: string) => dispatch({ type: 'REMOVE_FORM_CHOICE', id, UUID })
   const bulkRemoveFormChoices = (UUID: string) => dispatch({ type: 'BULK_REMOVE_FORM_CHOICES', UUID })
-
   const setFormSelections = (formSelection: any) =>
-    dispatch({ type: 'SET_FORM_SELECTIONS', formSelections: { ...formSelection, UUID: uuidv4() } })
+    dispatch({ type: 'SET_FORM_SELECTIONS', formSelections: { ...formSelection } })
   const removeFormSelection = (id: number, UUID: string) => dispatch({ type: 'REMOVE_FORM_SELECTION', id, UUID })
   const bulkRemoveFormSelections = (UUID: string) => dispatch({ type: 'BULK_REMOVE_FORM_SELECTIONS', UUID })
-
   const setSelectedMenu = (menu: any) => dispatch({ type: 'SET_SELECTED_MENU', menu })
   const setSelectedItem = (item: any) => dispatch({ type: 'SET_SELECTED_ITEM', item })
   const setSelectedHeader = (header: any) => dispatch({ type: 'SET_SELECTED_HEADER', header })

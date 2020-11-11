@@ -3,17 +3,13 @@ import styled from 'styled-components'
 // Common Components
 import { Button } from 'components/common/Button'
 
-// Components
-import DropdownSelectChoices from 'components/Menu/choice/DropdownSelectChoices'
-import DropdownSelectSelections from 'components/Menu/selection/DropdownSelectSelections'
-
 // GraphQL
 import { useQuery } from '@apollo/client'
 import { MENU_CHOICES_BY_ORGANIZATION } from 'graphql/queries/menu-choice/menuChoiceByOrganization'
 import { useUI } from 'components/Context'
-import DropDownSelect from '../header/DropdownSelect'
+import DropDownSelect from './DropdownSelect'
 
-const StyledChoice = styled.div`
+const StyledAddOn = styled.div`
   display: flex;
   justify-content: right;
   flex-direction: column;
@@ -24,7 +20,7 @@ const StyledChoice = styled.div`
   border: 2px #f5f5f5 solid;
 `
 
-export const ChoiceGroup = ({ selectionData }) => {
+export const AddOn = ({ selectionData }) => {
   const { organizationId, formAddOns, removeFormAddOn, bulkRemoveFormChoices, bulkRemoveFormSelections } = useUI()
 
   const { data: choicesData, loading, error } = useQuery(MENU_CHOICES_BY_ORGANIZATION, {
@@ -44,7 +40,7 @@ export const ChoiceGroup = ({ selectionData }) => {
       {formAddOns &&
         formAddOns.map((choice) => {
           return (
-            <StyledChoice key={choice.id}>
+            <StyledAddOn key={choice.UUID}>
               <span>
                 <Button onClick={() => handleClick(choice)} type="button" value="close">
                   &times;
@@ -55,8 +51,7 @@ export const ChoiceGroup = ({ selectionData }) => {
                   items={choicesData.menuChoicesByOrganization}
                   title="Select one"
                   label={'Choices'}
-                  multiSelect={false}
-                  id={choice.id}
+                  UUID={choice.UUID}
                   variant="CHOICE"
                 />
               )}
@@ -66,12 +61,12 @@ export const ChoiceGroup = ({ selectionData }) => {
                   items={selectionData.menuSelectionsByOrganization}
                   title="You can select more than one"
                   label={'Selections'}
-                  multiSelect={true}
-                  id={choice.id}
+                  multiSelect
+                  UUID={choice.UUID}
                   variant="SELECTION"
                 />
               )}
-            </StyledChoice>
+            </StyledAddOn>
           )
         })}
     </>

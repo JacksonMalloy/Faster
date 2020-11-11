@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 // Global State
 import UserContext from 'stores/UserContext'
-import { choiceGroupCreated } from 'stores/choiceActions'
+import { AddOnCreated } from 'stores/choiceActions'
 import { addHeader, reset, addChoice, addSelection } from 'stores/userActions'
 
 // Common Components
@@ -13,8 +13,8 @@ import { Button } from 'components/common/Button'
 import { CurrencyField } from 'components/common/CurrencyField'
 
 // Components
-import DropdownSelectHeader from 'components/Menu/header/DropdownSelect'
-import { ChoiceGroup } from 'components/Menu/choice/ChoiceGroup'
+import DropdownSelectHeader from 'components/Form/DropdownSelect'
+import { AddOn } from 'components/Form/AddOn'
 
 type ItemFormProps = {
   handleBlur: any
@@ -48,7 +48,7 @@ export const ItemForm = ({
   const [hasTriggered, setHasTriggered] = useState(false)
 
   const handleChoice = () => {
-    dispatch(choiceGroupCreated())
+    dispatch(AddOnCreated())
   }
 
   const handleCancel = () => {
@@ -71,7 +71,7 @@ export const ItemForm = ({
       // console.log({ placeholderDataArray })
 
       for (let key of item.menu_choices) {
-        dispatch(choiceGroupCreated())
+        dispatch(AddOnCreated())
         placeholderDataArray.pop()
 
         console.info(`CREATE ${i++} CHOICE GROUP(s)`)
@@ -87,14 +87,14 @@ export const ItemForm = ({
 
   useEffect(() => {
     if (item && item.menu_choices) {
-      const { choiceGroups } = state
+      const { AddOns } = state
       const { menu_choices } = item
 
-      // console.log({ choiceGroups })
+      // console.log({ AddOns })
       // console.log({ menu_choices })
       // console.log({ state })
 
-      const isArrayEqualLength = menu_choices.length === choiceGroups.length
+      const isArrayEqualLength = menu_choices.length === AddOns.length
 
       // console.log({ isArrayEqualLength })
 
@@ -102,9 +102,9 @@ export const ItemForm = ({
 
       // Merge group ID with choice
       if (isArrayEqualLength) {
-        for (let index = 0; index < choiceGroups.length; index++) {
+        for (let index = 0; index < AddOns.length; index++) {
           mergedArray.push({
-            ...choiceGroups[index],
+            ...AddOns[index],
             ...menu_choices[index],
           })
         }
@@ -185,7 +185,7 @@ export const ItemForm = ({
               />
             )}
 
-            <ChoiceGroup selectionData={selectionData} />
+            <AddOn selectionData={selectionData} />
 
             <Button onClick={handleChoice} type="button" value="add">
               Add A Choice
@@ -256,7 +256,7 @@ export const ItemForm = ({
               />
             )}
 
-            <ChoiceGroup selectionData={selectionData} organization_id={organizationId} />
+            <AddOn selectionData={selectionData} organization_id={organizationId} />
             <StyledButtonContainer>
               <Button onClick={handleChoice} type="button" value="choice">
                 Add A Choice

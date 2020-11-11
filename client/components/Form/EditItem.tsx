@@ -21,8 +21,8 @@ import React from 'react'
 import Field from '../common/Field'
 import UploadFile from '../UploadFile'
 import { Button } from '../common/Button'
-import DropdownSelectHeader from '../Menu/header/DropdownSelect'
-import { ChoiceGroup } from '../Menu/choice/ChoiceGroup'
+import DropdownSelectHeader from './DropdownSelect'
+import { AddOn } from './AddOn'
 import { CurrencyField } from '../common/CurrencyField'
 import { useEffect } from 'react'
 import { MENU_HEADERS_BY_MENU } from 'graphql/queries/menu-header/menuHeadersByMenu'
@@ -103,9 +103,9 @@ export const EditItem = () => {
           connectMenuSelectionToMenuChoice,
         }
 
-        const { choiceGroups, choices, selections } = state
+        const { AddOns, choices, selections } = state
 
-        const CSargs = { item, choiceGroups, choices, selections }
+        const CSargs = { item, AddOns, choices, selections }
 
         await handleMenuChoiceItemConnections(mutations, CSargs)
           .then(() => {
@@ -192,7 +192,7 @@ export const EditItem = () => {
           />
         )}
 
-        <ChoiceGroup selectionData={selectionData} />
+        <AddOn selectionData={selectionData} />
         <div>
           {/* <Button onClick={handleChoice} type="button" value="choice">
             Add A Choice
