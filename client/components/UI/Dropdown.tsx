@@ -9,7 +9,7 @@ const StyledDropdown = styled.div`
 
   label {
     position: absolute;
-    top: -0.1rem;
+    top: 0.8rem;
     left: 1.3rem;
     width: 100%;
     color: black;

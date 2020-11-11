@@ -18,6 +18,11 @@ const StyledAddOn = styled.div`
   padding: 1rem 0;
   border-radius: 0.5rem;
   border: 2px #f5f5f5 solid;
+
+  span {
+    display: flex;
+    padding: 0rem 1rem;
+  }
 `
 
 export const AddOn = ({ selectionData }) => {
@@ -36,39 +41,37 @@ export const AddOn = ({ selectionData }) => {
   }
 
   return (
-    <>
-      {formAddOns &&
-        formAddOns.map((choice) => {
-          return (
-            <StyledAddOn key={choice.UUID}>
-              <span>
-                <Button onClick={() => handleClick(choice)} type="button" value="close">
-                  &times;
-                </Button>
-              </span>
-              {choicesData && choicesData.menuChoicesByOrganization && (
-                <DropDownSelect
-                  items={choicesData.menuChoicesByOrganization}
-                  title="Select one"
-                  label={'Choices'}
-                  UUID={choice.UUID}
-                  variant="CHOICE"
-                />
-              )}
+    formAddOns &&
+    formAddOns.map((choice) => {
+      return (
+        <StyledAddOn key={choice.UUID}>
+          <span>
+            <Button onClick={() => handleClick(choice)} type="button" value="close">
+              &times;
+            </Button>
+          </span>
+          {choicesData && choicesData.menuChoicesByOrganization && (
+            <DropDownSelect
+              items={choicesData.menuChoicesByOrganization}
+              title="Select one"
+              label={'Choices'}
+              UUID={choice.UUID}
+              variant="CHOICE"
+            />
+          )}
 
-              {selectionData && selectionData.menuSelectionsByOrganization && (
-                <DropDownSelect
-                  items={selectionData.menuSelectionsByOrganization}
-                  title="You can select more than one"
-                  label={'Selections'}
-                  multiSelect
-                  UUID={choice.UUID}
-                  variant="SELECTION"
-                />
-              )}
-            </StyledAddOn>
-          )
-        })}
-    </>
+          {selectionData && selectionData.menuSelectionsByOrganization && (
+            <DropDownSelect
+              items={selectionData.menuSelectionsByOrganization}
+              title="You can select more than one"
+              label={'Selections'}
+              multiSelect
+              UUID={choice.UUID}
+              variant="SELECTION"
+            />
+          )}
+        </StyledAddOn>
+      )
+    })
   )
 }

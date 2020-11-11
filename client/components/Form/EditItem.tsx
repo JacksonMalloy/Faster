@@ -21,7 +21,7 @@ import React from 'react'
 import Field from '../common/Field'
 import UploadFile from '../UploadFile'
 import { Button } from '../common/Button'
-import DropdownSelectHeader from './DropdownSelect'
+import DropdownSelect from './DropdownSelect'
 import { AddOn } from './AddOn'
 import { CurrencyField } from '../common/CurrencyField'
 import { useEffect } from 'react'
@@ -30,7 +30,7 @@ import { MENU_SELECTIONS_BY_ORGANIZATION } from 'graphql/queries/menu-selection/
 
 export const EditItem = () => {
   // State
-  const { organizationId, formImage, reset, openToast, selectedItem, setFormView } = useUI()
+  const { organizationId, formImage, reset, openToast, selectedItem, setFormView, setFormAddOns } = useUI()
 
   // Mutations
   const [editMenuItem, { error: editItemError }] = useMutation(EDIT_MENU_ITEM)
@@ -129,6 +129,11 @@ export const EditItem = () => {
     reset()
   }
 
+  const generateAddOn = () => {
+    console.log('clicked')
+    setFormAddOns()
+  }
+
   useEffect(() => {
     initialize({ title: selectedItem?.name, description: selectedItem?.description, price: selectedItem?.base_price })
   }, [initialize, selectedItem])
@@ -175,16 +180,10 @@ export const EditItem = () => {
           <label>Item Image (Optional)</label>
           <UploadFile />
         </section>
-        <div className="form-btns">
-          <Button onClick={handleCancel} type="reset" value="Reset">
-            Cancel
-          </Button>
-          <Button value="update">Update</Button>
-        </div>
       </section>
-      <section className="ptop">
+      <section>
         {headerData && headerData.menuHeadersByMenu && (
-          <DropdownSelectHeader
+          <DropdownSelect
             items={headerData.menuHeadersByMenu}
             title="Select a value"
             label={'Header'}
@@ -193,10 +192,21 @@ export const EditItem = () => {
         )}
 
         <AddOn selectionData={selectionData} />
-        <div>
-          {/* <Button onClick={handleChoice} type="button" value="choice">
-            Add A Choice
-          </Button> */}
+
+        <div className="form-btns">
+          <div />
+          <Button onClick={generateAddOn} type="button" value="choice">
+            Create Add On
+          </Button>
+        </div>
+
+        <hr />
+
+        <div className="form-btns">
+          <Button onClick={handleCancel} type="reset" value="Reset">
+            Cancel
+          </Button>
+          <Button value="update">Update</Button>
         </div>
       </section>
     </Form>

@@ -20,7 +20,7 @@ import { useUI } from '../Context'
 import { MENU_HEADERS_BY_MENU } from 'graphql/queries/menu-header/menuHeadersByMenu'
 import { MENU_SELECTIONS_BY_ORGANIZATION } from 'graphql/queries/menu-selection/menuSelectionsByOrganization'
 
-import DropdownSelectHeader from './DropdownSelect'
+import DropdownSelect from './DropdownSelect'
 
 export const CreateItem = () => {
   const [addMenuItem] = useMutation(ADD_MENU_ITEM)
@@ -219,12 +219,9 @@ export const CreateItem = () => {
           <label>Item Image (Optional)</label>
           <UploadFile />
         </section>
-        <div className="form-btns">
-          <div />
-          <Button value="create">Create</Button>
-        </div>
+
         {headerData && headerData.menuHeadersByMenu && (
-          <DropdownSelectHeader
+          <DropdownSelect
             items={headerData.menuHeadersByMenu}
             title="Select a value"
             label={'Header'}
@@ -239,6 +236,13 @@ export const CreateItem = () => {
           <Button onClick={generateAddOn} type="button" value="choice">
             Create Add On
           </Button>
+        </div>
+
+        <hr />
+
+        <div className="form-btns">
+          <div />
+          <Button value="create">Create</Button>
         </div>
       </section>
     </Form>

@@ -48,6 +48,7 @@ const DropDownSelect = ({
   const node = useRef()
 
   const [search, setSearch] = useState('')
+  const [searchView, setSearchView] = useState(false)
   const [data, setData] = useState(null)
 
   // Initialize data state store for search
@@ -200,8 +201,7 @@ const DropDownSelect = ({
 
   const handleSearch = (event) => {
     event.preventDefault()
-
-    console.log('seraching...')
+    setSearchView(!searchView)
   }
 
   const handleDelete = async (event, item) => {
@@ -310,31 +310,32 @@ const DropDownSelect = ({
 
       <main>
         <header tabIndex={0} className="dd-header" onKeyPress={() => toggle(!open)} onClick={() => toggle(!open)}>
-          {renderTags()}
-          <div className="dd-header__action">{open ? <p>Open</p> : <p>Close</p>}</div>
+          {searchView ? (
+            <input
+              id="search"
+              name="search"
+              type="search"
+              placeholder="Search..."
+              value={search}
+              onChange={(event) => handleChange(event.target.value)}
+            />
+          ) : (
+            <>{renderTags()}</>
+          )}
+
+          <button onClick={handleSearch}>
+            <Search />
+          </button>
         </header>
 
         {open && (
           <>
             <div className="selection-btns">
-              <button onClick={handleSearch}>
-                <Search />
-              </button>
               <button onClick={changeView}>
                 <Plus />
               </button>
             </div>
 
-            <Field
-              id="search"
-              name="search"
-              type="search"
-              required
-              label="Search"
-              placeholder=""
-              value={search}
-              onChange={(event) => handleChange(event.target.value)}
-            />
             <ul className="dd-list">
               {data.map((item) => (
                 <li className="dd-list-item" key={item.menu_header_id}>
