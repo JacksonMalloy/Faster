@@ -46,6 +46,9 @@ const DropDownSelect = ({
   const [open, setOpen] = useState(false)
   const toggle = () => setOpen(!open)
   const node = useRef()
+  const dropdown = useRef(null)
+
+  const executeScroll = () => dropdown.current.focus()
 
   const [search, setSearch] = useState('')
   const [searchView, setSearchView] = useState(false)
@@ -90,6 +93,8 @@ const DropDownSelect = ({
   }
 
   const handleOnClick = (item) => {
+    executeScroll()
+
     switch (variant) {
       case 'HEADER':
         if (!formHeader) {
@@ -204,8 +209,7 @@ const DropDownSelect = ({
     setSearchView(!searchView)
   }
 
-  const handleDelete = async (event, item) => {
-    event.preventDefault()
+  const handleDelete = async (item) => {
     let variables
     let args
 
@@ -239,9 +243,7 @@ const DropDownSelect = ({
     }
   }
 
-  const handleEdit = (event, item) => {
-    event.preventDefault()
-
+  const handleEdit = (item) => {
     switch (variant) {
       case 'CHOICE':
         setSelectedChoice(item)
@@ -310,45 +312,45 @@ const DropDownSelect = ({
 
       <main>
         <header tabIndex={0} className="dd-header" onKeyPress={() => toggle(!open)} onClick={() => toggle(!open)}>
-          {searchView ? (
-            <input
-              id="search"
-              name="search"
-              type="search"
-              placeholder="Search..."
-              value={search}
-              onChange={(event) => handleChange(event.target.value)}
-            />
-          ) : (
-            <>{renderTags()}</>
-          )}
-
-          <button onClick={handleSearch}>
-            <Search />
-          </button>
+          <>{renderTags()}</>
+          <Plus onClick={changeView} />
         </header>
 
         {open && (
           <>
-            <div className="selection-btns">
-              <button onClick={changeView}>
-                <Plus />
-              </button>
-            </div>
-
             <ul className="dd-list">
+              <li className="dd-list-item">
+                <input
+                  id="search"
+                  name="search"
+                  type="search"
+                  placeholder="Search..."
+                  value={search}
+                  onChange={(event) => handleChange(event.target.value)}
+                  ref={dropdown}
+                />
+                <Search onClick={handleSearch} className="search-btn" />
+              </li>
+
               {data.map((item) => (
                 <li className="dd-list-item" key={item.menu_header_id}>
                   <button type="button" onClick={() => handleOnClick(item)}>
-                    <span>{variant === 'CHOICE' ? item.header : item.name}</span>
+                    <div className="rows">
+                      <span>{variant === 'CHOICE' ? item.header : item.name}</span>
+                      <span className="sub">
+                        {variant === 'CHOICE'
+                          ? item.sub_header
+                          : variant === 'SELECTION'
+                          ? item.value_add
+                          : variant === 'HEADER'
+                          ? item.sub_header
+                          : null}{' '}
+                      </span>
+                    </div>
                     <span>{isItemInSelection(item) && 'Selected'}</span>
                   </button>
-                  <button className="action" onClick={(event) => handleDelete(event, item)}>
-                    <Trash />
-                  </button>
-                  <button className="action" onClick={(event) => handleEdit(event, item)}>
-                    <Tools />
-                  </button>
+                  <Trash className="action delete-action" onClick={() => handleDelete(item)} />
+                  <Tools className="action edit-action" onClick={() => handleEdit(item)} />
                 </li>
               ))}
             </ul>

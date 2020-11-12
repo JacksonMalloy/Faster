@@ -18,6 +18,7 @@ const StyledDropdown = styled.div`
 
   main {
     padding: 1rem 1rem 0 1rem;
+    position: relative;
 
     .dd-header {
       display: flex;
@@ -37,21 +38,67 @@ const StyledDropdown = styled.div`
     .dd-list {
       padding: 0;
       margin: 0;
-      width: 100%;
+      width: 93%;
       max-height: 200px;
       overflow-y: scroll;
+      margin-top: 1rem;
+      position: absolute;
+      top: 70px;
+      z-index: 9;
+
+      .selected {
+        background-color: red;
+      }
 
       .dd-list-item {
         display: flex;
+        position: relative;
 
         .action {
-          flex: 1;
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          width: 15px;
+          cursor: pointer;
+        }
+
+        .delete-action {
+          right: 5px;
+        }
+
+        .edit-action {
+          right: 35px;
         }
 
         &:first-of-type {
-          > button {
+          > button,
+          input {
             border-top: 1px solid #ccc;
           }
+        }
+
+        input {
+          display: flex;
+          justify-content: space-between;
+          background-color: white;
+          font-size: 1rem;
+          padding: 0.4rem;
+          border: 0;
+          border-bottom: 1px solid #ccc;
+          width: 100%;
+          border-left: 1px solid #ccc;
+          border-right: 1px solid #ccc;
+        }
+
+        input:focus {
+          outline: none;
+        }
+
+        .search-btn {
+          position: absolute;
+          right: 10px;
+          top: 5px;
+          color: #ccc;
         }
 
         button {
@@ -68,13 +115,19 @@ const StyledDropdown = styled.div`
 
           span {
             background-color: white;
+            padding: 0.2rem;
+            padding-right: 2rem;
           }
 
           &:hover,
           &:focus {
             cursor: pointer;
-            font-weight: bold;
-            box-shadow: inset 0 0 2px #000;
+            background-color: #f9f9f9;
+            outline: none;
+
+            span {
+              background-color: #f9f9f9;
+            }
           }
         }
       }
@@ -91,52 +144,21 @@ const StyledDropdown = styled.div`
       background-color: black;
       color: white;
       padding: 0.51rem;
-      margin: 0.3rem;
       text-align: center;
       font-size: 0.6rem;
       cursor: pointer;
     }
   }
 
-  .selection-btns {
+  .rows {
     display: flex;
-    align-items: center;
-    z-index: 9;
-    padding-top: 1rem;
+    flex-direction: column;
+    text-align: left;
 
-    p {
-      padding: 0 1rem;
-    }
-
-    button {
-      border-radius: 50%;
-      cursor: pointer;
-      height: 30px;
-      width: 30px;
-      text-decoration: none;
-      font-weight: 300;
-      position: relative;
-      text-align: center;
-      transition: all 0.2s;
-      border: none;
-      margin: 0 0.4rem;
-      z-index: 9999999;
-
-      &:hover {
-        color: #000000;
-        background-color: #ffffff;
-
-        border: 0.1rem solid #000000;
-      }
-
-      svg {
-        height: 15px;
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        bottom: 7px;
-        z-index: 9;
-      }
+    .sub {
+      color: #ccc;
+      font-size: 0.7rem;
+      text-align: left;
     }
   }
 `
