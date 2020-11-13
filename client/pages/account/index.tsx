@@ -1,15 +1,13 @@
-import Security from 'components/Account/Security'
-import { useQuery } from '@apollo/client'
-
-import Analytics from 'components/Analytics'
 import MainNavigation from 'components/MainNavigation'
+
+import { useQuery } from '@apollo/client'
 import { MainLayout } from 'components/common/layout/MainLayout'
 import Login from 'components/Login'
-
 // GraphQL
 import { ACTIVE_USER_ADMIN } from 'graphql/queries/active-user/activeUserAdmin'
+import Account from 'components/Account'
 
-const SecurityPage = () => {
+const AccountPage = () => {
   const { loading: userLoading, data: userData } = useQuery(ACTIVE_USER_ADMIN, {
     fetchPolicy: 'network-only',
   })
@@ -23,7 +21,11 @@ const SecurityPage = () => {
   }
 
   if (userData.activeUserAdmin) {
-    return <Security permissions={userData.activeUserAdmin.permissions} />
+    return (
+      <MainNavigation permissions={userData.activeUserAdmin.permissions}>
+        <Account organizationId={userData.activeUserAdmin.organization_id} />
+      </MainNavigation>
+    )
   }
 
   return (
@@ -33,4 +35,4 @@ const SecurityPage = () => {
   )
 }
 
-export default SecurityPage
+export default AccountPage

@@ -8,7 +8,7 @@ import { EventHandler } from 'react'
 const StyledCurrency = styled.div`
   padding: 1rem;
   position: relative;
-  margin: 0.4rem;
+  width: 100%;
 
   input {
     padding: 0 1rem;

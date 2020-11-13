@@ -182,12 +182,12 @@ const MainNavigation = ({ children, permissions }: MainNavigationProps) => {
           </>
         </ActiveLink>
 
-        <ActiveLink href="/orders">
+        {/* <ActiveLink href="/orders">
           <>
             <CreditCard />
             <p className="hide">Orders</p>
           </>
-        </ActiveLink>
+        </ActiveLink> */}
 
         {/* <ActiveLink href="/analytics">
           <>
@@ -196,14 +196,14 @@ const MainNavigation = ({ children, permissions }: MainNavigationProps) => {
           </>
         </ActiveLink> */}
 
-        <ActiveLink href="/staff">
+        {/* <ActiveLink href="/staff">
           <>
             <Person />
             <p className="hide">Staff</p>
           </>
-        </ActiveLink>
+        </ActiveLink> */}
 
-        <ActiveLink href="/account/basic-information">
+        <ActiveLink href="/account">
           <>
             <Settings />
             <p className="hide">Settings</p>

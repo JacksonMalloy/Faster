@@ -8,6 +8,7 @@ import DashboardHeader from 'components/common/DashboardHeader'
 import { QAtools } from 'components/QAtools'
 import { Container, Grid } from '../UI'
 import { useUI } from '../Context'
+import Skeleton from 'components/UI/Skeleton'
 
 type MenusProps = {
   organization_id: number
@@ -52,7 +53,13 @@ const Menus = ({ organization_id }: MenusProps) => {
         <DashboardHeader setSearch={setSearch} search={search} />
 
         <Container>
-          <Grid>Loading...</Grid>
+          <Grid>
+            <Skeleton width="100%" height="10rem" />
+            <Skeleton width="100%" height="10rem" />
+            <Skeleton width="100%" height="10rem" />
+            <Skeleton width="100%" height="10rem" />
+            <Skeleton width="100%" height="10rem" />
+          </Grid>
           <Form />
         </Container>
       </>
@@ -91,11 +98,19 @@ const Menus = ({ organization_id }: MenusProps) => {
         <Grid>
           {!isRouting && (
             <>
-              {data.menusByOrganization
-                ? data.menusByOrganization.map((menu: MenuTypes) => (
-                    <MenuCard menu={menu} key={menu.menu_id} image={menu.image} setIsRouting={setIsRouting} />
-                  ))
-                : null}
+              {data.menusByOrganization ? (
+                data.menusByOrganization.map((menu: MenuTypes) => (
+                  <MenuCard menu={menu} key={menu.menu_id} image={menu.image} setIsRouting={setIsRouting} />
+                ))
+              ) : (
+                <>
+                  <Skeleton width="100%" height="10rem" />
+                  <Skeleton width="100%" height="10rem" />
+                  <Skeleton width="100%" height="10rem" />
+                  <Skeleton width="100%" height="10rem" />
+                  <Skeleton width="100%" height="10rem" />
+                </>
+              )}
             </>
           )}
         </Grid>

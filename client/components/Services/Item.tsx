@@ -113,101 +113,127 @@ export const handleConnectingImageToItem = async (mutation, args) => {
 }
 
 export const handleMenuChoiceItemConnections = async (mutations, args) => {
-  const { item, choiceGroups, choices, selections } = args
+  const { selectedItem, formAddOns, formChoices, formSelections } = args
+
   const {
     removeMenuChoicesMenuItemsConnection,
     connectMenuChoiceToMenuItem,
     removeMenuSelectionsMenuChoicesConnection,
     connectMenuSelectionToMenuChoice,
   } = mutations
-  const { menu_choices, menu_item_id } = item
-  const choiceIDs = menu_choices.map((choice: { menu_choice_id: number }) => choice.menu_choice_id)
+
+  const choiceIDs = selectedItem.menu_choices.map((choice) => choice.menu_choice_id)
 
   const variables = {
-    menu_item_id: menu_item_id,
+    menu_item_id: selectedItem.menu_item_id,
     menu_choice_ids: choiceIDs,
   }
 
-  if (choiceIDs.length) {
-    removeMenuChoicesMenuItemsConnection({
-      variables: variables,
-      refetchQueries: [
-        {
-          query: MENU_ITEM,
-          variables: { menu_item_id: menu_item_id },
-        },
-      ],
-    })
-  }
-
-  for (let choice of menu_choices) {
-    const selectionIDs = choice.selections.map(
-      (selection: { menu_selection_id: number }) => selection.menu_selection_id
-    )
-
-    const variables = {
-      menu_choice_id: choice.menu_choice_id,
-      menu_selection_ids: selectionIDs,
-    }
-
-    if (selectionIDs.length) {
-      removeMenuSelectionsMenuChoicesConnection({
-        variables: variables,
-        refetchQueries: [
-          {
-            query: MENU_ITEM,
-            variables: { menu_item_id: menu_item_id },
-          },
-        ],
-      })
-    }
-  }
-
-  if (choiceGroups.length && choices.length) {
-    const choiceIDs = choices.map((choice: { menu_choice_id: number }) => choice.menu_choice_id)
-
-    const variables = {
-      menu_item_id: menu_item_id,
-      menu_choice_ids: choiceIDs,
-    }
-
+  const removeChoicesController = async () => {
     if (choiceIDs.length) {
-      connectMenuChoiceToMenuItem({
-        variables: variables,
-        refetchQueries: [
-          {
-            query: MENU_ITEM,
-            variables: { menu_item_id: menu_item_id },
-          },
-        ],
-      })
+      try {
+        const data = await removeMenuChoicesMenuItemsConnection({
+          variables: variables,
+        })
+
+        return data
+      } catch (error) {
+        console.error(error)
+      }
     }
   }
 
-  if (choiceGroups.length && choices.length && selections.length) {
-    for (let choice of choices) {
-      const arrayOfMenuSelectionIds = selections
-        .filter((selection: { id: string }) => selection.id === choice.id)
-        .map((selection: { menu_selection_id: number }) => selection.menu_selection_id)
+  const removedChoices = await removeChoicesController()
+  // console.log({ removedChoices })
+
+  const removeSelectionsController = async () => {
+    for (let choice of formChoices) {
+      const selectionIDs = choice.selections.map((selection) => selection.menu_selection_id)
 
       const variables = {
         menu_choice_id: choice.menu_choice_id,
-        menu_selection_ids: arrayOfMenuSelectionIds,
+        menu_selection_ids: selectionIDs,
       }
 
-      if (arrayOfMenuSelectionIds.length) {
-        connectMenuSelectionToMenuChoice({
-          variables: variables,
-          refetchQueries: [
-            {
-              query: MENU_ITEM,
-              variables: { menu_item_id: menu_item_id },
-            },
-          ],
-        })
+      if (selectionIDs.length) {
+        try {
+          const data = await removeMenuSelectionsMenuChoicesConnection({
+            variables: variables,
+          })
+
+          return data
+        } catch (error) {
+          console.error(error)
+        }
       }
     }
   }
+
+  const removedSelections = await removeSelectionsController()
+  // console.log({ removedSelections })
+
+  const connectChoicesController = async () => {
+    if (formAddOns.length && formChoices.length) {
+      const choiceIDs = formChoices.map((choice) => choice.menu_choice_id)
+
+      const variables = {
+        menu_item_id: selectedItem.menu_item_id,
+        menu_choice_ids: choiceIDs,
+      }
+
+      if (choiceIDs.length) {
+        try {
+          const data = await connectMenuChoiceToMenuItem({
+            variables: variables,
+          })
+
+          return data
+        } catch (error) {
+          console.error(error)
+        }
+      }
+    }
+  }
+
+  const connectedChoices = await connectChoicesController()
+  // console.log({ connectedChoices })
+
+  const connectSelectionsController = async () => {
+    if (formAddOns.length && formChoices.length && formSelections.length) {
+      console.log({ formChoices })
+
+      for (let choice of formChoices) {
+        const arrayOfMenuSelections = formSelections.filter(
+          (selection: { UUID: string }) => selection.UUID === choice.UUID
+        )
+        console.log({ choice })
+        console.log({ arrayOfMenuSelections })
+
+        // [1, 4, 16, 234, 56, 12]
+        const arrayOfMenuSelectionIds = arrayOfMenuSelections.map(
+          (selection: { menu_selection_id: number }) => selection.menu_selection_id
+        )
+
+        const variables = {
+          menu_choice_id: choice.menu_choice_id,
+          menu_selection_ids: arrayOfMenuSelectionIds,
+        }
+
+        try {
+          const connect = await connectMenuSelectionToMenuChoice({
+            variables: variables,
+          })
+
+          console.log({ connect })
+        } catch (error) {
+          console.error(error)
+        }
+      }
+    }
+  }
+
+  const connectedSelections = await connectSelectionsController()
+  // console.log({ connectedSelections })
 }
 
 export const handleDeleteItem = async () => {

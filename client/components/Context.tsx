@@ -278,6 +278,11 @@ function uiReducer(state: State, action: Action) {
         formSelections: [],
         formImage: null,
         selectedMenu: null,
+        // Otherwise itemSelection.header is undefined
+        // selectedItem: null,
+        selectedHeader: null,
+        selectedChoice: null,
+        selectedSelection: null,
       }
     }
     case 'SET_SELECTED_MENU': {

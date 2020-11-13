@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import styled from 'styled-components'
 import { Button } from './common/Button'
+import { useUI } from './Context'
 
 const StyledQA = styled.div`
   position: fixed;
@@ -24,12 +25,9 @@ const StyledQA = styled.div`
   }
 `
 
-type QAtypes = {
-  state?: any
-}
-
-export const QAtools = (state: QAtypes) => {
+export const QAtools = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const state = useUI()
 
   const renderQATools = () => {
     if (isOpen) {

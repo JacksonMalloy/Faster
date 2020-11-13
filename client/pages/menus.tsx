@@ -7,6 +7,9 @@ import Login from 'components/Login'
 // GraphQL
 import { ACTIVE_USER_ADMIN } from 'graphql/queries/active-user/activeUserAdmin'
 import { useEffect, useState } from 'react'
+import Skeleton from 'components/UI/Skeleton'
+import DashboardHeader from 'components/common/DashboardHeader'
+import { Container, Form, Grid } from 'components/UI'
 
 const MenusPage = () => {
   const { loading: userLoading, data: userData } = useQuery(ACTIVE_USER_ADMIN, {
@@ -16,7 +19,22 @@ const MenusPage = () => {
   if (userLoading) {
     return (
       <MainNavigation>
-        <p>loading</p>
+        <DashboardHeader />
+        <Container>
+          <Grid>
+            <Skeleton width="100%" height="10rem" />
+            <Skeleton width="100%" height="10rem" />
+            <Skeleton width="100%" height="10rem" />
+            <Skeleton width="100%" height="10rem" />
+            <Skeleton width="100%" height="10rem" />
+          </Grid>
+          <Form>
+            <div style={{ margin: '2rem 1rem 1rem 1rem' }}>
+              <Skeleton width="100%" height="10rem" />
+              <Skeleton width="100%" height="30rem" />
+            </div>
+          </Form>
+        </Container>
       </MainNavigation>
     )
   }

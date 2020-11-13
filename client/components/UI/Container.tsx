@@ -8,17 +8,19 @@ const StyledContainer = styled.section`
   }
 
   padding-top: 7rem;
-  padding-right: 460px;
+  padding-right: ${({ paddingRight }) => (paddingRight ? paddingRight : '460px')};
   padding-bottom: 1rem;
   background-color: white;
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   overflow-x: hidden;
 `
 
-const Container = ({ children }: any) => {
-  return <StyledContainer>{children}</StyledContainer>
+const Container = ({ children, paddingRight }: any) => {
+  return <StyledContainer paddingRight={paddingRight}>{children}</StyledContainer>
 }
 
 export default Container

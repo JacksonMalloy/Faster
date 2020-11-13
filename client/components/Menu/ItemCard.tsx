@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Button } from '../common/Button'
-import { useMutation } from '@apollo/client'
+import { useLazyQuery, useMutation } from '@apollo/client'
 
 // SVGs
 import Trash from 'assets/trash.svg'
@@ -12,6 +12,8 @@ import { MENU_ITEMS_BY_MENU } from 'graphql/queries/menu-item/menuItemsByMenu'
 import { itemDeleter } from 'utils'
 import { useUI } from '../Context'
 import { Card } from '../UI'
+import { MENU_ITEM } from 'graphql/queries/menu-item/menuItem'
+import { useEffect } from 'react'
 
 const StyledActions = styled.div`
   width: 100%;
@@ -87,9 +89,23 @@ type CardProps = {
 export const ItemCard = ({ item }: CardProps) => {
   const { menu_id, menu_item_id, image } = item
 
-  const { reset, setSelectedItem, setFormView } = useUI()
+  const {
+    reset,
+    setSelectedItem,
+    setFormView,
+    setFormHeader,
+    setFormChoices,
+    setFormSelections,
+    setFormAddOns,
+    formAddOns,
+  } = useUI()
 
   const [removeMenuItem] = useMutation(REMOVE_MENU_ITEM)
+
+  const [loadItem, { called, loading, data }] = useLazyQuery(MENU_ITEM, {
+    variables: { menu_item_id: menu_item_id },
+    fetchPolicy: 'network-only',
+  })
 
   const deleteMenuItem = () => {
     removeMenuItem({
@@ -114,10 +130,75 @@ export const ItemCard = ({ item }: CardProps) => {
   }
 
   const handleEditItem = () => {
+    loadItem()
     reset()
-    setSelectedItem(item)
-    setFormView('EDIT_ITEM_VIEW')
   }
+
+  // Simulate callback to set items' initial state
+  useEffect(() => {
+    if (called && !loading) {
+      setFormView('EDIT_ITEM_VIEW')
+      setSelectedItem(data.menuItem)
+
+      // Data
+      console.log({ data })
+
+      if (data && data.menuItem) {
+        const {
+          menuItem: { menu_header, menu_choices },
+        } = data
+
+        setFormHeader(menu_header)
+
+        if (menu_choices) {
+          for (let key of menu_choices) {
+            setFormAddOns()
+          }
+        }
+      }
+    }
+    // eslint-disable-next-line
+  }, [called, loading, data])
+
+  useEffect(() => {
+    if (data && data.menuItem) {
+      const {
+        menuItem: { menu_choices },
+      } = data
+
+      const isArrayEqualLength = menu_choices.length === formAddOns.length
+
+      let mergedArray = []
+
+      // Merge group ID with choice
+      if (isArrayEqualLength) {
+        for (let index = 0; index < formAddOns.length; index++) {
+          mergedArray.push({
+            ...formAddOns[index],
+            ...menu_choices[index],
+          })
+        }
+
+        console.log({ mergedArray })
+
+        // Populate Choices and Selections in assigned group
+        for (let choice of mergedArray) {
+          console.log({ choice })
+
+          setFormChoices(choice)
+
+          const { selections } = choice
+
+          selections.forEach((selection) => {
+            const { UUID } = choice
+            const newKey = { ...selection, UUID }
+            setFormSelections(newKey)
+          })
+        }
+      }
+    }
+    // eslint-disable-next-line
+  }, [data, formAddOns])
 
   return (
     <Card>

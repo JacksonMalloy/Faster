@@ -11,7 +11,7 @@ type Props = {
 const StyledField = styled.div`
   padding: 1rem;
   position: relative;
-  margin: 0.4rem;
+  width: 100%;
 `
 
 const StyledInput = styled.input<Props>`

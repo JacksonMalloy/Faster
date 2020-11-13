@@ -21,6 +21,7 @@ const StyledAddOn = styled.div`
 
   span {
     display: flex;
+    justify-content: flex-end;
     padding: 0rem 1rem;
   }
 `

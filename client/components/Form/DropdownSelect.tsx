@@ -48,7 +48,11 @@ const DropDownSelect = ({
   const node = useRef()
   const dropdown = useRef(null)
 
-  const executeScroll = () => dropdown.current.focus()
+  const executeScroll = () =>
+    dropdown.current.scrollTo({
+      top: -100,
+      behavior: 'smooth',
+    })
 
   const [search, setSearch] = useState('')
   const [searchView, setSearchView] = useState(false)
@@ -59,9 +63,9 @@ const DropDownSelect = ({
     setData(items)
   }, [])
 
-  useEffect(() => {
-    console.log({ formSelections })
-  }, [formSelections])
+  // useEffect(() => {
+  //   console.log({ formSelections })
+  // }, [formSelections])
 
   const excludeColumns = [
     '__typename',
@@ -308,12 +312,11 @@ const DropDownSelect = ({
 
   return (
     <Dropdown node={node} label={label}>
-      <header></header>
-
       <main>
         <header tabIndex={0} className="dd-header" onKeyPress={() => toggle(!open)} onClick={() => toggle(!open)}>
           <>{renderTags()}</>
           <Plus onClick={changeView} />
+          <div className="empty" />
         </header>
 
         {open && (

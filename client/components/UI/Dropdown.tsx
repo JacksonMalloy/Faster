@@ -5,11 +5,13 @@ const StyledDropdown = styled.div`
   position: relative;
   margin-top: 1rem;
   display: flex;
+  padding: 0.2rem 1rem 0.2rem 1rem;
   flex-direction: column !important;
+  margin: 0.4rem;
 
   label {
     position: absolute;
-    top: 0.8rem;
+    top: 2.3rem;
     left: 1.3rem;
     width: 100%;
     color: black;
@@ -17,7 +19,6 @@ const StyledDropdown = styled.div`
   }
 
   main {
-    padding: 1rem 1rem 0 1rem;
     position: relative;
 
     .dd-header {
@@ -35,15 +36,19 @@ const StyledDropdown = styled.div`
       }
     }
 
+    /* **** */
+    /* List */
+    /* **** */
     .dd-list {
       padding: 0;
       margin: 0;
-      width: 93%;
-      max-height: 200px;
+      width: 500px;
       overflow-y: scroll;
       margin-top: 1rem;
-      position: absolute;
+      position: fixed;
       top: 70px;
+      right: 25px;
+
       z-index: 9;
 
       .selected {
@@ -134,18 +139,32 @@ const StyledDropdown = styled.div`
     }
   }
 
+  /* **** */
+  /* Tags */
+  /* **** */
+
   header {
-    display: grid;
-    padding: 1rem 1rem 0rem 1rem;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    display: flex;
+    justify-content: space-around;
+    padding: 0rem !important;
+    min-height: 40px;
+    position: relative;
+    flex-wrap: wrap;
+
+    svg {
+      position: absolute;
+      right: 10px;
+      top: 20px;
+    }
 
     span {
-      border-radius: 1rem;
+      border-radius: 0px;
       background-color: black;
       color: white;
-      padding: 0.51rem;
-      text-align: center;
-      font-size: 0.6rem;
+      border-radius: 0.2rem;
+      padding: 0.51rem 0.8rem;
+      margin: 0.2rem;
+      font-size: 0.8rem;
       cursor: pointer;
     }
   }

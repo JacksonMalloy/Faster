@@ -16,6 +16,7 @@ import { QAtools } from 'components/QAtools'
 import { useRouter } from 'next/router'
 import { useUI } from '../Context'
 import { Container, Grid } from 'components/UI'
+import Skeleton from 'components/UI/Skeleton'
 
 type MenuProps = {
   id: number
@@ -68,7 +69,16 @@ const Menu = ({ id, organization_id }: MenuProps) => {
     return (
       <>
         <DashboardHeader setSearch={setSearch} search={search} />
-        <Container>Loading... (Load Skeleton Loader here*)</Container>
+        <Container>
+          <Grid>
+            <Skeleton width="100%" height="10rem" />
+            <Skeleton width="100%" height="10rem" />
+            <Skeleton width="100%" height="10rem" />
+            <Skeleton width="100%" height="10rem" />
+            <Skeleton width="100%" height="10rem" />
+          </Grid>
+          <Form menu_id={id} />
+        </Container>
       </>
     )
 

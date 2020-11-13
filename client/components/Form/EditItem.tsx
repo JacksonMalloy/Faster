@@ -14,7 +14,7 @@ import useForm from 'components/common/hooks/useForm'
 
 // Components
 import { handleEditMenu } from 'components/Services/Menu'
-import { handleConnectingImageToItem, handleMenuChoiceItemConnections } from '../Services'
+import { handleConnectingImageToItem, handleEditItem, handleMenuChoiceItemConnections } from '../Services'
 import { useUI } from '../Context'
 import { Form } from '../UI'
 import React from 'react'
@@ -30,7 +30,19 @@ import { MENU_SELECTIONS_BY_ORGANIZATION } from 'graphql/queries/menu-selection/
 
 export const EditItem = () => {
   // State
-  const { organizationId, formImage, reset, openToast, selectedItem, setFormView, setFormAddOns } = useUI()
+  const {
+    organizationId,
+    formImage,
+    reset,
+    openToast,
+    selectedItem,
+    setFormView,
+    setFormAddOns,
+    formHeader,
+    formAddOns,
+    formChoices,
+    formSelections,
+  } = useUI()
 
   // Mutations
   const [editMenuItem, { error: editItemError }] = useMutation(EDIT_MENU_ITEM)
@@ -72,11 +84,11 @@ export const EditItem = () => {
     onSubmit: async ({ errors, values }) => {
       const { title, description, price } = values
       const { menu_item_id, menu_id } = selectedItem
-      const [{ menu_header_id }] = headerData
+      const headerId = formHeader ? formHeader.menu_header_id : null
 
       const variables = {
         menu_item_id: menu_item_id,
-        menu_header_id: menu_header_id,
+        menu_header_id: headerId,
         menu_id: menu_id,
         name: title,
         base_price: price,
@@ -85,42 +97,32 @@ export const EditItem = () => {
 
       const args = { variables, menu_id }
 
-      const handleData = await handleEditMenu(editMenuItem, args)
+      const handleData = await handleEditItem(editMenuItem, args)
+      console.log({ handleData })
+      console.log({ selectedItem })
 
-      // UPDATE IMAGE
-      if (formImage) {
-        const connectingImageVariables = {
-          image_id: formImage.uploadImage.image_id,
-          menu_item_id: handleData.editMenuItem.menu_item_id,
-        }
-        const connectingImageArgs = { variables: connectingImageVariables, menu_id }
-        await handleConnectingImageToItem(connectImageToMenuItem, connectingImageArgs)
-
-        const mutations = {
-          removeMenuChoicesMenuItemsConnection,
-          removeMenuSelectionsMenuChoicesConnection,
-          connectMenuChoiceToMenuItem,
-          connectMenuSelectionToMenuChoice,
-        }
-
-        const { AddOns, choices, selections } = state
-
-        const CSargs = { item, AddOns, choices, selections }
-
-        await handleMenuChoiceItemConnections(mutations, CSargs)
-          .then(() => {
-            console.log({ editItemError })
-            console.log({ connectImageToItemError })
-            console.log({ removeChoicesToItemsError })
-            console.log({ removeSelectionsToChoiceError })
-            console.log({ connectChoicesToItemError })
-            console.log({ connectSelectionsToChoicesError })
-
-            reset()
-            setFormView('EDIT_ITEM_VIEW')
-          })
-          .catch((error) => console.log(error))
+      const mutations = {
+        removeMenuChoicesMenuItemsConnection,
+        removeMenuSelectionsMenuChoicesConnection,
+        connectMenuChoiceToMenuItem,
+        connectMenuSelectionToMenuChoice,
       }
+
+      const CSargs = { selectedItem, formAddOns, formChoices, formSelections }
+
+      await handleMenuChoiceItemConnections(mutations, CSargs)
+        .then(() => {
+          // console.log({ editItemError })
+          // console.log({ connectImageToItemError })
+          // console.log({ removeChoicesToItemsError })
+          // console.log({ removeSelectionsToChoiceError })
+          // console.log({ connectChoicesToItemError })
+          // console.log({ connectSelectionsToChoicesError })
+        })
+        .catch((error) => console.log(error))
+
+      setFormView('CREATE_ITEM_VIEW')
+      reset()
     },
   })
 
