@@ -46,6 +46,8 @@ export const EditSelection = () => {
 
   return (
     <Form onSubmit={handleSubmit}>
+      <h1>Edit Selection</h1>
+
       <Field
         id="name"
         name="name"

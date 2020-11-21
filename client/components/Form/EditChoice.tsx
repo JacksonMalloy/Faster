@@ -43,6 +43,8 @@ export const EditChoice = () => {
 
   return (
     <Form onSubmit={handleSubmit}>
+      <h1>Edit Choice</h1>
+
       <Field
         id="header"
         name="header"

@@ -37,6 +37,7 @@ export const CreateItem = () => {
     organizationId,
     selectedMenu,
     menuId,
+    reset,
   } = useUI()
 
   const { data: headerData, loading: headerDataLoading, error: headerDataError } = useQuery(MENU_HEADERS_BY_MENU, {
@@ -54,17 +55,18 @@ export const CreateItem = () => {
 
   const { values, errors, handleChange, handleBlur, handleSubmit } = useForm({
     onSubmit: async ({ errors, values }) => {
-      const { description, price, title, reset } = values
+      const { description, price, title } = values
+      const { menu_header_id } = formHeader
 
       const variables = {
-        menu_id: menu_id,
+        menu_id: menuId,
         name: title,
         description: description,
         base_price: price,
-        menu_header_id: formHeader.length !== 0 ? formHeader[0].menu_header_id : null,
+        menu_header_id: menu_header_id,
       }
 
-      const args = { variables, menu_id }
+      const args = { variables, menuId }
       const { data } = await handleCreateItem(addMenuItem, args)
 
       const {
@@ -173,19 +175,30 @@ export const CreateItem = () => {
   // }, [data])
 
   const generateAddOn = () => {
-    console.log('clicked')
     setFormAddOns()
+  }
+
+  const hasErrors = () => {
+    if (!values.title) return true
+    if (!values.description) return true
+    if (!values.price) return true
+    if (!formHeader) return true
+
+    const postalCodeRegex = /^[ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy]{1}\d{1}[A-Za-z]{1}[ ]{0,1}\d{1}[A-Za-z]{1}\d{1}$/i
+    if (!postalCodeRegex.test(values.postal_code.trim())) return true
   }
 
   return (
     <Form onSubmit={handleSubmit}>
+      <h1>Create Item</h1>
+
       <section>
         <Field
           id="title"
           name="title"
           type="name"
           required
-          label="Item Title"
+          label="Name"
           placeholder=""
           onChange={handleChange}
           onBlur={handleBlur}
@@ -196,7 +209,7 @@ export const CreateItem = () => {
           id="description"
           name="description"
           type="textarea"
-          label="Item Description"
+          label="Description"
           placeholder=""
           onChange={handleChange}
           onBlur={handleBlur}
@@ -207,7 +220,7 @@ export const CreateItem = () => {
         <CurrencyField
           placeholder="$0.00"
           type="text"
-          label="Item Price"
+          label="Price"
           id="price"
           name="price"
           onChange={handleChange}
@@ -242,7 +255,10 @@ export const CreateItem = () => {
 
         <div className="form-btns">
           <div />
-          <Button value="create">Create</Button>
+
+          <Button value="create" disabled={hasErrors()}>
+            Create
+          </Button>
         </div>
       </section>
     </Form>

@@ -44,6 +44,8 @@ export const CreateMenu = () => {
 
   return (
     <Form onSubmit={handleSubmit}>
+      <h1>Create Menu</h1>
+
       <Field
         id="menu_title"
         name="menu_title"

@@ -10,7 +10,6 @@ type Props = {
 const StyledSelectContainer = styled.div<Props>`
   padding: 1rem;
   position: relative;
-  margin: 0.4rem;
 
   select {
     cursor: pointer;

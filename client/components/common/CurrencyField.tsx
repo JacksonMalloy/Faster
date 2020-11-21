@@ -24,7 +24,7 @@ const StyledCurrency = styled.div`
     height: 2.5rem;
     border-radius: 0.25rem;
     border: 2px solid;
-    border-color: ${({ error }) => (error ? 'red' : '#black')};
+    border-color: ${({ error }) => (error ? 'red' : 'black')};
     background-color: #fff;
 
     &:focus {
@@ -77,7 +77,7 @@ interface FieldProps {
   value: string
   onChange: EventHandler<any>
   onBlur?: FocusEventHandler
-  error: string
+  error?: string
   serverError?: any
 }
 
@@ -99,7 +99,7 @@ export const CurrencyField = ({
   })
 
   return (
-    <StyledCurrency>
+    <StyledCurrency error={error}>
       <StyledLabel htmlFor={name}>{label}</StyledLabel>
 
       <MaskedInput

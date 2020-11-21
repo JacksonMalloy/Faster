@@ -14,14 +14,15 @@ COPY jsconfig.json .
 COPY next.config.js .
 COPY ./tsconfig.json .
 
+# TODO: Change to src
 COPY pages ./pages
 COPY public ./public
 COPY lib ./lib
 COPY components ./components
 COPY fonts ./fonts
 COPY graphql ./graphql
-COPY stores ./stores
 COPY assets ./assets
+COPY utils ./utils
 
 #---------- DEVELOPMENT ----------
 FROM prereq AS development

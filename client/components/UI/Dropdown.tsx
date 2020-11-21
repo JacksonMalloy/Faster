@@ -9,15 +9,6 @@ const StyledDropdown = styled.div`
   flex-direction: column !important;
   margin: 0.4rem;
 
-  label {
-    position: absolute;
-    top: 2.3rem;
-    left: 1.3rem;
-    width: 100%;
-    color: black;
-    font-size: 0.8rem;
-  }
-
   main {
     position: relative;
 
@@ -30,17 +21,26 @@ const StyledDropdown = styled.div`
       padding: 0.7rem 0.8rem;
       border: 2px solid black;
       border-radius: 0.25rem;
+      margin-top: 1rem;
 
       p {
         margin: 0;
       }
+
+      svg {
+        top: 6px;
+      }
+    }
+
+    .dd-header__title--bold {
+      padding: 0 1rem;
     }
 
     /* **** */
     /* List */
     /* **** */
     .dd-list {
-      padding: 0;
+      padding: 1rem;
       margin: 0;
       width: 500px;
       overflow-y: scroll;
@@ -48,7 +48,8 @@ const StyledDropdown = styled.div`
       position: fixed;
       top: 70px;
       right: 25px;
-
+      background-color: white;
+      height: 100%;
       z-index: 9;
 
       .selected {

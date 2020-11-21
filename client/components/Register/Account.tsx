@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Dispatch, SetStateAction } from 'react'
+import { useState, Dispatch, SetStateAction } from 'react'
 import Field from 'components/common/Field'
 import { Button } from 'components/common/Button'
 import useForm from 'components/common/hooks/useForm'
@@ -29,7 +29,7 @@ const StyledForm = styled.form`
     display: flex;
     justify-content: center;
     width: 100%;
-    padding: 1rem 1.4rem;
+    padding: 1rem;
 
     button {
       width: 100%;

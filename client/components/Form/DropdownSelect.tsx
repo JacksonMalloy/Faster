@@ -314,50 +314,52 @@ const DropDownSelect = ({
     <Dropdown node={node} label={label}>
       <main>
         <header tabIndex={0} className="dd-header" onKeyPress={() => toggle(!open)} onClick={() => toggle(!open)}>
-          <>{renderTags()}</>
+          {renderTags()}
           <Plus onClick={changeView} />
-          <div className="empty" />
         </header>
 
         {open && (
-          <>
-            <ul className="dd-list">
-              <li className="dd-list-item">
-                <input
-                  id="search"
-                  name="search"
-                  type="search"
-                  placeholder="Search..."
-                  value={search}
-                  onChange={(event) => handleChange(event.target.value)}
-                  ref={dropdown}
-                />
-                <Search onClick={handleSearch} className="search-btn" />
-              </li>
+          <ul className="dd-list">
+            <h1>Select Header</h1>
+            <header tabIndex={0} className="dd-header" onKeyPress={() => toggle(!open)} onClick={() => toggle(!open)}>
+              {renderTags()}
+              <Plus onClick={changeView} />
+            </header>
+            <li className="dd-list-item">
+              <input
+                id="search"
+                name="search"
+                type="search"
+                placeholder="Search..."
+                value={search}
+                onChange={(event) => handleChange(event.target.value)}
+                ref={dropdown}
+              />
+              <Search onClick={handleSearch} className="search-btn" />
+            </li>
 
-              {data.map((item) => (
-                <li className="dd-list-item" key={item.menu_header_id}>
-                  <button type="button" onClick={() => handleOnClick(item)}>
-                    <div className="rows">
-                      <span>{variant === 'CHOICE' ? item.header : item.name}</span>
-                      <span className="sub">
-                        {variant === 'CHOICE'
-                          ? item.sub_header
-                          : variant === 'SELECTION'
-                          ? item.value_add
-                          : variant === 'HEADER'
-                          ? item.sub_header
-                          : null}{' '}
-                      </span>
-                    </div>
-                    <span>{isItemInSelection(item) && 'Selected'}</span>
-                  </button>
-                  <Trash className="action delete-action" onClick={() => handleDelete(item)} />
-                  <Tools className="action edit-action" onClick={() => handleEdit(item)} />
-                </li>
-              ))}
-            </ul>
-          </>
+            {data.map((item) => (
+              <li className="dd-list-item" key={item.menu_header_id}>
+                <button type="button" onClick={() => handleOnClick(item)}>
+                  <div className="rows">
+                    <span>{variant === 'CHOICE' ? item.header : item.name}</span>
+                    <span className="sub">
+                      {variant === 'CHOICE'
+                        ? item.sub_header
+                        : variant === 'SELECTION'
+                        ? item.value_add
+                        : variant === 'HEADER'
+                        ? item.sub_header
+                        : null}{' '}
+                    </span>
+                  </div>
+                  <span>{isItemInSelection(item) && 'Selected'}</span>
+                </button>
+                <Trash className="action delete-action" onClick={() => handleDelete(item)} />
+                <Tools className="action edit-action" onClick={() => handleEdit(item)} />
+              </li>
+            ))}
+          </ul>
         )}
       </main>
     </Dropdown>

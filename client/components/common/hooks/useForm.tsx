@@ -1,4 +1,6 @@
-import { useState, useEffect, useRef, EventHandler, FormEventHandler, useReducer, useCallback } from 'react'
+import { useState, useRef, EventHandler, FormEventHandler, useCallback } from 'react'
+import { normalizeInput } from '../../../utils/normalizeInput'
+import { validate } from '../../../utils/validate'
 
 interface useFormProps {
   initialValues?: {} | null
@@ -20,18 +22,6 @@ const useForm = ({ initialValues, onSubmit }: useFormProps) => {
     }
   }, [])
 
-  const normalizeInput = (value: string, previousValue: string | any[]) => {
-    if (!value) return value
-    const currentValue = value.replace(/[^\d]/g, '')
-    const cvLength = currentValue.length
-
-    if (!previousValue || value.length > previousValue.length) {
-      if (cvLength < 4) return currentValue
-      if (cvLength < 7) return `(${currentValue.slice(0, 3)}) ${currentValue.slice(3)}`
-      return `(${currentValue.slice(0, 3)}) ${currentValue.slice(3, 6)}-${currentValue.slice(6, 10)}`
-    }
-  }
-
   const handleChange: EventHandler<any> = (event) => {
     const { target } = event
     const { name, value } = target
@@ -45,97 +35,14 @@ const useForm = ({ initialValues, onSubmit }: useFormProps) => {
     }
   }
 
-  const validate = (name: string, value: string) => {
-    switch (name) {
-      case 'organization_name':
-        if (value.split('').length === 0) {
-          errors.organization_name = 'Your company must have a name'
-        } else {
-          errors.organization_name = ''
-        }
-        break
-      case 'address':
-        if (value.split('').length === 0) {
-          errors.address = 'Your company must have an address'
-        } else {
-          errors.address = ''
-        }
-        break
-      case 'country_region':
-        if (value.split('').length === 0) {
-          errors.country_region = 'This field is required'
-        } else {
-          errors.country_region = ''
-        }
-        break
-      case 'postal_code':
-        if (value.split('').length === 0) {
-          errors.postal_code = 'Please enter a valid postal code'
-        } else {
-          errors.postal_code = ''
-        }
-        break
-      case 'city':
-        if (value.split('').length === 0) {
-          errors.city = 'This field is required'
-        } else {
-          errors.city = ''
-        }
-        break
-      case 'account_name':
-        if (value.split('').length === 0) {
-          errors.account_name = 'Your account must have a name'
-        } else {
-          errors.account_name = ''
-        }
-        break
-      case 'account_phone':
-        if (value.split('').length === 0 && value.split('').length !== 14) {
-          errors.account_phone = 'Your account must have a valid phone number'
-        } else if (value.split('').length > 0 && value.split('').length < 10) {
-          errors.account_phone = 'Please enter a valid phone number'
-        } else {
-          errors.account_phone = ''
-        }
-        break
-      case 'account_email':
-        if (value.split('').length === 0) {
-          errors.account_email = 'Your account must have an email'
-        } else if (!value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
-          errors.account_email = 'Please enter a valid email address'
-        } else {
-          errors.account_email = ''
-        }
-        break
-      case 'recovery_email':
-        if (value.split('').length === 0 || !value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
-          errors.recovery_email = 'Please enter a valid email address'
-        } else {
-          errors.recovery_email = ''
-        }
-        break
-      case 'password_check':
-        if (values.password !== value) {
-          errors.password_check = 'Passwords do not match!'
-        } else {
-          errors.password_check = ''
-        }
-        break
-
-      default:
-        break
-    }
-  }
-
   const handleBlur: EventHandler<any> = (event) => {
     const { target } = event
     const { name, value } = target
-    validate(name, value)
+    validate(name, value, values, errors)
     setErrors({ ...errors })
   }
 
   const handleSubmit: EventHandler<any> = (event) => {
-    console.log('clicked')
     if (event) event.preventDefault()
     setErrors({ ...errors })
     onSubmit({ values, errors } as any)

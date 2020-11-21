@@ -56,6 +56,8 @@ export const EditMenu = () => {
 
   return (
     <Form onSubmit={handleSubmit}>
+      <h1>Edit Menu</h1>
+
       <Field
         id="menu_title"
         name="menu_title"

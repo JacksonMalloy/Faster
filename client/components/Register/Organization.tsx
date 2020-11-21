@@ -1,4 +1,3 @@
-import React from 'react'
 import Field from 'components/common/Field'
 import { Button } from 'components/common/Button'
 import useForm from 'components/common/hooks/useForm'
@@ -29,7 +28,7 @@ const StyledForm = styled.form`
     display: flex;
     justify-content: center;
     width: 100%;
-    padding: 1rem 1.4rem;
+    padding: 1rem;
 
     button {
       width: 100%;
@@ -93,28 +92,14 @@ export const Organization = ({ setFormPhase, setAuthToken, setOrganizationId }: 
   })
 
   const hasErrors = () => {
-    if (!values.organization_name) {
-      return true
-    }
+    if (!values.organization_name) return true
+    if (!values.address) return true
+    if (!values.city) return true
+    if (!values.postal_code) return true
+    if (!province) return true
 
-    if (!values.address) {
-      return true
-    }
-
-    if (!values.city) {
-      return true
-    }
-
-    if (!values.postal_code) {
-      return true
-    }
     const postalCodeRegex = /^[ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy]{1}\d{1}[A-Za-z]{1}[ ]{0,1}\d{1}[A-Za-z]{1}\d{1}$/i
-
-    if (postalCodeRegex.test(values.postal_code.trim())) {
-      return false
-    } else {
-      return true
-    }
+    if (!postalCodeRegex.test(values.postal_code.trim())) return true
   }
 
   // NEED TO ADD PROVINCE!
