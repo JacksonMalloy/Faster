@@ -3,40 +3,31 @@ import { useQuery, gql } from '@apollo/client'
 import Link from 'next/link'
 
 const StyledItemLink = styled(Link)`
+  cursor: pointer;
+`
+
+const StyledContainer = styled.section`
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  margin: 0rem;
+  align-items: center;
+
+  header {
+    max-width: 320px;
+    text-align: center;
+    background-color: #ccc;
+    width: 100%;
+  }
 
   article {
-    padding: 1rem;
-    border-top: 1px #f5f5f5 solid;
     width: 100%;
-    position: relative;
+    max-width: 320px;
+    cursor: pointer;
+    padding: 1rem;
 
-    header {
-      width: 100%;
-      height: 15rem;
-
-      div {
-        height: 15rem;
-        width: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+    &:hover {
+      background-color: #f2f2f2;
     }
-  }
-
-  h2 {
-    font-size: 1rem;
-    margin: 0;
-  }
-
-  p {
-    margin: 0;
   }
 `
 
@@ -80,7 +71,7 @@ const Menu = ({ accessCode, menuId }) => {
                 </header>
               )}
 
-              <h2>{item.name}</h2>
+              <h3>{item.name}</h3>
               <p>{item.description}</p>
               <span>{item.base_price}</span>
             </article>
@@ -90,12 +81,13 @@ const Menu = ({ accessCode, menuId }) => {
 
     const headerSet = () => {
       return (
-        <section>
-          <h1>{header.name}</h1>
-          <p>{header.sub_header}</p>
-          <small>{header.menu_header_id}</small>
+        <StyledContainer>
+          <header>
+            <h2>{header.name}</h2>
+            <p>{header.sub_header}</p>
+          </header>
           {itemSet}
-        </section>
+        </StyledContainer>
       )
     }
 
@@ -104,7 +96,8 @@ const Menu = ({ accessCode, menuId }) => {
 
   return (
     <>
-      <h2>{data.menu.title}</h2>
+      <h1>{data.menu.title}</h1>
+
       {jsx}
       <pre style={{ fontSize: '0.8rem' }}>{JSON.stringify(data, null, 2)}</pre>
     </>

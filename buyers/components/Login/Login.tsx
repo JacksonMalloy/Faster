@@ -185,7 +185,17 @@ const Login = () => {
       <div className="center">
         {twoStepPINView === 'first' ? (
           <a onClick={handleSignInPhase} className="recovery">
-            <>{signMethod === 'phone' ? <>Try with Email</> : <>Try with Phone</>}</>
+            <>
+              {signMethod === 'phone' ? (
+                <Button type="button" value="button">
+                  Try with Email
+                </Button>
+              ) : (
+                <Button type="button" value="button">
+                  Try with Phone
+                </Button>
+              )}
+            </>
           </a>
         ) : (
           <a onClick={handleSignInPhase} className="recovery">

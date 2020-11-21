@@ -24,12 +24,10 @@ export const MENU_ITEM = gql`
       }
       menu_choices {
         menu_choice_id
-        organization_id
         menu_item_id
         header
         sub_header
         selections {
-          organization_id
           menu_selection_id
           menu_choice_id
           menu_item_id
