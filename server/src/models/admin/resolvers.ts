@@ -10,16 +10,16 @@ export const AdminQueries = {
 
     return data
   },
-  adminsByOrganization: async (
+  adminsByTenant: async (
     parent: any,
-    { organization_id }: { organization_id: number },
+    { tenant_id }: { tenant_id: number },
     context: { user: any },
     info: any
   ) => {
     if (!isDirector(context)) return null
 
     const adminRepo = new AdminRepository()
-    const data = await adminRepo.getAdminsByOrganization(organization_id)
+    const data = await adminRepo.getAdminsByTenant(tenant_id)
     return data
   },
   // activeAdmin: () => {},
@@ -27,7 +27,7 @@ export const AdminQueries = {
 
 type AdminToOrgArgs = {
   admin_id: number
-  organization_id: number
+  tenant_id: number
   auth_token: string
 }
 
@@ -64,11 +64,11 @@ export const AdminMutations = {
     const admin = await adminRepo.deleteAdmin(admin_id)
     return admin
   },
-  joinAdminToOrganization: async (parent: any, args: AdminToOrgArgs, context: { user: any }, info: any) => {
+  joinAdminToTenant: async (parent: any, args: AdminToOrgArgs, context: { user: any }, info: any) => {
     if (!isDirector(context)) return { code: 401, message: 'Not Authorized', success: false }
 
     const adminRepo = new AdminRepository()
-    const admin = await adminRepo.registerAdminToOrganization(args)
+    const admin = await adminRepo.registerAdminToTenant(args)
     return admin
   },
   resetPassword: async (parent: any, args: { email: string }, context: any, info: any) => {

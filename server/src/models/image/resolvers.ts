@@ -3,10 +3,10 @@ import { isAuthenticated, isAdmin, isDirector } from '../../utils'
 
 type UploadFileArgs = {
   file: any
-  menu_item_id: number
+  item_id: number
   menu_id: number
-  organization_id: number
-  organization_name: string
+  tenant_id: number
+  tenant_name: string
 }
 
 type ConnectImageWithMenu = {
@@ -16,7 +16,7 @@ type ConnectImageWithMenu = {
 
 type ConnectImageWithItem = {
   image_id: number
-  menu_item_id: number
+  item_id: number
 }
 
 export const ImageQueries = {
@@ -25,19 +25,19 @@ export const ImageQueries = {
     const data = await imageRepo.getImageById(image_id)
     return data
   },
-  imageByMenuItem: async (parent: any, { menu_item_id }: { menu_item_id: number }, context: any, info: any) => {
+  imageByMenuItem: async (parent: any, { item_id }: { item_id: number }, context: any, info: any) => {
     const imageRepo = new ImageRepository()
-    const data = await imageRepo.getImageByMenuItem(menu_item_id)
+    const data = await imageRepo.getImageByMenuItem(item_id)
     return data
   },
-  imagesByOrganization: async (
+  imagesByTenant: async (
     parent: any,
-    { organization_id }: { organization_id: number },
+    { tenant_id }: { tenant_id: number },
     context: any,
     info: any
   ) => {
     const imageRepo = new ImageRepository()
-    const data = await imageRepo.getImagesByOrganization(organization_id)
+    const data = await imageRepo.getImagesByTenant(tenant_id)
     return data
   },
   imageByMenu: async (parent: any, { menu_id }: { menu_id: number }, context: any, info: any) => {

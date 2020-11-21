@@ -10,7 +10,7 @@ import Form from '../UI/Form'
 import { useUI } from '../Context'
 
 export const CreateMenu = () => {
-  const { organizationId, formImage, openToast, reset } = useUI()
+  const { tenantId, formImage, openToast, reset } = useUI()
 
   const [addMenu, { data }] = useMutation(ADD_MENU)
   const [connectImageToMenu] = useMutation(CONNECT_IMAGE_TO_MENU)
@@ -18,8 +18,8 @@ export const CreateMenu = () => {
   const { values, errors, handleChange, handleSubmit, handleBlur } = useForm({
     onSubmit: async ({ values }) => {
       const { menu_title } = values
-      const variables = { organization_id: organizationId, title: menu_title }
-      const args = { variables, organizationId }
+      const variables = { tenant_id: tenantId, title: menu_title }
+      const args = { variables, tenantId }
       const { data } = await handleCreateMenu(addMenu, args)
 
       const handleImageUpload = async () => {
@@ -28,7 +28,7 @@ export const CreateMenu = () => {
           menu_id: data.addMenu.menu.menu_id,
         }
 
-        const args = { variables, organizationId }
+        const args = { variables, tenantId }
         const imageData = await handleConnectImage(connectImageToMenu, args)
         return imageData
       }

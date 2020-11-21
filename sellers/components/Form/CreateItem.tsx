@@ -18,7 +18,7 @@ import { AddOn } from './AddOn'
 import { Form } from '../UI'
 import { useUI } from '../Context'
 import { MENU_HEADERS_BY_MENU } from 'graphql/queries/menu-header/menuHeadersByMenu'
-import { MENU_SELECTIONS_BY_ORGANIZATION } from 'graphql/queries/menu-selection/menuSelectionsByOrganization'
+import { MENU_SELECTIONS_BY_TENANT } from 'graphql/queries/menu-selection/menuSelectionsByTenant'
 
 import DropdownSelect from './DropdownSelect'
 
@@ -34,7 +34,7 @@ export const CreateItem = () => {
     formSelections,
     setFormAddOns,
     formAddOns,
-    organizationId,
+    tenantId,
     selectedMenu,
     menuId,
     reset,
@@ -45,10 +45,10 @@ export const CreateItem = () => {
   })
 
   const { data: selectionData, loading: selectionDataLoading, error: selectionDataError } = useQuery(
-    MENU_SELECTIONS_BY_ORGANIZATION,
+    MENU_SELECTIONS_BY_TENANT,
     {
       variables: {
-        organization_id: organizationId,
+        tenant_id: tenantId,
       },
     }
   )
@@ -56,14 +56,14 @@ export const CreateItem = () => {
   const { values, errors, handleChange, handleBlur, handleSubmit } = useForm({
     onSubmit: async ({ errors, values }) => {
       const { description, price, title } = values
-      const { menu_header_id } = formHeader
+      const { header_id } = formHeader
 
       const variables = {
         menu_id: menuId,
         name: title,
         description: description,
         base_price: price,
-        menu_header_id: menu_header_id,
+        header_id: header_id,
       }
 
       const args = { variables, menuId }
@@ -71,17 +71,17 @@ export const CreateItem = () => {
 
       const {
         addMenuItem: {
-          menu_item: { menu_item_id },
+          menu_item: { item_id },
         },
       } = data
 
       // If any choices have been made connect them and their selections
       if (formChoices.length !== 0) {
-        const arrayOfMenuChoiceIds = formChoices.map((choice: { menu_choice_id: any }) => choice.menu_choice_id)
+        const arrayOfMenuChoiceIds = formChoices.map((choice: { choice_id: any }) => choice.choice_id)
 
         const variables = {
-          menu_item_id: menu_item_id,
-          menu_choice_ids: arrayOfMenuChoiceIds,
+          item_id: item_id,
+          choice_ids: arrayOfMenuChoiceIds,
         }
 
         const args = { variables }
@@ -92,12 +92,12 @@ export const CreateItem = () => {
             for (let choice of formChoices) {
               const arrayOfMenuSelectionIds = formSelections
                 .filter((selection: { id: any }) => selection.id === choice.id)
-                .map((selection: { menu_selection_id: any }) => selection.menu_selection_id)
+                .map((selection: { selection_id: any }) => selection.selection_id)
 
               connectMenuSelectionsToMenuChoice({
                 variables: {
-                  menu_choice_id: choice.menu_choice_id,
-                  menu_selection_ids: arrayOfMenuSelectionIds,
+                  choice_id: choice.choice_id,
+                  selection_ids: arrayOfMenuSelectionIds,
                 },
               })
             }
@@ -125,7 +125,7 @@ export const CreateItem = () => {
   //   if (data && data.addMenuItem && state.image) {
   //     const variables = {
   //       image_id: state.image.uploadImage.image_id,
-  //       menu_item_id: data.addMenuItem.menu_item_id,
+  //       item_id: data.addMenuItem.item_id,
   //     }
 
   //     console.log({ variables })
@@ -146,7 +146,7 @@ export const CreateItem = () => {
 
   //           const oldItem = menuItemData.menu.menu_items.find(
   //             (obj) =>
-  //               obj.menu_item_id === data.connectImageToMenuItem.menu_item_id
+  //               obj.item_id === data.connectImageToMenuItem.item_id
   //           )
 
   //           const newData = itemReplacer(

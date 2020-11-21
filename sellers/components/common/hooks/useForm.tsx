@@ -26,8 +26,8 @@ const useForm = ({ initialValues, onSubmit }: useFormProps) => {
     const { target } = event
     const { name, value } = target
 
-    if (name === 'organization_phone' || name === 'account_phone') {
-      const normalizedInput = normalizeInput(value, values.organization_phone)
+    if (name === 'tenant_phone' || name === 'account_phone') {
+      const normalizedInput = normalizeInput(value, values.tenant_phone)
       setValues({ ...values, [name]: normalizedInput })
     } else {
       event.persist()

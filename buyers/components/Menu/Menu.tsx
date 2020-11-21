@@ -42,10 +42,10 @@ const Menu = ({ accessCode, menuId }) => {
 
   // Set up array of unique Menu Headers
   for (const item of items) {
-    if (!map.has(item.menu_header.menu_header_id)) {
-      map.set(item.menu_header.menu_header_id, true) // set any value to Map
+    if (!map.has(item.menu_header.header_id)) {
+      map.set(item.menu_header.header_id, true) // set any value to Map
       result.push({
-        menu_header_id: item.menu_header.menu_header_id,
+        header_id: item.menu_header.header_id,
         name: item.menu_header.name,
         sub_header: item.menu_header.sub_header,
       })
@@ -57,11 +57,11 @@ const Menu = ({ accessCode, menuId }) => {
   // Create array of Item Sets beneath Headers
   for (const header of result) {
     const itemSet = items
-      .filter((item) => item.menu_header.menu_header_id === header.menu_header_id)
+      .filter((item) => item.menu_header.header_id === header.header_id)
       .map((item, i) => {
         return (
           <StyledItemLink
-            href={`/${accessCode}/menu/${menuId}/item/${item.menu_item_id}`}
+            href={`/${accessCode}/menu/${menuId}/item/${item.item_id}`}
             key={`${i}-${accessCode}-${menuId}`}
           >
             <article>
@@ -110,7 +110,7 @@ const MENU = gql`
   query($menu_id: ID!) {
     menu(menu_id: $menu_id) {
       menu_id
-      organization_id
+      tenant_id
       updated_at
       title
       __typename
@@ -120,7 +120,7 @@ const MENU = gql`
         __typename
       }
       menu_items {
-        menu_item_id
+        item_id
         base_price
         description
         name
@@ -129,7 +129,7 @@ const MENU = gql`
           image_url
         }
         menu_header {
-          menu_header_id
+          header_id
           name
           sub_header
         }

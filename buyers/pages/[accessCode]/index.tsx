@@ -1,7 +1,7 @@
 import Home from 'components/Home'
 import { useRouter } from 'next/router'
 import { Header } from '../../components/common/Header'
-import Organization from '../../components/Organization'
+import Tenant from '../../components/Tenant'
 
 const HomePage = () => {
   const {
@@ -11,7 +11,7 @@ const HomePage = () => {
   return (
     <>
       <Header />
-      <Organization accessCode={accessCode} />
+      <Tenant accessCode={accessCode} />
     </>
   )
 }

@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/client'
 import { useUI } from 'components/Context'
 import { Container } from 'components/UI'
 import Skeleton from 'components/UI/Skeleton'
-import { ORGANIZATION } from 'graphql/queries/organization/organization'
+import { TENANT } from 'graphql/queries/tenant/tenant'
 import styled from 'styled-components'
 import { Info } from './Info'
 
@@ -35,8 +35,8 @@ const StyledAccountWrapper = styled.section`
   }
 `
 
-const Account = ({ organizationId }) => {
-  const { data, loading, error } = useQuery(ORGANIZATION, { variables: { organization_id: organizationId } })
+const Account = ({ tenantId }) => {
+  const { data, loading, error } = useQuery(TENANT, { variables: { tenant_id: tenantId } })
 
   if (loading) {
     return <Skeleton width="100%" height="3rem" />
@@ -49,7 +49,7 @@ const Account = ({ organizationId }) => {
   return (
     <Container paddingRight={'1rem'}>
       <StyledAccountWrapper>
-        <Info data={data.organization} />
+        <Info data={data.tenant} />
       </StyledAccountWrapper>
     </Container>
   )

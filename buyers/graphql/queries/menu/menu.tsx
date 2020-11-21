@@ -4,7 +4,7 @@ export const MENU = gql`
   query($menu_id: ID!) {
     menu(menu_id: $menu_id) {
       menu_id
-      organization_id
+      tenant_id
       created_at
       updated_at
       published
@@ -13,13 +13,13 @@ export const MENU = gql`
         uploaded_at
         image_id
         image_url
-        menu_item_id
+        item_id
         menu_id
-        organization_id
+        tenant_id
         __typename
       }
       menu_items {
-        menu_item_id
+        item_id
         menu_id
         base_price
         description
@@ -28,26 +28,26 @@ export const MENU = gql`
           uploaded_at
           image_id
           image_url
-          menu_item_id
+          item_id
           menu_id
         }
         menu_header {
-          menu_header_id
+          header_id
           menu_id
           name
           sub_header
         }
         menu_choices {
-          menu_choice_id
-          organization_id
-          menu_item_id
+          choice_id
+          tenant_id
+          item_id
           header
           sub_header
           selections {
-            organization_id
-            menu_selection_id
-            menu_choice_id
-            menu_item_id
+            tenant_id
+            selection_id
+            choice_id
+            item_id
             name
             value_add
             selected

@@ -3,7 +3,7 @@ import Field from 'components/common/Field'
 import { Button } from 'components/common/Button'
 import useForm from 'components/common/hooks/useForm'
 import styled from 'styled-components'
-import { JOIN_ADMIN_TO_ORGANIZATION } from 'graphql/mutations/admin/joinAdminToOrganization'
+import { JOIN_ADMIN_TO_TENANT } from 'graphql/mutations/admin/joinAdminToTenant'
 import { SIGNUP_DIRECTOR } from 'graphql/mutations/admin/signupDirector'
 import { useMutation } from '@apollo/client'
 import { useRouter } from 'next/router'
@@ -40,13 +40,13 @@ const StyledForm = styled.form`
 type AccountProps = {
   handlePhase: any
   authToken: string | null
-  organizationId: number | null
+  tenantId: number | null
   setAuthToken: (s: Dispatch<SetStateAction<null>>) => void
 }
 
-export const Account = ({ authToken, organizationId, setAuthToken }: AccountProps) => {
+export const Account = ({ authToken, tenantId, setAuthToken }: AccountProps) => {
   const [signupDirector] = useMutation(SIGNUP_DIRECTOR)
-  const [joinAdminToOrganization] = useMutation(JOIN_ADMIN_TO_ORGANIZATION)
+  const [joinAdminToTenant] = useMutation(JOIN_ADMIN_TO_TENANT)
 
   const [emailServerError, setEmailServerError] = useState<any>({ message: '', error: false })
   const [phoneServerError, setPhoneServerError] = useState<any>({ message: '', error: false })
@@ -110,10 +110,10 @@ export const Account = ({ authToken, organizationId, setAuthToken }: AccountProp
       }
 
       const connect = async (authToken: string) => {
-        const data = await joinAdminToOrganization({
+        const data = await joinAdminToTenant({
           variables: {
             admin_id: admin_id,
-            organization_id: organizationId,
+            tenant_id: tenantId,
             auth_token: authToken,
           },
         })
@@ -122,13 +122,13 @@ export const Account = ({ authToken, organizationId, setAuthToken }: AccountProp
       }
 
       if (success && authToken) {
-        // Set JWT before calling joinAdminToOrganization
+        // Set JWT before calling joinAdminToTenant
         localStorage.setItem('auth_token', token)
         const connectResult = await connect(authToken)
 
         const {
           data: {
-            joinAdminToOrganization: { success },
+            joinAdminToTenant: { success },
           },
         } = connectResult
 

@@ -6,9 +6,9 @@ export const IMAGES_BY_MENU = gql`
       uploaded_at
       image_id
       image_url
-      menu_item_id
+      item_id
       menu_id
-      organization_id
+      tenant_id
     }
   }
 `

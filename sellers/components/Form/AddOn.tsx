@@ -5,7 +5,7 @@ import { Button } from 'components/common/Button'
 
 // GraphQL
 import { useQuery } from '@apollo/client'
-import { MENU_CHOICES_BY_ORGANIZATION } from 'graphql/queries/menu-choice/menuChoiceByOrganization'
+import { MENU_CHOICES_BY_TENANT } from 'graphql/queries/menu-choice/menuChoiceByTenant'
 import { useUI } from 'components/Context'
 import DropDownSelect from './DropdownSelect'
 
@@ -27,10 +27,10 @@ const StyledAddOn = styled.div`
 `
 
 export const AddOn = ({ selectionData }) => {
-  const { organizationId, formAddOns, removeFormAddOn, bulkRemoveFormChoices, bulkRemoveFormSelections } = useUI()
+  const { tenantId, formAddOns, removeFormAddOn, bulkRemoveFormChoices, bulkRemoveFormSelections } = useUI()
 
-  const { data: choicesData, loading, error } = useQuery(MENU_CHOICES_BY_ORGANIZATION, {
-    variables: { organization_id: organizationId },
+  const { data: choicesData, loading, error } = useQuery(MENU_CHOICES_BY_TENANT, {
+    variables: { tenant_id: tenantId },
     fetchPolicy: 'cache-first',
   })
 
@@ -51,9 +51,9 @@ export const AddOn = ({ selectionData }) => {
               &times;
             </Button>
           </span>
-          {choicesData && choicesData.menuChoicesByOrganization && (
+          {choicesData && choicesData.menuChoicesByTenant && (
             <DropDownSelect
-              items={choicesData.menuChoicesByOrganization}
+              items={choicesData.menuChoicesByTenant}
               title="Select one"
               label={'Choices'}
               UUID={choice.UUID}
@@ -61,9 +61,9 @@ export const AddOn = ({ selectionData }) => {
             />
           )}
 
-          {selectionData && selectionData.menuSelectionsByOrganization && (
+          {selectionData && selectionData.menuSelectionsByTenant && (
             <DropDownSelect
-              items={selectionData.menuSelectionsByOrganization}
+              items={selectionData.menuSelectionsByTenant}
               title="You can select more than one"
               label={'Selections'}
               multiSelect

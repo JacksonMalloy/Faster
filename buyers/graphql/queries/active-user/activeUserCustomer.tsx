@@ -10,9 +10,9 @@ export const ACTIVE_USER_CUSTOMER = gql`
       permissions
       created_at
       token
-      organizations {
+      tenants {
         name
-        organization_id
+        tenant_id
       }
     }
   }

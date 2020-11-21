@@ -1,18 +1,15 @@
 import { gql } from '@apollo/client'
 
 export const CONNECT_MENU_SELECTIONS_TO_MENU_CHOICES = gql`
-  mutation($menu_choice_id: ID!, $menu_selection_ids: [ID!]) {
-    connectMenuSelectionsToMenuChoice(
-      menu_choice_id: $menu_choice_id
-      menu_selection_ids: $menu_selection_ids
-    ) {
+  mutation($choice_id: ID!, $selection_ids: [ID!]) {
+    connectMenuSelectionsToMenuChoice(choice_id: $choice_id, selection_ids: $selection_ids) {
       code
       message
       success
       connection {
         connect {
-          menu_choice_id
-          menu_selection_id
+          choice_id
+          selection_id
         }
       }
     }

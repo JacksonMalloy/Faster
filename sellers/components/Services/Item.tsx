@@ -59,7 +59,7 @@ export const handleEditItem = async (mutation, args) => {
         })
 
         const oldItem = menuItemData.menuItemsByMenu.find(
-          (obj: { menu_item_id: number }) => obj.menu_item_id === data.editMenuItem.menu_item.menu_item_id
+          (obj: { item_id: number }) => obj.item_id === data.editMenuItem.menu_item.item_id
         )
 
         const newData = itemReplacer(menuItemData.menuItemsByMenu, oldItem, data.editMenuItem.menu_item)
@@ -93,10 +93,10 @@ export const handleConnectingImageToItem = async (mutation, args) => {
         })
 
         const oldItem = menuItemData.menu.menu_items.find(
-          (obj: { menu_item_id: number }) => obj.menu_item_id === data.connectImageToMenuItem.menu_item_id
+          (obj: { item_id: number }) => obj.item_id === data.connectImageToMenuItem.item_id
         )
 
-        const newData = itemReplacer(menuItemData.menu.menu_items, oldItem, data.connectImageToMenuItem.menu_item_id)
+        const newData = itemReplacer(menuItemData.menu.menu_items, oldItem, data.connectImageToMenuItem.item_id)
 
         store.writeQuery({
           query: MENU_ITEMS_BY_MENU,
@@ -122,11 +122,11 @@ export const handleMenuChoiceItemConnections = async (mutations, args) => {
     connectMenuSelectionToMenuChoice,
   } = mutations
 
-  const choiceIDs = selectedItem.menu_choices.map((choice) => choice.menu_choice_id)
+  const choiceIDs = selectedItem.menu_choices.map((choice) => choice.choice_id)
 
   const variables = {
-    menu_item_id: selectedItem.menu_item_id,
-    menu_choice_ids: choiceIDs,
+    item_id: selectedItem.item_id,
+    choice_ids: choiceIDs,
   }
 
   const removeChoicesController = async () => {
@@ -148,11 +148,11 @@ export const handleMenuChoiceItemConnections = async (mutations, args) => {
 
   const removeSelectionsController = async () => {
     for (let choice of formChoices) {
-      const selectionIDs = choice.selections.map((selection) => selection.menu_selection_id)
+      const selectionIDs = choice.selections.map((selection) => selection.selection_id)
 
       const variables = {
-        menu_choice_id: choice.menu_choice_id,
-        menu_selection_ids: selectionIDs,
+        choice_id: choice.choice_id,
+        selection_ids: selectionIDs,
       }
 
       if (selectionIDs.length) {
@@ -174,11 +174,11 @@ export const handleMenuChoiceItemConnections = async (mutations, args) => {
 
   const connectChoicesController = async () => {
     if (formAddOns.length && formChoices.length) {
-      const choiceIDs = formChoices.map((choice) => choice.menu_choice_id)
+      const choiceIDs = formChoices.map((choice) => choice.choice_id)
 
       const variables = {
-        menu_item_id: selectedItem.menu_item_id,
-        menu_choice_ids: choiceIDs,
+        item_id: selectedItem.item_id,
+        choice_ids: choiceIDs,
       }
 
       if (choiceIDs.length) {
@@ -211,12 +211,12 @@ export const handleMenuChoiceItemConnections = async (mutations, args) => {
 
         // [1, 4, 16, 234, 56, 12]
         const arrayOfMenuSelectionIds = arrayOfMenuSelections.map(
-          (selection: { menu_selection_id: number }) => selection.menu_selection_id
+          (selection: { selection_id: number }) => selection.selection_id
         )
 
         const variables = {
-          menu_choice_id: choice.menu_choice_id,
-          menu_selection_ids: arrayOfMenuSelectionIds,
+          choice_id: choice.choice_id,
+          selection_ids: arrayOfMenuSelectionIds,
         }
 
         try {

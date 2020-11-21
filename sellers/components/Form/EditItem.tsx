@@ -26,12 +26,12 @@ import { AddOn } from './AddOn'
 import { CurrencyField } from '../common/CurrencyField'
 import { useEffect } from 'react'
 import { MENU_HEADERS_BY_MENU } from 'graphql/queries/menu-header/menuHeadersByMenu'
-import { MENU_SELECTIONS_BY_ORGANIZATION } from 'graphql/queries/menu-selection/menuSelectionsByOrganization'
+import { MENU_SELECTIONS_BY_TENANT } from 'graphql/queries/menu-selection/menuSelectionsByTenant'
 
 export const EditItem = () => {
   // State
   const {
-    organizationId,
+    tenantId,
     formImage,
     reset,
     openToast,
@@ -65,10 +65,10 @@ export const EditItem = () => {
   })
 
   const { data: selectionData, loading: selectionDataLoading, error: selectionDataError } = useQuery(
-    MENU_SELECTIONS_BY_ORGANIZATION,
+    MENU_SELECTIONS_BY_TENANT,
     {
       variables: {
-        organization_id: organizationId,
+        tenant_id: tenantId,
       },
     }
   )
@@ -83,12 +83,12 @@ export const EditItem = () => {
     initialValues,
     onSubmit: async ({ errors, values }) => {
       const { title, description, price } = values
-      const { menu_item_id, menu_id } = selectedItem
-      const headerId = formHeader ? formHeader.menu_header_id : null
+      const { item_id, menu_id } = selectedItem
+      const headerId = formHeader ? formHeader.header_id : null
 
       const variables = {
-        menu_item_id: menu_item_id,
-        menu_header_id: headerId,
+        item_id: item_id,
+        header_id: headerId,
         menu_id: menu_id,
         name: title,
         base_price: price,

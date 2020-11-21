@@ -15,7 +15,7 @@ import { Form } from 'components/UI'
 export const CreateHeader = () => {
   const [addMenuHeader] = useMutation(ADD_MENU_HEADER)
 
-  const { organizationId, menuId, setFormView } = useUI()
+  const { tenantId, menuId, setFormView } = useUI()
 
   const { values, errors, handleChange, handleBlur, handleSubmit } = useForm({
     onSubmit: async ({ errors, values }) => {

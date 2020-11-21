@@ -12,23 +12,23 @@ import { handleEditSelection } from 'components/Services/Selection'
 import { CurrencyField } from '../common/CurrencyField'
 
 export const EditSelection = () => {
-  const { organizationId, reset, openToast, selectedHeader, selectedSelection, setFormView } = useUI()
+  const { tenantId, reset, openToast, selectedHeader, selectedSelection, setFormView } = useUI()
   const [editMenuSelection] = useMutation(EDIT_MENU_SELECTION)
   const initialValues = {
     name: '',
     value_add: '',
-    menu_selection_id: '',
+    selection_id: '',
   }
 
   const { values, errors, handleChange, handleSubmit, initialize, handleBlur } = useForm({
     initialValues,
     onSubmit: async ({ values }) => {
       const variables = {
-        menu_selection_id: selectedSelection.menu_selection_id,
+        selection_id: selectedSelection.selection_id,
         name: values.name,
         value_add: values.value_add,
       }
-      const args = { variables, organizationId }
+      const args = { variables, tenantId }
 
       const { data } = await handleEditSelection(editMenuSelection, args)
 

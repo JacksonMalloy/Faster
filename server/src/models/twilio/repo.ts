@@ -17,8 +17,8 @@ export default class TwilioRepository {
   ///////READS////////
   ////////////////////
 
-  // async getAllOrganizations() {
-  //   const query = `SELECT * FROM "fm"."organizations"`
+  // async getAllTenants() {
+  //   const query = `SELECT * FROM "fm"."tenants"`
 
   //   try {
   //     const result = await db.query(query)

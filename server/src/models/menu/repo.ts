@@ -2,7 +2,7 @@ import db from '../../db/config'
 import { update } from '../../helpers'
 
 type CreateMenuArgs = {
-  organization_id: number
+  tenant_id: number
   title: string
 }
 
@@ -13,9 +13,9 @@ type UpdateMenuArgs = {
 }
 
 export default class MenuRepository {
-  async getAllMenusByOrganization(organization_id: number) {
-    const query = `SELECT * FROM "fm"."menus" WHERE organization_id = $1`
-    const params = [organization_id]
+  async getAllMenusByTenant(tenant_id: number) {
+    const query = `SELECT * FROM "fm"."menus" WHERE tenant_id = $1`
+    const params = [tenant_id]
 
     try {
       const result = await db.query(query, params)
@@ -41,9 +41,9 @@ export default class MenuRepository {
     }
   }
 
-  async createMenu({ organization_id, title }: CreateMenuArgs) {
-    const query = `INSERT INTO "fm"."menus" (organization_id, title) VALUES ($1, $2) RETURNING *`
-    const params = [organization_id, title]
+  async createMenu({ tenant_id, title }: CreateMenuArgs) {
+    const query = `INSERT INTO "fm"."menus" (tenant_id, title) VALUES ($1, $2) RETURNING *`
+    const params = [tenant_id, title]
 
     try {
       const result = await db.query(query, params)
@@ -120,7 +120,7 @@ export default class MenuRepository {
           success: false,
           menu: {
             menu_id: menu_id,
-            organization_id: '',
+            tenant_id: '',
           },
         }
       } else {
@@ -130,7 +130,7 @@ export default class MenuRepository {
           success: true,
           menu: {
             menu_id: menu_id,
-            organization_id: '',
+            tenant_id: '',
           },
         }
       }

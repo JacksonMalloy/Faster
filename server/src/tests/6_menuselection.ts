@@ -8,15 +8,15 @@ export const createMenuSelections = () =>
     it(`Create Menu Selections`, async () => {
       for (let i = 0; i < 1000; i++) {
         const variables = {
-          organization_id: faker.random.number({ max: 10, min: 1 }),
-          menu_item_id: faker.random.number({ max: 500, min: 1 }),
+          tenant_id: faker.random.number({ max: 10, min: 1 }),
+          item_id: faker.random.number({ max: 500, min: 1 }),
           name: faker.random.word(),
           value_add: faker.commerce.price(5, 1),
         }
 
         const result = await menuSelectionRepo.createMenuSelection(variables)
 
-        expect(result.menu_selection.organization_id).not.toBeNull()
+        expect(result.menu_selection.tenant_id).not.toBeNull()
         expect(result.menu_selection.header).not.toBeNull()
       }
     })
@@ -27,15 +27,15 @@ export const createMenuSelectionsForTestAccount = () =>
     it(`Create Menu Selections`, async () => {
       for (let i = 0; i < 100; i++) {
         const variables = {
-          organization_id: 12,
-          menu_item_id: faker.random.number({ max: 40, min: 1 }),
+          tenant_id: 12,
+          item_id: faker.random.number({ max: 40, min: 1 }),
           name: faker.random.word(),
           value_add: faker.commerce.price(5, 1),
         }
 
         const result = await menuSelectionRepo.createMenuSelection(variables)
 
-        expect(result.menu_selection.organization_id).not.toBeNull()
+        expect(result.menu_selection.tenant_id).not.toBeNull()
         expect(result.menu_selection.header).not.toBeNull()
       }
     })

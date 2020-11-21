@@ -79,7 +79,7 @@ const MenuItem = () => {
   const router = useRouter()
   const { id } = router.query
   const { data, loading, error } = useQuery(MENU_ITEM, {
-    variables: { menu_item_id: id },
+    variables: { item_id: id },
     skip: Number.isNaN(id),
   })
 
@@ -106,12 +106,12 @@ const MenuItem = () => {
               {data.menuItem.menu_choices &&
                 data.menuItem.menu_choices.map((choice) => {
                   return (
-                    <div key={choice.menu_choice_id}>
+                    <div key={choice.choice_id}>
                       <div>{choice.header}</div>
                       {choice.selections &&
                         choice.selections.map((selection) => {
                           return (
-                            <div key={selection.menu_selection_id}>
+                            <div key={selection.selection_id}>
                               <div style={{ paddingLeft: '1rem' }}>
                                 - {selection.name}
                               </div>

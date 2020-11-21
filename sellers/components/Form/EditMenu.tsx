@@ -11,7 +11,7 @@ import { useUI } from '../Context'
 import { useEffect } from 'react'
 
 export const EditMenu = () => {
-  const { organizationId, formImage, reset, openToast, selectedMenu, setFormView } = useUI()
+  const { tenantId, formImage, reset, openToast, selectedMenu, setFormView } = useUI()
   const [editMenu] = useMutation(EDIT_MENU)
   const [connectImageToMenu] = useMutation(CONNECT_IMAGE_TO_MENU)
   const initialValues = {
@@ -23,7 +23,7 @@ export const EditMenu = () => {
     onSubmit: async ({ values }) => {
       const { menu_title } = values
       const variables = { menu_id: selectedMenu.menu_id, title: menu_title }
-      const args = { variables, organizationId }
+      const args = { variables, tenantId }
       const { data } = await handleEditMenu(editMenu, args)
 
       if (formImage) {
@@ -32,7 +32,7 @@ export const EditMenu = () => {
           menu_id: data.editMenu.menu.menu_id,
         }
 
-        const args = { variables, organizationId }
+        const args = { variables, tenantId }
 
         await handleConnectImage(connectImageToMenu, args).then(() => {
           reset()

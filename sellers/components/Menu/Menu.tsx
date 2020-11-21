@@ -20,30 +20,30 @@ import Skeleton from 'components/UI/Skeleton'
 
 type MenuProps = {
   id: number
-  organization_id: number
+  tenant_id: number
 }
 
 type ItemTypes = {
   base_price: string
   description: string
   menu_id: number
-  menu_item_id: number
+  item_id: number
   name: string
   image?: {
     image_id: number
     image_url: string
     menu_id?: number
-    menu_item_id?: number
-    organization_id: number
+    item_id?: number
+    tenant_id: number
     uploaded_at: number
   }
 }
 
-const Menu = ({ id, organization_id }: MenuProps) => {
+const Menu = ({ id, tenant_id }: MenuProps) => {
   const [search, setSearch] = useState('')
   const router = useRouter()
 
-  const { selectedMenuName, setOrganizationId, setMenuId, setFormView } = useUI()
+  const { selectedMenuName, setTenantId, setMenuId, setFormView } = useUI()
 
   useEffect(() => {
     setFormView('CREATE_ITEM_VIEW')
@@ -55,10 +55,10 @@ const Menu = ({ id, organization_id }: MenuProps) => {
       router.push(`/menus`)
     }
 
-    setOrganizationId(organization_id)
+    setTenantId(tenant_id)
     setMenuId(id)
     // eslint-disable-next-line
-  }, [organization_id, router, selectedMenuName])
+  }, [tenant_id, router, selectedMenuName])
 
   const { data, loading, error } = useQuery(MENU_ITEMS_BY_MENU, {
     variables: { menu_id: id },
@@ -93,7 +93,7 @@ const Menu = ({ id, organization_id }: MenuProps) => {
       <Container>
         <Grid>
           {data && data.menuItemsByMenu
-            ? data.menuItemsByMenu.map((item: ItemTypes) => <ItemCard item={item} key={item.menu_item_id} />)
+            ? data.menuItemsByMenu.map((item: ItemTypes) => <ItemCard item={item} key={item.item_id} />)
             : null}
         </Grid>
         <Form menu_id={id} />

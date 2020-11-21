@@ -1,35 +1,35 @@
 import { useState, EventHandler } from 'react'
-import { Organization } from './Organization'
+import { Tenant } from './Tenant'
 import { Account } from './Account'
 
 const Register = () => {
-  const [formPhase, setFormPhase] = useState('organization')
+  const [formPhase, setFormPhase] = useState('tenant')
   const [authToken, setAuthToken] = useState(null)
-  const [organizationId, setOrganizationId] = useState(null)
+  const [tenantId, setTenantId] = useState(null)
 
   const handlePhase: EventHandler<any> = (event) => {
     event.preventDefault()
-    if (formPhase === 'organization') setFormPhase('account')
-    if (formPhase === 'account') setFormPhase('organization')
+    if (formPhase === 'tenant') setFormPhase('account')
+    if (formPhase === 'account') setFormPhase('tenant')
   }
 
   return (
     <>
-      {formPhase === 'organization' ? (
+      {formPhase === 'tenant' ? (
         <>
           <h2>Registration</h2>
-          <Organization
+          <Tenant
             handlePhase={handlePhase}
             setFormPhase={setFormPhase}
             setAuthToken={setAuthToken}
-            setOrganizationId={setOrganizationId}
+            setTenantId={setTenantId}
           />
         </>
       ) : (
         <>
           <h2>Create Account</h2>
           <Account
-            organizationId={organizationId}
+            tenantId={tenantId}
             authToken={authToken}
             setAuthToken={setAuthToken}
             setFormPhase={setFormPhase}

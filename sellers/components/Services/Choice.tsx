@@ -1,6 +1,6 @@
 import { MENU_HEADERS_BY_MENU } from 'graphql/queries/menu-header/menuHeadersByMenu'
 import { itemDeleter, itemReplacer } from 'utils'
-import { MENU_CHOICES_BY_ORGANIZATION } from '../../graphql/queries/menu-choice/menuChoiceByOrganization'
+import { MENU_CHOICES_BY_TENANT } from '../../graphql/queries/menu-choice/menuChoiceByTenant'
 
 export const handleDeleteChoice = async (mutation, args) => {
   const { variables, menuId } = args
@@ -15,7 +15,7 @@ export const handleDeleteChoice = async (mutation, args) => {
     //   console.log({ menuHeaderData })
     //   console.log({ data })
 
-    //   const newData = itemDeleter(menuHeaderData.menuHeadersByMenu, data.removeMenuHeader.menu_header.menu_header_id)
+    //   const newData = itemDeleter(menuHeaderData.menuHeadersByMenu, data.removeMenuHeader.menu_header.header_id)
 
     //   console.log({ newData })
 
@@ -33,28 +33,28 @@ export const handleDeleteChoice = async (mutation, args) => {
 }
 
 export const handleEditChoice = async (mutation, args) => {
-  const { variables, organizationId } = args
+  const { variables, tenantId } = args
 
   const data = await mutation({
     variables: variables,
     update: (store, { data }) => {
       try {
         const choiceData: any = store.readQuery({
-          query: MENU_CHOICES_BY_ORGANIZATION,
-          variables: { organization_id: organizationId },
+          query: MENU_CHOICES_BY_TENANT,
+          variables: { tenant_id: tenantId },
         })
 
-        const oldItem = choiceData.menuChoicesByOrganization.find(
-          (obj: { menu_choice_id: any }) => obj.menu_choice_id === data.editMenuChoice.menu_choice.menu_choice_id
+        const oldItem = choiceData.menuChoicesByTenant.find(
+          (obj: { choice_id: any }) => obj.choice_id === data.editMenuChoice.menu_choice.choice_id
         )
 
-        const newData = itemReplacer(choiceData.menuChoicesByOrganization, oldItem, data.editMenuChoice.menu_choice)
+        const newData = itemReplacer(choiceData.menuChoicesByTenant, oldItem, data.editMenuChoice.menu_choice)
 
         store.writeQuery({
-          query: MENU_CHOICES_BY_ORGANIZATION,
-          variables: { organization_id: organizationId },
+          query: MENU_CHOICES_BY_TENANT,
+          variables: { tenant_id: tenantId },
           data: {
-            menuChoicesByOrganization: [...newData],
+            menuChoicesByTenant: [...newData],
           },
         })
       } catch (error) {
@@ -67,22 +67,22 @@ export const handleEditChoice = async (mutation, args) => {
 }
 
 export const handleCreateChoice = async (mutation, args) => {
-  const { variables, organizationId } = args
+  const { variables, tenantId } = args
 
   const data = await mutation({
     variables: variables,
     update: (store, { data }) => {
       try {
         const choiceData: any = store.readQuery({
-          query: MENU_CHOICES_BY_ORGANIZATION,
-          variables: { organization_id: organizationId },
+          query: MENU_CHOICES_BY_TENANT,
+          variables: { tenant_id: tenantId },
         })
 
         store.writeQuery({
-          query: MENU_CHOICES_BY_ORGANIZATION,
-          variables: { organization_id: organizationId },
+          query: MENU_CHOICES_BY_TENANT,
+          variables: { tenant_id: tenantId },
           data: {
-            menuChoicesByOrganization: [...choiceData.menuChoicesByOrganization, data.addMenuChoice],
+            menuChoicesByTenant: [...choiceData.menuChoicesByTenant, data.addMenuChoice],
           },
         })
       } catch (error) {

@@ -3,7 +3,7 @@ import { update } from '../../helpers'
 
 type CreateItemArgs = {
   menu_id: number
-  menu_header_id: number | null
+  header_id: number | null
   base_price: string
   description: string
   name: string
@@ -11,8 +11,8 @@ type CreateItemArgs = {
 
 type UpdateItemArgs = {
   menu_id: number
-  menu_item_id: number
-  menu_header_id: number
+  item_id: number
+  header_id: number
   base_price: string
   description: string
   name: string
@@ -23,21 +23,21 @@ export default class MenuItemRepository {
   ///////READS////////
   ////////////////////
 
-  async getAllMenuItemsByOrganizationId(organization_id: number) {
+  async getAllMenuItemsByTenantId(tenant_id: number) {
     const query = `
         SELECT
-            mi.menu_item_id,
+            mi.item_id,
             mi.menu_id,
             mi.base_price,
             mi.description,
             mi.name
 
-          FROM "fm"."menuitems" mi
+          FROM "fm"."items" mi
           JOIN "fm"."menus" m ON m.menu_id = mi.menu_id
-          JOIN "fm"."organizations" o ON o.organization_id = m.organization_id
-          WHERE o.organization_id = $1`
+          JOIN "fm"."tenants" o ON o.tenant_id = m.tenant_id
+          WHERE o.tenant_id = $1`
 
-    const params = [organization_id]
+    const params = [tenant_id]
 
     try {
       const result = await db.query(query, params)
@@ -50,7 +50,7 @@ export default class MenuItemRepository {
   }
 
   async getAllMenuItemsByMenu(menu_id: number) {
-    const query = `SELECT * FROM "fm"."menuitems" WHERE menu_id = $1`
+    const query = `SELECT * FROM "fm"."items" WHERE menu_id = $1`
     const params = [menu_id]
 
     try {
@@ -62,9 +62,9 @@ export default class MenuItemRepository {
     }
   }
 
-  async getMenuItemById(menu_item_id: number) {
-    const query = `SELECT * FROM "fm"."menuitems" WHERE menu_item_id = $1`
-    const params = [menu_item_id]
+  async getMenuItemById(item_id: number) {
+    const query = `SELECT * FROM "fm"."items" WHERE item_id = $1`
+    const params = [item_id]
 
     try {
       const result = await db.query(query, params)
@@ -80,11 +80,11 @@ export default class MenuItemRepository {
   ///////WRITES///////
   ////////////////////
 
-  async createMenuItem({ menu_id, base_price, menu_header_id, description, name }: CreateItemArgs) {
+  async createMenuItem({ menu_id, base_price, header_id, description, name }: CreateItemArgs) {
     try {
-      const query = `INSERT INTO "fm"."menuitems" (menu_id, base_price, description, name, menu_header_id)
+      const query = `INSERT INTO "fm"."items" (menu_id, base_price, description, name, header_id)
                       VALUES ($1, $2, $3, $4, $5) RETURNING *`
-      const params = [menu_id, base_price, description, name, menu_header_id]
+      const params = [menu_id, base_price, description, name, header_id]
       const result = await db.query(query, params)
 
       return {
@@ -103,11 +103,11 @@ export default class MenuItemRepository {
     }
   }
 
-  async updateMenuItem({ menu_id, menu_item_id, menu_header_id, base_price, description, name }: UpdateItemArgs) {
-    const fields = { menu_id, menu_header_id, base_price, description, name }
-    const conditions = { menu_item_id }
+  async updateMenuItem({ menu_id, item_id, header_id, base_price, description, name }: UpdateItemArgs) {
+    const fields = { menu_id, header_id, base_price, description, name }
+    const conditions = { item_id }
 
-    const { query, params } = update(`"fm"."menuitems"`, conditions, fields)
+    const { query, params } = update(`"fm"."items"`, conditions, fields)
 
     try {
       const result = await db.query(query, params)
@@ -128,9 +128,9 @@ export default class MenuItemRepository {
     }
   }
 
-  async deleteMenuItem(menu_item_id: number) {
-    const query = `DELETE FROM "fm"."menuitems" WHERE menu_item_id = $1`
-    const params = [menu_item_id]
+  async deleteMenuItem(item_id: number) {
+    const query = `DELETE FROM "fm"."items" WHERE item_id = $1`
+    const params = [item_id]
 
     try {
       const result = await db.query(query, params)
@@ -142,13 +142,13 @@ export default class MenuItemRepository {
           success: false,
         }
       } else {
-        //console.log(`DELETED ITEM WITH ID = ${menu_item_id}`)
+        //console.log(`DELETED ITEM WITH ID = ${item_id}`)
         return {
           code: 204,
           message: 'The menu item was deleted',
           success: true,
           menu_item: {
-            menu_item_id: menu_item_id,
+            item_id: item_id,
           },
         }
       }

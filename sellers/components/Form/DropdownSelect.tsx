@@ -67,14 +67,7 @@ const DropDownSelect = ({
   //   console.log({ formSelections })
   // }, [formSelections])
 
-  const excludeColumns = [
-    '__typename',
-    'selected',
-    'organization_id',
-    'menu_selection_id',
-    'menu_item_id',
-    'menu_choice_id',
-  ]
+  const excludeColumns = ['__typename', 'selected', 'tenant_id', 'selection_id', 'item_id', 'choice_id']
 
   // filter records by search text
   const filterData = (value) => {
@@ -110,7 +103,7 @@ const DropDownSelect = ({
         if (
           formHeader &&
           !header.some((current) => {
-            return current.menu_header_id === formHeader.menu_header_id
+            return current.header_id === formHeader.header_id
           })
         ) {
           setFormHeader(item)
@@ -119,7 +112,7 @@ const DropDownSelect = ({
       case 'SELECTION':
         const stampedSelection = { ...item, UUID }
         const isSelected = formSelections.some((current) => {
-          return current.menu_selection_id === stampedSelection.menu_selection_id && current.UUID === UUID
+          return current.selection_id === stampedSelection.selection_id && current.UUID === UUID
         })
 
         if (!isSelected) {
@@ -127,14 +120,14 @@ const DropDownSelect = ({
           setFormSelections(stampedSelection)
         } else {
           console.log(`REMOVE SELECTION`)
-          removeFormSelection(stampedSelection.menu_selection_id, UUID)
+          removeFormSelection(stampedSelection.selection_id, UUID)
         }
         break
 
       case 'CHOICE':
         const stampedChoice = { ...item, UUID }
         const isChoiceSelected = formChoices.some(
-          (current) => current.menu_choice_id === item.menu_choice_id && current.UUID === UUID
+          (current) => current.choice_id === item.choice_id && current.UUID === UUID
         )
 
         if (!isChoiceSelected) {
@@ -142,7 +135,7 @@ const DropDownSelect = ({
           setFormChoices(stampedChoice)
         } else {
           console.log(`REMOVING CHOICE`)
-          removeFormChoice(stampedChoice.menu_choice_id, UUID)
+          removeFormChoice(stampedChoice.choice_id, UUID)
         }
         break
       default:
@@ -155,7 +148,7 @@ const DropDownSelect = ({
 
     switch (variant) {
       case 'HEADER':
-        if (formHeader && header.some((current) => current.menu_header_id === item.menu_header_id)) {
+        if (formHeader && header.some((current) => current.header_id === item.header_id)) {
           return true
         }
         return false
@@ -163,7 +156,7 @@ const DropDownSelect = ({
         if (
           formSelections &&
           formSelections.some((current) => {
-            return current.menu_selection_id === item.menu_selection_id && current.UUID === UUID
+            return current.selection_id === item.selection_id && current.UUID === UUID
           })
         ) {
           return true
@@ -172,7 +165,7 @@ const DropDownSelect = ({
       case 'CHOICE':
         if (
           formChoices &&
-          formChoices.some((current) => current.menu_choice_id === item.menu_choice_id && current.UUID === UUID)
+          formChoices.some((current) => current.choice_id === item.choice_id && current.UUID === UUID)
         ) {
           return true
         }
@@ -232,7 +225,7 @@ const DropDownSelect = ({
 
     switch (variant) {
       case 'HEADER':
-        variables = { menu_header_id: item.menu_header_id }
+        variables = { header_id: item.header_id }
         args = { variables, menuId }
         await handleDeleteHeader(removeMenuHeader, args).then(() => {
           openToast('Header was successfully deleted', 'SUCCESS')
@@ -240,7 +233,7 @@ const DropDownSelect = ({
         break
 
       case 'SELECTION':
-        variables = { menu_selection_id: item.menu_selection_id }
+        variables = { selection_id: item.selection_id }
         args = { variables, menuId }
         await handleDeleteSelection(removeMenuSelection, args).then(() => {
           openToast('Selection was successfully deleted', 'SUCCESS')
@@ -248,7 +241,7 @@ const DropDownSelect = ({
         break
 
       case 'CHOICE':
-        variables = { menu_choice_id: item.menu_choice_id }
+        variables = { choice_id: item.choice_id }
         args = { variables, menuId }
         await handleDeleteChoice(removeMenuChoice, args).then(() => {
           openToast('Choice was successfully deleted', 'SUCCESS')
@@ -298,7 +291,7 @@ const DropDownSelect = ({
           formSelections
             .filter((selection) => selection.UUID === UUID)
             .map((selection) => {
-              return <span key={selection.menu_selection_id}>{selection.name}</span>
+              return <span key={selection.selection_id}>{selection.name}</span>
             })
         ) : (
           <div className="dd-header__title">
@@ -310,7 +303,7 @@ const DropDownSelect = ({
           formChoices
             .filter((choice) => choice.UUID === UUID)
             .map((choice) => {
-              return <span key={choice.menu_choice_id}>{choice.header}</span>
+              return <span key={choice.choice_id}>{choice.header}</span>
             })
         ) : (
           <div className="dd-header__title">
@@ -352,7 +345,7 @@ const DropDownSelect = ({
             </li>
 
             {data.map((item, i) => (
-              <li className="dd-list-item" key={`${i}-${item.menu_header_id}`}>
+              <li className="dd-list-item" key={`${i}-${item.header_id}`}>
                 <button type="button" onClick={() => handleOnClick(item)}>
                   <div className="rows">
                     <span>{variant === 'CHOICE' ? item.header : item.name}</span>

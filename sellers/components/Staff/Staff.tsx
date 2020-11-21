@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { ADMINS_BY_ORGANIZATION } from 'graphql/queries/admin/adminsByOrganization'
+import { ADMINS_BY_TENANT } from 'graphql/queries/admin/adminsByTenant'
 import { useQuery, useMutation } from '@apollo/client'
 
 const StyledContainer = styled.section`
@@ -29,18 +29,18 @@ grid-gap: 1rem; */
   }
 `
 
-const Staff = ({ organization_id }) => {
-  const { data, loading, error } = useQuery(ADMINS_BY_ORGANIZATION, {
+const Staff = ({ tenant_id }) => {
+  const { data, loading, error } = useQuery(ADMINS_BY_TENANT, {
     variables: {
-      organization_id: organization_id,
+      tenant_id: tenant_id,
     },
   })
 
   return (
     <StyledContainer>
-      <h1>Organization Staff Members</h1>
-      {data && data.adminsByOrganization
-        ? data.adminsByOrganization.map((admin) => {
+      <h1>Tenant Staff Members</h1>
+      {data && data.adminsByTenant
+        ? data.adminsByTenant.map((admin) => {
             return (
               <div style={{ padding: '2rem' }} key={admin.admin_id}>
                 <h3>{admin.name}</h3>

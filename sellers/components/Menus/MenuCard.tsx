@@ -25,14 +25,14 @@ type CardProps = {
     image?: any
     published?: boolean
     title?: string
-    organization_id?: number
+    tenant_id?: number
   }
   image: {
     image_id: number
     image_url: string
     menu_id?: number
-    menu_item_id?: number
-    organization_id: number
+    item_id?: number
+    tenant_id: number
     uploaded_at: number
   }
   setIsRouting: (b: boolean) => void
@@ -46,11 +46,11 @@ export const MenuCard = ({ menu, image, setIsRouting }: CardProps) => {
 
   const router = useRouter()
 
-  const { published, title, menu_id, organization_id } = menu
+  const { published, title, menu_id, tenant_id } = menu
 
   const deleteMenu = async () => {
     const variables = { menu_id: menu_id }
-    const args = { variables, organization_id }
+    const args = { variables, tenant_id }
     const data = await handleDeleteMenu(removeMenu, args).then(() => {
       openToast('Menu was successfully deleted', 'SUCCESS')
     })
@@ -58,7 +58,7 @@ export const MenuCard = ({ menu, image, setIsRouting }: CardProps) => {
 
   const publishMenu = async () => {
     const variables = { menu_id: menu_id, published: !published }
-    const args = { variables, organization_id }
+    const args = { variables, tenant_id }
     const data = await handlePublishMenu(editMenu, args).then(() => {
       openToast('Menu was successfully published', 'SUCCESS')
     })

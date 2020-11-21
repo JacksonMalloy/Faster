@@ -70,8 +70,8 @@ const Orders = () => {
       <StyledContainer>
         <h1 className="page-title">Orders</h1>
         <StyledGrid>
-          {/* {data.menusByOrganization
-            ? data.menusByOrganization.map((menu) => (
+          {/* {data.menusByTenant
+            ? data.menusByTenant.map((menu) => (
                 <Menu menu={menu} key={menu.menu_id} image={menu.image} />
               ))
             : null} */}

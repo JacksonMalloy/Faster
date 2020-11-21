@@ -9,7 +9,7 @@ export const SIGNUP_ADMIN = gql`
       type
       admin {
         admin_id
-        organization_id
+        tenant_id
         phone
         email
         name

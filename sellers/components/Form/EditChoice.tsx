@@ -10,7 +10,7 @@ import { EDIT_MENU_CHOICE } from 'graphql/mutations/menu-choice/editMenuChoice'
 import { handleEditChoice } from 'components/Services/Choice'
 
 export const EditChoice = () => {
-  const { organizationId, reset, openToast, selectedHeader, selectedChoice, setFormView } = useUI()
+  const { tenantId, reset, openToast, selectedHeader, selectedChoice, setFormView } = useUI()
   const [editMenuChoice] = useMutation(EDIT_MENU_CHOICE)
   const initialValues = {
     header: '',
@@ -23,9 +23,9 @@ export const EditChoice = () => {
       const variables = {
         header: values.header,
         sub_header: values.sub_header,
-        menu_choice_id: selectedChoice.menu_choice_id,
+        choice_id: selectedChoice.choice_id,
       }
-      const args = { variables, organizationId }
+      const args = { variables, tenantId }
       const { data } = await handleEditChoice(editMenuChoice, args)
 
       setFormView('CREATE_ITEM_VIEW')

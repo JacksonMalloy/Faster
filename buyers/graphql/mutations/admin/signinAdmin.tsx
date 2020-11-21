@@ -8,7 +8,7 @@ export const SIGNIN_ADMIN = gql`
       success
       admin {
         admin_id
-        organization_id
+        tenant_id
         phone
         email
         name

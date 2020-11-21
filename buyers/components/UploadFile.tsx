@@ -12,15 +12,15 @@ type UploadFileProps = {
 
 export default function UploadFile({ image }: UploadFileProps) {
   const [uploadImage, { data }] = useMutation(UPLOAD_IMAGE)
-  const { setFormImage, formImage, organizationId } = useUI()
+  const { setFormImage, formImage, tenantId } = useUI()
 
   const onDrop = useCallback(
     ([file]) => {
       uploadImage({
         variables: {
           file,
-          organization_id: organizationId,
-          organization_name: 'Testing',
+          tenant_id: tenantId,
+          tenant_name: 'Testing',
         },
         update: (store, { data }) => {
           console.log({ data })
@@ -28,7 +28,7 @@ export default function UploadFile({ image }: UploadFileProps) {
       })
     },
 
-    [organizationId, uploadImage]
+    [tenantId, uploadImage]
   )
 
   useEffect(() => {

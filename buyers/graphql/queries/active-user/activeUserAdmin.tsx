@@ -4,7 +4,7 @@ export const ACTIVE_USER_ADMIN = gql`
   query {
     activeUserAdmin {
       admin_id
-      organization_id
+      tenant_id
       phone
       email
       name

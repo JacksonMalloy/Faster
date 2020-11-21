@@ -11,9 +11,9 @@ export const CUSTOMER = gql`
       created_at
       table_id
       token
-      organizations {
+      tenants {
         name
-        organization_id
+        tenant_id
       }
     }
   }

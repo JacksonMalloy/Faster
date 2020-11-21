@@ -4,7 +4,7 @@ import db from '../../db/config'
 
 type CreateItemArgs = {
   menu_id: number
-  menu_header_id: number | null
+  header_id: number | null
   base_price: string
   description: string
   name: string
@@ -12,27 +12,22 @@ type CreateItemArgs = {
 
 type UpdateItemArgs = {
   menu_id: number
-  menu_item_id: number
-  menu_header_id: number
+  item_id: number
+  header_id: number
   base_price: string
   description: string
   name: string
 }
 
 export const MenuItemQueries = {
-  menuItem: async (parent: any, { menu_item_id }: { menu_item_id: number }, context: any, info: any) => {
+  menuItem: async (parent: any, { item_id }: { item_id: number }, context: any, info: any) => {
     const menuItemRepository = new MenuItemRepository()
-    const data = await menuItemRepository.getMenuItemById(menu_item_id)
+    const data = await menuItemRepository.getMenuItemById(item_id)
     return data
   },
-  menuItemsByOrganization: async (
-    parent: any,
-    { organization_id }: { organization_id: number },
-    context: any,
-    info: any
-  ) => {
+  menuItemsByTenant: async (parent: any, { tenant_id }: { tenant_id: number }, context: any, info: any) => {
     const menuItemRepository = new MenuItemRepository()
-    const data = await menuItemRepository.getAllMenuItemsByOrganizationId(organization_id)
+    const data = await menuItemRepository.getAllMenuItemsByTenantId(tenant_id)
     return data
   },
   menuItemsByMenu: async (parent: any, { menu_id }: { menu_id: number }, context: any, info: any) => {
@@ -46,9 +41,9 @@ export const MenuItemMutations = {
   addMenuItem: async (parent: any, args: CreateItemArgs, context: any, info: any) => {
     if (!isDirector(context)) return { code: 401, message: 'Not Authorized', success: false }
 
-    const getOrganizationId = async ({ menu_id }: { menu_id: number }) => {
+    const getTenantId = async ({ menu_id }: { menu_id: number }) => {
       try {
-        const query = `SELECT organization_id
+        const query = `SELECT tenant_id
                       FROM "fm"."menus"
                       WHERE menu_id = $1`
 
@@ -61,7 +56,7 @@ export const MenuItemMutations = {
       }
     }
 
-    const result = await getOrganizationId(args)
+    const result = await getTenantId(args)
 
     if (!isOwner(context, result)) return { code: 403, message: 'Forbidden', success: false }
 
@@ -77,11 +72,11 @@ export const MenuItemMutations = {
     const data = await menuItemRepository.updateMenuItem(args)
     return data
   },
-  removeMenuItem: async (parent: any, { menu_item_id }: { menu_item_id: number }, context: any, info: any) => {
+  removeMenuItem: async (parent: any, { item_id }: { item_id: number }, context: any, info: any) => {
     if (!isDirector(context)) return { code: 401, message: 'Not Authorized', success: false }
 
     const menuItemRepository = new MenuItemRepository()
-    const data = await menuItemRepository.deleteMenuItem(menu_item_id)
+    const data = await menuItemRepository.deleteMenuItem(item_id)
     return data
   },
 }

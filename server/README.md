@@ -5,7 +5,7 @@ mutation {
     success
     message
     admin {
-      organization_id
+      tenant_id
       email
       token
       created_at

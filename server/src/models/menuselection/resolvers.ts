@@ -2,59 +2,59 @@ import MenuSelectionRepository from './repo'
 import { isAuthenticated, isAdmin, isDirector } from '../../utils'
 
 type CreateSelectionArgs = {
-  organization_id: number
-  menu_item_id: number
+  tenant_id: number
+  item_id: number
   name: string
   value_add: string
 }
 
 type UpdateSelectionArgs = {
-  organization_id: number
-  menu_selection_id: number
-  menu_item_id: number
+  tenant_id: number
+  selection_id: number
+  item_id: number
   name: string
   value_add: string
 }
 
 type SelectionsWithChoice = {
-  menu_selection_ids: number[]
-  menu_choice_id: number
+  selection_ids: number[]
+  choice_id: number
 }
 
 export const MenuSelectionQueries = {
-  menuSelection: async (parent: any, { menu_selection_id }: { menu_selection_id: number }, context: any, info: any) => {
+  menuSelection: async (parent: any, { selection_id }: { selection_id: number }, context: any, info: any) => {
     const menuSelectionRepository = new MenuSelectionRepository()
-    const menuSelection = await menuSelectionRepository.getMenuSelectionById(menu_selection_id)
+    const menuSelection = await menuSelectionRepository.getMenuSelectionById(selection_id)
     return menuSelection
   },
-  menuSelectionsByOrganization: async (
+  menuSelectionsByTenant: async (
     parent: any,
-    { organization_id }: { organization_id: number },
+    { tenant_id }: { tenant_id: number },
     context: any,
     info: any
   ) => {
     const menuSelectionRepository = new MenuSelectionRepository()
-    const menuSelections = await menuSelectionRepository.getMenuSelectionsByOrganization(organization_id)
+    const menuSelections = await menuSelectionRepository.getMenuSelectionsByTenant(tenant_id)
     return menuSelections
   },
   menuSelectionsByMenuChoice: async (
     parent: any,
-    { menu_choice_id }: { menu_choice_id: number },
+    { choice_id }: { choice_id: number },
     context: any,
     info: any
   ) => {
     const menuSelectionRepository = new MenuSelectionRepository()
-    const menuSelections = await menuSelectionRepository.getMenuSelectionsByMenuChoice(menu_choice_id)
+    const menuSelections = await menuSelectionRepository.getMenuSelectionsByMenuChoice(choice_id)
     return menuSelections
   },
   menuSelectionsByMenuItem: async (
     parent: any,
-    { menu_item_id }: { menu_item_id: number },
+    { item_id }: { item_id: number },
     context: any,
     info: any
   ) => {
     const menuSelectionRepository = new MenuSelectionRepository()
-    const menuSelections = await menuSelectionRepository.getMenuSelectionsByMenuItem(menu_item_id)
+    const menuSelections = await menuSelectionRepository.getMenuSelectionsByMenuItem(item_id)
     return menuSelections
   },
 }
@@ -68,13 +68,13 @@ export const MenuSelectionMutations = {
   },
   removeMenuSelection: async (
     parent: any,
-    { menu_selection_id }: { menu_selection_id: number },
+    { selection_id }: { selection_id: number },
     context: any,
     info: any
   ) => {
     if (!isDirector(context)) return { code: 401, message: 'Not Authorized', success: false }
     const menuSelectionRepository = new MenuSelectionRepository()
-    const data = await menuSelectionRepository.deleteMenuSelection(menu_selection_id)
+    const data = await menuSelectionRepository.deleteMenuSelection(selection_id)
     return data
   },
   editMenuSelection: async (parent: any, args: UpdateSelectionArgs, context: any, info: any) => {

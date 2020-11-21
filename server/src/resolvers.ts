@@ -6,7 +6,7 @@ import { MenuHeaderQueries, MenuHeaderMutations } from './models/menuheader/reso
 import { MenuItemQueries, MenuItemMutations } from './models/menuitem/resolvers'
 import { MenuSelectionQueries, MenuSelectionMutations } from './models/menuselection/resolvers'
 import { OrderMutations, OrderSubscriptions } from './models/orders/resolvers'
-import { OrganizationMutations, OrganizationQueries } from './models/organization/resolvers'
+import { TenantMutations, TenantQueries } from './models/tenant/resolvers'
 import { ActiveUserQueries } from './models/activeuser/resolvers'
 import { ImageMutations, ImageQueries } from './models/image/resolvers'
 import { StripeMutations } from './models/stripe/resolvers'
@@ -23,7 +23,7 @@ export const resolvers = {
     ...MenuHeaderQueries,
     ...MenuItemQueries,
     ...MenuSelectionQueries,
-    ...OrganizationQueries,
+    ...TenantQueries,
     ...ActiveUserQueries,
     ...ImageQueries,
   },
@@ -36,7 +36,7 @@ export const resolvers = {
     ...MenuItemMutations,
     ...MenuSelectionMutations,
     ...OrderMutations,
-    ...OrganizationMutations,
+    ...TenantMutations,
     ...ImageMutations,
     ...StripeMutations,
     ...TwilioMutations,
@@ -45,7 +45,7 @@ export const resolvers = {
     ...OrderSubscriptions,
   },
   Admin: {
-    organization: async (parent: { admin_id: number }, args: any, context: any, info: any) => {
+    tenant: async (parent: { admin_id: number }, args: any, context: any, info: any) => {
       const query = `SELECT o.access_code,
                       o.address,
                       o.city,
@@ -56,9 +56,9 @@ export const resolvers = {
                       o.sub_address,
                       o.country_region,
                       o.name
-                      FROM "fm"."organizations" o
+                      FROM "fm"."tenants" o
                       INNER JOIN "fm"."admins" a
-                      ON o.organization_id = a.organization_id
+                      ON o.tenant_id = a.tenant_id
                       WHERE a.admin_id = $1`
 
       const params = [parent.admin_id]
@@ -74,18 +74,18 @@ export const resolvers = {
     },
   },
   Customer: {
-    organizations: async (parent: { customer_id: number }, args: any, context: any, info: any) => {
+    tenants: async (parent: { customer_id: number }, args: any, context: any, info: any) => {
       const query = `
           SELECT
                 o.name
           FROM
-                "fm"."customers_to_organizations" c2o
+                "fm"."customers_to_tenants" c2o
           INNER JOIN
                 "fm"."customers" c
               ON c2o.customer_id = c.customer_id
           INNER JOIN
-              "fm"."organizations" o
-              ON c2o.organization_id = o.organization_id
+              "fm"."tenants" o
+              ON c2o.tenant_id = o.tenant_id
           WHERE c.customer_id = $1`
       const params = [parent.customer_id]
 
@@ -100,12 +100,12 @@ export const resolvers = {
     },
   },
   // Change published to true in prod
-  Organization: {
-    menus: async (parent: { organization_id: number }, args: any, context: any, info: any) => {
+  Tenant: {
+    menus: async (parent: { tenant_id: number }, args: any, context: any, info: any) => {
       const query = `SELECT * FROM "fm"."menus"
-                    WHERE organization_id = $1 AND published = false`
+                    WHERE tenant_id = $1 AND published = false`
 
-      const params = [parent.organization_id]
+      const params = [parent.tenant_id]
 
       try {
         const result = await db.query(query, params)
@@ -134,7 +134,7 @@ export const resolvers = {
       }
     },
     menu_items: async (parent: { menu_id: number }, args: any, context: any, info: any) => {
-      const query = `SELECT * FROM "fm"."menuitems" WHERE menu_id = $1`
+      const query = `SELECT * FROM "fm"."items" WHERE menu_id = $1`
       const params = [parent.menu_id]
 
       try {
@@ -149,20 +149,20 @@ export const resolvers = {
   },
   // Need to add Type queries with Dataloader here
   MenuItem: {
-    menu_choices: async (parent: { menu_item_id: number }, args: any, context: any, info: any) => {
+    menu_choices: async (parent: { item_id: number }, args: any, context: any, info: any) => {
       const query = `SELECT
                       *
                     FROM
-                      "fm"."menuchoices" c
+                      "fm"."choices" c
                     INNER JOIN
-                      "fm"."menuchoices_to_menuitems" mci
-                    ON c.menu_choice_id = mci.menu_choice_id
+                      "fm"."choices_to_items" mci
+                    ON c.choice_id = mci.choice_id
                     INNER JOIN
-                      "fm"."menuitems" i
-                      ON mci.menu_item_id = i.menu_item_id
-                    WHERE i.menu_item_id = $1`
+                      "fm"."items" i
+                      ON mci.item_id = i.item_id
+                    WHERE i.item_id = $1`
 
-      const params = [parent.menu_item_id]
+      const params = [parent.item_id]
 
       try {
         const result = await db.query(query, params)
@@ -172,14 +172,14 @@ export const resolvers = {
         throw error
       }
     },
-    menu_header: async (parent: { menu_header_id: number }, args: any, context: any, info: any) => {
+    menu_header: async (parent: { header_id: number }, args: any, context: any, info: any) => {
       // console.log({ parent })
-      // const menuChoice = await loaders.menuChoices.load(parent.menu_item_id)
+      // const menuChoice = await loaders.menuChoices.load(parent.item_id)
 
       // console.log({ menuChoice })
 
-      const query = `SELECT * FROM "fm"."menuheaders" WHERE menu_header_id = $1`
-      const params = [parent.menu_header_id]
+      const query = `SELECT * FROM "fm"."headers" WHERE header_id = $1`
+      const params = [parent.header_id]
 
       try {
         const result = await db.query(query, params)
@@ -192,14 +192,14 @@ export const resolvers = {
     },
   },
   MenuChoice: {
-    selections: async (parent: { menu_choice_id: number }, args: any, context: any, info: any) => {
-      const query = `SELECT * FROM "fm"."menuselections" s
-                       INNER JOIN "fm"."menuselections_to_menuchoices" msc
-                        ON s.menu_selection_id = msc.menu_selection_id
-                        INNER JOIN  "fm"."menuchoices" c
-                        ON msc.menu_choice_id = c.menu_choice_id
-                        WHERE c.menu_choice_id = $1`
-      const params = [parent.menu_choice_id]
+    selections: async (parent: { choice_id: number }, args: any, context: any, info: any) => {
+      const query = `SELECT * FROM "fm"."selections" s
+                       INNER JOIN "fm"."selections_to_choices" msc
+                        ON s.selection_id = msc.selection_id
+                        INNER JOIN  "fm"."choices" c
+                        ON msc.choice_id = c.choice_id
+                        WHERE c.choice_id = $1`
+      const params = [parent.choice_id]
 
       try {
         const result = await db.query(query, params)
@@ -211,13 +211,13 @@ export const resolvers = {
     },
   },
   MenuHeader: {
-    menu_items: async (parent: { menu_header_id: number }, args: any, context: any, info: any) => {
-      const query = `SELECT * FROM "fm"."menuitems" mi INNER JOIN
-                    "fm"."menuheaders" mh
-                    ON mi.menu_header_id = mh.menu_header_id
-                    WHERE mh.menu_header_id = $1`
+    menu_items: async (parent: { header_id: number }, args: any, context: any, info: any) => {
+      const query = `SELECT * FROM "fm"."items" mi INNER JOIN
+                    "fm"."headers" mh
+                    ON mi.header_id = mh.header_id
+                    WHERE mh.header_id = $1`
 
-      const params = [parent.menu_header_id]
+      const params = [parent.header_id]
 
       try {
         const result = await db.query(query, params)

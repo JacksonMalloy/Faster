@@ -15,7 +15,7 @@ type LoginArgs = {
 
 type ConnectCustomerWithOrgArgs = {
   customer_id: number
-  organization_id: number
+  tenant_id: number
 }
 
 export const CustomerQueries = {
@@ -24,14 +24,14 @@ export const CustomerQueries = {
     const data = await customerRepository.getCustomerById(customer_id)
     return data
   },
-  customersByOrganization: async (
+  customersByTenant: async (
     parent: any,
-    { organization_id }: { organization_id: number },
+    { tenant_id }: { tenant_id: number },
     context: any,
     info: any
   ) => {
     const customerRepository = new CustomerRepository()
-    const data = await customerRepository.getCustomersByOrganization(organization_id)
+    const data = await customerRepository.getCustomersByTenant(tenant_id)
     return data
   },
 }
@@ -52,9 +52,9 @@ export const CustomerMutations = {
     const data = await customerRepository.deleteCustomer(customer_id)
     return data
   },
-  joinCustomerToOrganization: async (parent: any, args: ConnectCustomerWithOrgArgs, context: any, info: any) => {
+  joinCustomerToTenant: async (parent: any, args: ConnectCustomerWithOrgArgs, context: any, info: any) => {
     const customerRepository = new CustomerRepository()
-    const data = await customerRepository.connectCustomerToOrganization(args)
+    const data = await customerRepository.connectCustomerToTenant(args)
     return data
   },
 }

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { Button } from 'components/common/Button'
 import { useMutation } from '@apollo/client'
 import { REMOVE_MENU } from 'graphql/mutations/menu/removeMenu'
-import { MENUS_BY_ORGANIZATION } from 'graphql/queries/menu/menusByOrganization'
+import { MENUS_BY_TENANT } from 'graphql/queries/menu/menusByTenant'
 import UserContext from 'stores/UserContext'
 import { menuDeleted } from 'stores/alertActions'
 

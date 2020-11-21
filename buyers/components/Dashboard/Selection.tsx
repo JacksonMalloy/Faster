@@ -103,7 +103,7 @@ export const Selection = ({ choice }) => {
     const updateItem = { ...item, id }
 
     const isSelected = state.orderSelections.some((current) => {
-      return current.menu_selection_id === updateItem.menu_selection_id && current.menu_choice_id === id
+      return current.selection_id === updateItem.selection_id && current.choice_id === id
     })
 
     if (!isSelected) {
@@ -118,7 +118,7 @@ export const Selection = ({ choice }) => {
   function isItemInSelection(item) {
     if (
       state.orderSelections.some((current) => {
-        return current.menu_selection_id === item.menu_selection_id && current.menu_choice_id === item.menu_choice_id
+        return current.selection_id === item.selection_id && current.choice_id === item.choice_id
       })
     ) {
       return true
@@ -133,9 +133,9 @@ export const Selection = ({ choice }) => {
       {choice &&
         choice.selections &&
         choice.selections.map((selection) => (
-          <li key={selection.menu_selection_id}>
+          <li key={selection.selection_id}>
             <label>
-              <StyledInputButton type="button" onClick={() => handleOnClick(selection, selection.menu_choice_id)}>
+              <StyledInputButton type="button" onClick={() => handleOnClick(selection, selection.choice_id)}>
                 {selection.name}
               </StyledInputButton>
               <>

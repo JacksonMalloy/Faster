@@ -1,5 +1,5 @@
 // import 'jest';
-import { registerOrganizations, getOrganizationById, getAllOrganizations, setUpTestAccount, setUpTestCustomerAccount } from '../0_organization'
+import { registerTenants, getTenantById, getAllTenants, setUpTestAccount, setUpTestCustomerAccount } from '../0_tenant'
 import { registerAdmins, getAdministrators } from '../1_admin'
 import { registerCustomers } from '../1_customer'
 import { createMenus, setUpTestMenusForTestAccount } from '../2_menu'
@@ -9,10 +9,10 @@ import { createMenuChoices, createMenuChoicesForTestAccount } from '../5_menucho
 import { createMenuSelections, createMenuSelectionsForTestAccount } from '../6_menuselection'
 
 describe('sequentially run tests', () => {
-  // Organization Tests
-  registerOrganizations()
-  getOrganizationById()
-  getAllOrganizations()
+  // Tenant Tests
+  registerTenants()
+  getTenantById()
+  getAllTenants()
 
   // Setup Test Accounts
   setUpTestAccount()

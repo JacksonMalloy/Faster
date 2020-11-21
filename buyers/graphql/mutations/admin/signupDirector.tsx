@@ -18,7 +18,7 @@ export const SIGNUP_DIRECTOR = gql`
       success
       admin {
         admin_id
-        organization_id
+        tenant_id
         phone
         email
         name

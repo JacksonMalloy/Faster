@@ -5,8 +5,8 @@ import { useQuery } from '@apollo/client'
 import { Menu } from 'components/Dashboard/Menu'
 
 // GraphQL
-import { MENUS_BY_ORGANIZATION } from 'graphql/queries/menu/menusByOrganization'
-import Organization from '../Organization'
+import { MENUS_BY_TENANT } from 'graphql/queries/menu/menusByTenant'
+import Tenant from '../Tenant'
 import Entry from '../Entry'
 
 const StyledGrid = styled.div`
@@ -22,12 +22,12 @@ const Dashboard = () => {
       <h1 className="page-title">Dashboard</h1>
       <StyledGrid>
         Need to filter for published in the future
-        {/* {data && data.menusByOrganization && data.menusByOrganization.length
-          ? data.menusByOrganization
+        {/* {data && data.menusByTenant && data.menusByTenant.length
+          ? data.menusByTenant
               .filter((menu) => menu.published)
               .map((menu) => <Menu menu={menu} key={menu.menu_id} image={menu.image} />)
           : null} */}
-        {/* <Organization /> */}
+        {/* <Tenant /> */}
         <Entry />
       </StyledGrid>
     </>

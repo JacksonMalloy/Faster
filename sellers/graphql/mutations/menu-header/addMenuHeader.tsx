@@ -6,7 +6,7 @@ export const ADD_MENU_HEADER = gql`
       code
       success
       menu_header {
-        menu_header_id
+        header_id
         menu_id
         name
         sub_header

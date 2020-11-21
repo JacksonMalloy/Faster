@@ -1,9 +1,9 @@
 import { gql } from '@apollo/client'
 
 export const MENU_ITEM = gql`
-  query($menu_item_id: ID!) {
-    menuItem(menu_item_id: $menu_item_id) {
-      menu_item_id
+  query($item_id: ID!) {
+    menuItem(item_id: $item_id) {
+      item_id
       menu_id
       base_price
       description
@@ -12,25 +12,25 @@ export const MENU_ITEM = gql`
         uploaded_at
         image_id
         image_url
-        menu_item_id
+        item_id
         menu_id
-        organization_id
+        tenant_id
       }
       menu_header {
-        menu_header_id
+        header_id
         menu_id
         name
         sub_header
       }
       menu_choices {
-        menu_choice_id
-        menu_item_id
+        choice_id
+        item_id
         header
         sub_header
         selections {
-          menu_selection_id
-          menu_choice_id
-          menu_item_id
+          selection_id
+          choice_id
+          item_id
           name
           value_add
           selected

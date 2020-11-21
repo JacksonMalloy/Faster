@@ -6,7 +6,7 @@ import { useQuery } from '@apollo/client'
 import { Menu } from 'components/Dashboard/Menu'
 
 // GraphQL
-import { MENUS_BY_ORGANIZATION } from 'graphql/queries/menu/menusByOrganization'
+import { MENUS_BY_TENANT } from 'graphql/queries/menu/menusByTenant'
 
 const StyledContainer = styled.section`
   padding-left: calc(300px + 1rem);
@@ -44,11 +44,11 @@ const StyledGrid = styled.div`
 
 export const Dashboard = ({ userData }) => {
   const {
-    activeUserAdmin: { organization_id },
+    activeUserAdmin: { tenant_id },
   } = userData
 
-  const { data, loading, error } = useQuery(MENUS_BY_ORGANIZATION, {
-    variables: { organization_id: organization_id },
+  const { data, loading, error } = useQuery(MENUS_BY_TENANT, {
+    variables: { tenant_id: tenant_id },
   })
 
   return (
@@ -56,8 +56,8 @@ export const Dashboard = ({ userData }) => {
       <h1 className="page-title">Dashboard</h1>
       <StyledGrid>
         {/* Need to filter for published in the future */}
-        {data && data.menusByOrganization && data.menusByOrganization.length
-          ? data.menusByOrganization
+        {data && data.menusByTenant && data.menusByTenant.length
+          ? data.menusByTenant
               .filter((menu) => menu.published)
               .map((menu) => <Menu menu={menu} key={menu.menu_id} image={menu.image} />)
           : null}

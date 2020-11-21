@@ -9,7 +9,7 @@ export const createMenuItems = () =>
       for (let i = 0; i < 500; i++) {
         const variables = {
           menu_id: faker.random.number({ max: 50, min: 1 }),
-          menu_header_id: null,
+          header_id: null,
           base_price: faker.finance.amount(1, 12),
           description: faker.random.words(),
           name: faker.random.word(),
@@ -29,7 +29,7 @@ export const createMenuItemsForTestAccount = () =>
       for (let i = 0; i < 200; i++) {
         const variables = {
           menu_id: faker.random.number({ max: 10, min: 1 }),
-          menu_header_id: null,
+          header_id: null,
           base_price: faker.finance.amount(1, 12),
           description: faker.random.words(),
           name: faker.random.word(),

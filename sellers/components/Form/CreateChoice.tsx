@@ -13,24 +13,24 @@ import { handleCreateChoice } from 'components/Services/Choice'
 export const CreateChoice = () => {
   const [addMenuChoice, { data }] = useMutation(ADD_MENU_CHOICE)
 
-  const { organizationId, menuId, setFormView } = useUI()
+  const { tenantId, menuId, setFormView } = useUI()
 
   const { values, errors, handleChange, handleBlur, handleSubmit } = useForm({
     onSubmit: async ({ errors, values }) => {
       const variables = {
-        organization_id: organizationId,
-        menu_item_id: values.menu_item_id,
+        tenant_id: tenantId,
+        item_id: values.item_id,
         header: values.header,
         sub_header: values.sub_header,
       }
-      const args = { variables, organizationId }
+      const args = { variables, tenantId }
       const { data } = await handleCreateChoice(addMenuChoice, args)
 
       setFormView('CREATE_ITEM_VIEW')
     },
 
-    // $organization_id: ID!
-    // $menu_item_id: ID!
+    // $tenant_id: ID!
+    // $item_id: ID!
     // $header: String!
     // $sub_header: String
   })

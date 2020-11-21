@@ -1,5 +1,5 @@
 import db from '../../db/config'
-import { createOrganizationAuthToken } from '../../utils'
+import { createTenantAuthToken } from '../../utils'
 import { update } from '../../helpers'
 
 const stripe = require('stripe')(
@@ -23,8 +23,8 @@ export default class StripeRepository {
   ///////READS////////
   ////////////////////
 
-  // async getAllOrganizations() {
-  //   const query = `SELECT * FROM "fm"."organizations"`
+  // async getAllTenants() {
+  //   const query = `SELECT * FROM "fm"."tenants"`
 
   //   try {
   //     const result = await db.query(query)

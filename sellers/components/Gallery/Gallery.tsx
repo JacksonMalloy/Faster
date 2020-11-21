@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react'
 import { useQuery, gql } from '@apollo/client'
 import styled from 'styled-components'
-import { IMAGES_BY_ORGANIZATION } from 'graphql/queries/image/imagesByOrganization'
+import { IMAGES_BY_TENANT } from 'graphql/queries/image/imagesByTenant'
 
 const StyledGallery = styled.section`
   padding-left: 300px;
@@ -35,9 +35,9 @@ const StyledBorder = styled.div`
   border: 10px black solid;
 `
 
-const Gallery = ({ organization_id }) => {
-  const { data, loading, error } = useQuery(IMAGES_BY_ORGANIZATION, {
-    variables: { organization_id: organization_id },
+const Gallery = ({ tenant_id }) => {
+  const { data, loading, error } = useQuery(IMAGES_BY_TENANT, {
+    variables: { tenant_id: tenant_id },
   })
 
   // if (loading) return <p>loading</p>
@@ -67,8 +67,8 @@ const Gallery = ({ organization_id }) => {
   return (
     <StyledGallery>
       {data &&
-        data.imagesByOrganization &&
-        data.imagesByOrganization.map((image) => (
+        data.imagesByTenant &&
+        data.imagesByTenant.map((image) => (
           <StyledImage key={image.image_id} onClick={handleClick(image)}>
             <img src={image.image_url} className="gallery_image" />
             {isActivelySelected(image) ? <StyledBorder /> : null}

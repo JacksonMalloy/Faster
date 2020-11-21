@@ -1,9 +1,9 @@
 import React, { FC, useMemo } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 export interface State {
-  organizationId: number | null
+  tenantId: number | null
   menuId: number | null
-  organizationToken: string | null
+  tenantToken: string | null
   selectedMenuName: string | null
 
   formHeader: any
@@ -23,9 +23,9 @@ export interface State {
 }
 
 const initialState = {
-  organizationId: null,
+  tenantId: null,
   menuId: null,
-  organizationToken: null,
+  tenantToken: null,
   selectedMenuName: null,
 
   formHeader: null,
@@ -72,11 +72,11 @@ type Action =
       view: FORM_VIEWS
     }
   | {
-      type: 'SET_ORGANIZATION_ID'
+      type: 'SET_TENANT_ID'
       id: number
     }
   | {
-      type: 'SET_ORGANIZATION_TOKEN'
+      type: 'SET_TENANT_TOKEN'
       token: string
     }
   | {
@@ -177,16 +177,16 @@ function uiReducer(state: State, action: Action) {
         formView: action.view,
       }
     }
-    case 'SET_ORGANIZATION_ID': {
+    case 'SET_TENANT_ID': {
       return {
         ...state,
-        organizationId: action.id,
+        tenantId: action.id,
       }
     }
-    case 'SET_ORGANIZATION_TOKEN': {
+    case 'SET_TENANT_TOKEN': {
       return {
         ...state,
-        organizationToken: action.token,
+        tenantToken: action.token,
       }
     }
     case 'SET_UPLOADED_FORM_IMAGE': {
@@ -247,7 +247,7 @@ function uiReducer(state: State, action: Action) {
         formSelections: [
           ...state.formSelections.filter((selection: any) => {
             return (
-              selection.menu_selection_id !== action.formSelections.menu_selection_id ||
+              selection.selection_id !== action.formSelections.selection_id ||
               selection.UUID !== action.formSelections.UUID
             )
           }),
@@ -259,7 +259,7 @@ function uiReducer(state: State, action: Action) {
       return {
         ...state,
         formSelections: state.formSelections.filter((selection: any) => {
-          return selection.menu_selection_id !== action.id || selection.UUID !== action.UUID
+          return selection.selection_id !== action.id || selection.UUID !== action.UUID
         }),
       }
     }
@@ -328,9 +328,9 @@ export const UIProvider: FC = (props) => {
   const [state, dispatch] = React.useReducer(uiReducer, initialState)
 
   const reset = () => dispatch({ type: 'RESET' })
-  const setOrganizationId = (id: number) => dispatch({ type: 'SET_ORGANIZATION_ID', id })
+  const setTenantId = (id: number) => dispatch({ type: 'SET_TENANT_ID', id })
   const setMenuId = (id: number) => dispatch({ type: 'SET_MENU_ID', id })
-  const setOrganizationToken = (token: string) => dispatch({ type: 'SET_ORGANIZATION_TOKEN', token })
+  const setTenantToken = (token: string) => dispatch({ type: 'SET_TENANT_TOKEN', token })
   const setSelectedMenuName = (name: string) => dispatch({ type: 'SET_SELECTED_MENU_NAME', name })
   const closeToast = () => dispatch({ type: 'CLOSE_TOAST' })
   const openToast = (message: string, variant: TOAST_VARIANTS) => dispatch({ type: 'OPEN_TOAST', message, variant })
@@ -357,9 +357,9 @@ export const UIProvider: FC = (props) => {
     () => ({
       ...state,
       reset,
-      setOrganizationId,
+      setTenantId,
       setMenuId,
-      setOrganizationToken,
+      setTenantToken,
       setSelectedMenuName,
 
       // ALERTS

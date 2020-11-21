@@ -16,7 +16,7 @@ type CreateOrderArgs = {
   customer_id: number
   total: string
   charge: string
-  organization_id: number
+  tenant_id: number
 }
 
 export const OrderMutations = {
@@ -40,7 +40,7 @@ export const OrderSubscriptions = {
   orderCreated: {
     subscribe: withFilter(
       (parent, args, { pubsub }, info) => pubsub.asyncIterator(ORDER_CREATED),
-      (payload, variables) => payload.orderCreated.organization_id === parseInt(variables.organization_id)
+      (payload, variables) => payload.orderCreated.tenant_id === parseInt(variables.tenant_id)
     ),
   },
 }

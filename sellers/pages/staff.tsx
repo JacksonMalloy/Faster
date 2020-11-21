@@ -25,7 +25,7 @@ const StaffPage = () => {
   if (userData.activeUserAdmin) {
     return (
       <MainNavigation permissions={userData.activeUserAdmin.permissions}>
-        <Staff organization_id={userData.activeUserAdmin.organization_id} />
+        <Staff tenant_id={userData.activeUserAdmin.tenant_id} />
       </MainNavigation>
     )
   }

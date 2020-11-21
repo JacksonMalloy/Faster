@@ -5,14 +5,14 @@ type CreateOrderArgs = {
   customer_id: number
   total: string
   charge: string
-  organization_id: number
+  tenant_id: number
 }
 
 export default class OrderRepository {
   async createMenuOrder(args: CreateOrderArgs) {
-    const { admin_id, customer_id, total, charge, organization_id } = args
-    const query = `INSERT INTO "fm"."orders" (admin_id, customer_id, total, charge, organization_id) VALUES ($1, $2, $3, $4, $5) RETURNING *`
-    const params = [admin_id, customer_id, total, charge, organization_id]
+    const { admin_id, customer_id, total, charge, tenant_id } = args
+    const query = `INSERT INTO "fm"."orders" (admin_id, customer_id, total, charge, tenant_id) VALUES ($1, $2, $3, $4, $5) RETURNING *`
+    const params = [admin_id, customer_id, total, charge, tenant_id]
 
     try {
       const result = await db.query(query, params)

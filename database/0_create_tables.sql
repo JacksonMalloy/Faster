@@ -6,12 +6,12 @@ CREATE SCHEMA IF NOT EXISTS fm;
 
 CREATE SEQUENCE IF NOT EXISTS fm.admin_id_seq;
 CREATE SEQUENCE IF NOT EXISTS fm.customer_id_seq;
-CREATE SEQUENCE IF NOT EXISTS fm.organization_id_seq;
+CREATE SEQUENCE IF NOT EXISTS fm.tenant_id_seq;
 CREATE SEQUENCE IF NOT EXISTS fm.menu_id_seq;
-CREATE SEQUENCE IF NOT EXISTS fm.menu_item_id_seq;
-CREATE SEQUENCE IF NOT EXISTS fm.menu_choice_id_seq;
-CREATE SEQUENCE IF NOT EXISTS fm.menu_selection_id_seq;
-CREATE SEQUENCE IF NOT EXISTS fm.menu_header_id_seq;
+CREATE SEQUENCE IF NOT EXISTS fm.item_id_seq;
+CREATE SEQUENCE IF NOT EXISTS fm.choice_id_seq;
+CREATE SEQUENCE IF NOT EXISTS fm.selection_id_seq;
+CREATE SEQUENCE IF NOT EXISTS fm.header_id_seq;
 CREATE SEQUENCE IF NOT EXISTS fm.image_id_seq;
 CREATE SEQUENCE IF NOT EXISTS fm.order_id_seq;
 CREATE SEQUENCE IF NOT EXISTS fm.sms_id_seq;
@@ -34,8 +34,8 @@ CREATE TABLE "fm"."customers" (
     PRIMARY KEY ("customer_id")
 );
 
-CREATE TABLE "fm"."organizations" (
-    "organization_id" int4 NOT NULL DEFAULT nextval('fm.organization_id_seq'::regclass),
+CREATE TABLE "fm"."tenants" (
+    "tenant_id" int4 NOT NULL DEFAULT nextval('fm.tenant_id_seq'::regclass),
     "name" varchar,
     "created_at" timestamptz NOT NULL DEFAULT now(),
     "address" varchar,
@@ -47,13 +47,13 @@ CREATE TABLE "fm"."organizations" (
     "phone" varchar,
     "website_url" varchar,
 
-    -- Used as the URL param to access the organization
+    -- Used as the URL param to access the tenant
     "access_code" varchar,
 
     -- Used in authenticating the connection of director account
     "auth_token" varchar,
     UNIQUE (access_code),
-    PRIMARY KEY ("organization_id")
+    PRIMARY KEY ("tenant_id")
 );
 
 CREATE TABLE "fm"."admins" (
@@ -64,7 +64,7 @@ CREATE TABLE "fm"."admins" (
     "password" varchar,
     "permissions" varchar NOT NULL DEFAULT 'ADMIN',
     "created_at" timestamptz NOT NULL DEFAULT now(),
-    "organization_id" int4 REFERENCES fm.organizations("organization_id"),
+    "tenant_id" int4 REFERENCES fm.tenants("tenant_id"),
     UNIQUE (phone),
     UNIQUE (email),
     PRIMARY KEY ("admin_id")
@@ -85,55 +85,55 @@ CREATE TABLE "fm"."sms" (
 
 CREATE TABLE "fm"."menus" (
     "menu_id" int4 NOT NULL DEFAULT nextval('fm.menu_id_seq'::regclass),
-    "organization_id" int4 REFERENCES fm.organizations("organization_id"),
+    "tenant_id" int4 REFERENCES fm.tenants("tenant_id"),
     "created_at" timestamptz NOT NULL DEFAULT now(),
     "published" BOOLEAN NOT NULL DEFAULT false,
     "title" varchar,
     PRIMARY KEY ("menu_id"),
-    FOREIGN KEY ("organization_id") REFERENCES fm.organizations("organization_id") ON DELETE CASCADE
+    FOREIGN KEY ("tenant_id") REFERENCES fm.tenants("tenant_id") ON DELETE CASCADE
 );
 
-CREATE TABLE "fm"."menuheaders" (
-    "menu_header_id" int4 NOT NULL DEFAULT nextval('fm.menu_header_id_seq'::regclass),
-    "organization_id" int4 REFERENCES fm.organizations("organization_id") ON DELETE CASCADE,
+CREATE TABLE "fm"."headers" (
+    "header_id" int4 NOT NULL DEFAULT nextval('fm.header_id_seq'::regclass),
+    "tenant_id" int4 REFERENCES fm.tenants("tenant_id") ON DELETE CASCADE,
     "menu_id" int4 REFERENCES fm.menus("menu_id") ON DELETE SET NULL,
     "name" varchar,
     "sub_header" varchar,
-    FOREIGN KEY ("organization_id") REFERENCES fm.organizations("organization_id") ON DELETE CASCADE,
-    PRIMARY KEY ("menu_header_id")
+    FOREIGN KEY ("tenant_id") REFERENCES fm.tenants("tenant_id") ON DELETE CASCADE,
+    PRIMARY KEY ("header_id")
 );
 
-CREATE TABLE "fm"."menuitems" (
-    "menu_item_id" int4 NOT NULL DEFAULT nextval('fm.menu_item_id_seq'::regclass),
-    "organization_id" int4 REFERENCES fm.organizations("organization_id") ON DELETE CASCADE,
+CREATE TABLE "fm"."items" (
+    "item_id" int4 NOT NULL DEFAULT nextval('fm.item_id_seq'::regclass),
+    "tenant_id" int4 REFERENCES fm.tenants("tenant_id") ON DELETE CASCADE,
     "menu_id" int4 REFERENCES fm.menus("menu_id") ON DELETE CASCADE,
-    "menu_header_id" int4 REFERENCES fm.menuheaders("menu_header_id") ON DELETE SET NULL,
+    "header_id" int4 REFERENCES fm.headers("header_id") ON DELETE SET NULL,
     "base_price" varchar,
     "description" varchar,
     "created_at" timestamptz NOT NULL DEFAULT now(),
     "name" varchar,
-    PRIMARY KEY ("menu_item_id"),
-    FOREIGN KEY ("organization_id") REFERENCES fm.organizations("organization_id") ON DELETE CASCADE,
+    PRIMARY KEY ("item_id"),
+    FOREIGN KEY ("tenant_id") REFERENCES fm.tenants("tenant_id") ON DELETE CASCADE,
     FOREIGN KEY ("menu_id") REFERENCES fm.menus("menu_id")
 );
 
-CREATE TABLE "fm"."menuchoices" (
-    "menu_choice_id" int4 NOT NULL DEFAULT nextval('fm.menu_choice_id_seq'::regclass),
-    "organization_id" int4 REFERENCES fm.organizations("organization_id") ON DELETE CASCADE,
+CREATE TABLE "fm"."choices" (
+    "choice_id" int4 NOT NULL DEFAULT nextval('fm.choice_id_seq'::regclass),
+    "tenant_id" int4 REFERENCES fm.tenants("tenant_id") ON DELETE CASCADE,
     "header" varchar,
     "sub_header" varchar,
-    FOREIGN KEY ("organization_id") REFERENCES fm.organizations("organization_id") ON DELETE CASCADE,
-    PRIMARY KEY ("menu_choice_id")
+    FOREIGN KEY ("tenant_id") REFERENCES fm.tenants("tenant_id") ON DELETE CASCADE,
+    PRIMARY KEY ("choice_id")
 );
 
-CREATE TABLE "fm"."menuselections" (
-    "menu_selection_id" int4 NOT NULL DEFAULT nextval('fm.menu_selection_id_seq'::regclass),
-    "organization_id" int4 REFERENCES fm.organizations("organization_id") ON DELETE CASCADE,
-    "menu_item_id" int4 DEFAULT null REFERENCES fm.menuitems("menu_item_id") ON DELETE SET NULL,
+CREATE TABLE "fm"."selections" (
+    "selection_id" int4 NOT NULL DEFAULT nextval('fm.selection_id_seq'::regclass),
+    "tenant_id" int4 REFERENCES fm.tenants("tenant_id") ON DELETE CASCADE,
+    "item_id" int4 DEFAULT null REFERENCES fm.items("item_id") ON DELETE SET NULL,
     "name" varchar,
     "value_add" varchar,
-    FOREIGN KEY ("organization_id") REFERENCES fm.organizations("organization_id") ON DELETE CASCADE,
-    PRIMARY KEY ("menu_selection_id")
+    FOREIGN KEY ("tenant_id") REFERENCES fm.tenants("tenant_id") ON DELETE CASCADE,
+    PRIMARY KEY ("selection_id")
 );
 
 CREATE TABLE "fm"."images" (
@@ -141,13 +141,13 @@ CREATE TABLE "fm"."images" (
     "cloudinary_id" VARCHAR(128),
     "image_url" varchar,
     "uploaded_at" timestamptz NOT NULL DEFAULT now(),
-    "organization_id" int4 REFERENCES fm.organizations("organization_id") ON DELETE CASCADE,
-    "menu_item_id" int4 DEFAULT null REFERENCES fm.menuitems("menu_item_id") ON DELETE SET NULL,
+    "tenant_id" int4 REFERENCES fm.tenants("tenant_id") ON DELETE CASCADE,
+    "item_id" int4 DEFAULT null REFERENCES fm.items("item_id") ON DELETE SET NULL,
     "menu_id" int4 DEFAULT null REFERENCES fm.menus("menu_id") ON DELETE SET NULL,
-    UNIQUE (menu_item_id),
+    UNIQUE (item_id),
     UNIQUE (menu_id),
-    FOREIGN KEY ("organization_id") REFERENCES fm.organizations("organization_id") ON DELETE CASCADE,
-    FOREIGN KEY ("menu_item_id") REFERENCES fm.menuitems("menu_item_id") ON DELETE SET NULL,
+    FOREIGN KEY ("tenant_id") REFERENCES fm.tenants("tenant_id") ON DELETE CASCADE,
+    FOREIGN KEY ("item_id") REFERENCES fm.items("item_id") ON DELETE SET NULL,
     FOREIGN KEY ("menu_id") REFERENCES fm.menus("menu_id") ON DELETE SET NULL,
     PRIMARY KEY ("image_id")
 );
@@ -157,10 +157,10 @@ CREATE TABLE "fm"."orders" (
     "total" bigint,
     "admin_id" int4 REFERENCES fm.admins("admin_id"),
     "customer_id" int4 REFERENCES fm.customers("customer_id"),
-    "organization_id" int4 REFERENCES fm.organizations("organization_id") ON DELETE CASCADE,
+    "tenant_id" int4 REFERENCES fm.tenants("tenant_id") ON DELETE CASCADE,
     "charge" varchar,
     "created_at" timestamptz NOT NULL DEFAULT now(),
-    FOREIGN KEY ("organization_id") REFERENCES fm.organizations("organization_id") ON DELETE CASCADE,
+    FOREIGN KEY ("tenant_id") REFERENCES fm.tenants("tenant_id") ON DELETE CASCADE,
     FOREIGN KEY ("customer_id") REFERENCES fm.customers("customer_id"),
     FOREIGN KEY ("admin_id") REFERENCES fm.admins("admin_id"),
     PRIMARY KEY ("order_id")
@@ -168,34 +168,34 @@ CREATE TABLE "fm"."orders" (
 
 -- Many to Many relationships
 
-CREATE TABLE "fm"."customers_to_organizations" (
-    "organization_id" INT NOT NULL,
+CREATE TABLE "fm"."customers_to_tenants" (
+    "tenant_id" INT NOT NULL,
     "customer_id" INT NOT NULL,
     "created_at" timestamptz NOT NULL DEFAULT now(),
-    PRIMARY KEY ("customer_id", "organization_id"),
-    FOREIGN KEY ("organization_id") REFERENCES fm.organizations("organization_id") ON UPDATE CASCADE,
+    PRIMARY KEY ("customer_id", "tenant_id"),
+    FOREIGN KEY ("tenant_id") REFERENCES fm.tenants("tenant_id") ON UPDATE CASCADE,
     FOREIGN KEY ("customer_id") REFERENCES fm.customers("customer_id") ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE "fm"."menuchoices_to_menuitems" (
-    "menu_choice_id" INT NOT NULL,
-    "menu_item_id" INT NOT NULL,
-    "organization_id" int4 REFERENCES fm.organizations("organization_id") ON DELETE CASCADE,
+CREATE TABLE "fm"."choices_to_items" (
+    "choice_id" INT NOT NULL,
+    "item_id" INT NOT NULL,
+    "tenant_id" int4 REFERENCES fm.tenants("tenant_id") ON DELETE CASCADE,
 
-    PRIMARY KEY ("menu_item_id", "menu_choice_id"),
-    FOREIGN KEY ("organization_id") REFERENCES fm.organizations("organization_id") ON DELETE CASCADE,
-    FOREIGN KEY ("menu_choice_id") REFERENCES fm.menuchoices("menu_choice_id") ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY ("menu_item_id") REFERENCES fm.menuitems("menu_item_id") ON UPDATE CASCADE ON DELETE CASCADE
+    PRIMARY KEY ("item_id", "choice_id"),
+    FOREIGN KEY ("tenant_id") REFERENCES fm.tenants("tenant_id") ON DELETE CASCADE,
+    FOREIGN KEY ("choice_id") REFERENCES fm.choices("choice_id") ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY ("item_id") REFERENCES fm.items("item_id") ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE "fm"."menuselections_to_menuchoices" (
-    "menu_selection_id" INT NOT NULL,
-    "menu_choice_id" INT NOT NULL,
-    "organization_id" int4 REFERENCES fm.organizations("organization_id") ON DELETE CASCADE,
+CREATE TABLE "fm"."selections_to_choices" (
+    "selection_id" INT NOT NULL,
+    "choice_id" INT NOT NULL,
+    "tenant_id" int4 REFERENCES fm.tenants("tenant_id") ON DELETE CASCADE,
 
-    PRIMARY KEY ("menu_selection_id", "menu_choice_id"),
-    FOREIGN KEY ("organization_id") REFERENCES fm.organizations("organization_id") ON DELETE CASCADE,
+    PRIMARY KEY ("selection_id", "choice_id"),
+    FOREIGN KEY ("tenant_id") REFERENCES fm.tenants("tenant_id") ON DELETE CASCADE,
 
-    FOREIGN KEY ("menu_choice_id") REFERENCES fm.menuchoices("menu_choice_id") ON UPDATE CASCADE,
-    FOREIGN KEY ("menu_selection_id") REFERENCES fm.menuselections("menu_selection_id") ON UPDATE CASCADE
+    FOREIGN KEY ("choice_id") REFERENCES fm.choices("choice_id") ON UPDATE CASCADE,
+    FOREIGN KEY ("selection_id") REFERENCES fm.selections("selection_id") ON UPDATE CASCADE
 );

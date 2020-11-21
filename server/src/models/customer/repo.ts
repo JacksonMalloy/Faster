@@ -17,7 +17,7 @@ type LoginArgs = {
 
 type ConnectCustomerWithOrgArgs = {
   customer_id: number
-  organization_id: number
+  tenant_id: number
 }
 
 export default class CustomerRepository {
@@ -25,21 +25,21 @@ export default class CustomerRepository {
   ///////READS////////
   ////////////////////
 
-  async getCustomersByOrganization(organization_id: number) {
+  async getCustomersByTenant(tenant_id: number) {
     const query = `
             SELECT
                     *
               FROM
-                    "fm"."customers_to_organizations" c2o
+                    "fm"."customers_to_tenants" c2o
             INNER JOIN
                     "fm"."customers" c
                   ON c2o.customer_id = c.customer_id
             INNER JOIN
-                  "fm"."organizations" o
-                  ON c2o.organization_id = o.organization_id
-            WHERE o.organization_id = $1`
+                  "fm"."tenants" o
+                  ON c2o.tenant_id = o.tenant_id
+            WHERE o.tenant_id = $1`
 
-    const params = [organization_id]
+    const params = [tenant_id]
 
     try {
       const result = await db.query(query, params)
@@ -56,19 +56,19 @@ export default class CustomerRepository {
     const query = `SELECT * FROM "fm"."customers" WHERE customer_id = $1`
     const params = [customer_id]
 
-    const getOrganizationsByCustomerId = async (customer_id: number) => {
+    const getTenantsByCustomerId = async (customer_id: number) => {
       const query = `
         SELECT
               o.name,
-              o.organization_id
+              o.tenant_id
         FROM
-              "fm"."customers_to_organizations" c2o
+              "fm"."customers_to_tenants" c2o
         INNER JOIN
               "fm"."customers" c
             ON c2o.customer_id = c.customer_id
         INNER JOIN
-            "fm"."organizations" o
-            ON c2o.organization_id = o.organization_id
+            "fm"."tenants" o
+            ON c2o.tenant_id = o.tenant_id
         WHERE c.customer_id = $1`
 
       const params = [customer_id]
@@ -85,9 +85,9 @@ export default class CustomerRepository {
     try {
       const result = await db.query(query, params)
       const customer_id = result.rows[0].customer_id
-      const organizations = await getOrganizationsByCustomerId(customer_id)
+      const tenants = await getTenantsByCustomerId(customer_id)
 
-      return Object.assign(result.rows[0], { organizations })
+      return Object.assign(result.rows[0], { tenants })
     } catch (error) {
       //console.log(error)
       throw error
@@ -270,18 +270,18 @@ export default class CustomerRepository {
     }
   }
 
-  async connectCustomerToOrganization(args: ConnectCustomerWithOrgArgs) {
-    const { customer_id, organization_id } = args
+  async connectCustomerToTenant(args: ConnectCustomerWithOrgArgs) {
+    const { customer_id, tenant_id } = args
 
-    const query = `INSERT INTO "fm"."customers_to_organizations" (customer_id, organization_id) VALUES ($1, $2) RETURNING *`
-    const params = [customer_id, organization_id]
+    const query = `INSERT INTO "fm"."customers_to_tenants" (customer_id, tenant_id) VALUES ($1, $2) RETURNING *`
+    const params = [customer_id, tenant_id]
 
     try {
       const result = await db.query(query, params)
 
       return {
         code: 200,
-        message: 'Successfully joined organization!',
+        message: 'Successfully joined tenant!',
         success: true,
         connection: {
           connect: result.rows,

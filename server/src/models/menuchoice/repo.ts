@@ -4,27 +4,27 @@ import { update } from '../../helpers'
 type CreateMenuChoiceArgs = {
   header: string
   sub_header: string
-  organization_id: number
+  tenant_id: number
 }
 
 type UpdateMenuChoiceArgs = {
   header: string
   sub_header: string
-  menu_choice_id: number
+  choice_id: number
 }
 
 type ChoiceWithItemArgs = {
-  menu_item_id: number
-  menu_choice_ids: number[]
+  item_id: number
+  choice_ids: number[]
 }
 
 export default class MenuChoiceRepository {
   ////////////////////
   ///////READS////////
   ////////////////////
-  async getMenuChoiceById(menu_choice_id: number) {
-    const query = `SELECT * FROM "fm"."menuchoices" WHERE menu_choice_id = $1`
-    const params = [menu_choice_id]
+  async getMenuChoiceById(choice_id: number) {
+    const query = `SELECT * FROM "fm"."choices" WHERE choice_id = $1`
+    const params = [choice_id]
 
     try {
       const result = await db.query(query, params)
@@ -36,9 +36,9 @@ export default class MenuChoiceRepository {
     }
   }
 
-  async getAllMenuChoicesByOrganization(organization_id: number) {
-    const query = `SELECT * FROM "fm"."menuchoices" WHERE organization_id = $1`
-    const params = [organization_id]
+  async getAllMenuChoicesByTenant(tenant_id: number) {
+    const query = `SELECT * FROM "fm"."choices" WHERE tenant_id = $1`
+    const params = [tenant_id]
 
     try {
       const result = await db.query(query, params)
@@ -53,9 +53,9 @@ export default class MenuChoiceRepository {
   ////////////////////
   ///////WRITES///////
   ////////////////////
-  async createMenuChoice({ organization_id, header, sub_header }: CreateMenuChoiceArgs) {
-    const query = `INSERT INTO "fm"."menuchoices" (organization_id, header, sub_header) VALUES ($1, $2, $3) RETURNING *`
-    const params = [organization_id, header, sub_header]
+  async createMenuChoice({ tenant_id, header, sub_header }: CreateMenuChoiceArgs) {
+    const query = `INSERT INTO "fm"."choices" (tenant_id, header, sub_header) VALUES ($1, $2, $3) RETURNING *`
+    const params = [tenant_id, header, sub_header]
 
     try {
       const result = await db.query(query, params)
@@ -76,11 +76,11 @@ export default class MenuChoiceRepository {
     }
   }
 
-  async updateMenuChoice({ menu_choice_id, header, sub_header }: UpdateMenuChoiceArgs) {
+  async updateMenuChoice({ choice_id, header, sub_header }: UpdateMenuChoiceArgs) {
     const fields = { header, sub_header }
-    const conditions = { menu_choice_id }
+    const conditions = { choice_id }
 
-    const { query, params } = update(`"fm"."menuchoices"`, conditions, fields)
+    const { query, params } = update(`"fm"."choices"`, conditions, fields)
 
     try {
       const result = await db.query(query, params)
@@ -100,9 +100,9 @@ export default class MenuChoiceRepository {
     }
   }
 
-  async deleteMenuChoice({ menu_choice_id }: { menu_choice_id: number }) {
-    const query = `DELETE FROM "fm"."menuchoices" WHERE menu_choice_id = $1`
-    const params = [menu_choice_id]
+  async deleteMenuChoice({ choice_id }: { choice_id: number }) {
+    const query = `DELETE FROM "fm"."choices" WHERE choice_id = $1`
+    const params = [choice_id]
 
     try {
       const result = await db.query(query, params)
@@ -113,8 +113,8 @@ export default class MenuChoiceRepository {
           message: 'The menu choice no longer exists!',
           success: false,
           menu_choice: {
-            menu_choice_id: menu_choice_id,
-            organization_id: '',
+            choice_id: choice_id,
+            tenant_id: '',
           },
         }
       } else {
@@ -123,8 +123,8 @@ export default class MenuChoiceRepository {
           message: 'The menu choice was deleted',
           success: true,
           menu_choice: {
-            menu_choice_id: menu_choice_id,
-            organization_id: '',
+            choice_id: choice_id,
+            tenant_id: '',
           },
         }
       }
@@ -138,12 +138,12 @@ export default class MenuChoiceRepository {
     }
   }
 
-  async connectingMenuChoicesToMenuItem({ menu_choice_ids, menu_item_id }: ChoiceWithItemArgs) {
-    const values = menu_choice_ids.map((id) => {
-      return `(${menu_item_id}, ${id})`
+  async connectingMenuChoicesToMenuItem({ choice_ids, item_id }: ChoiceWithItemArgs) {
+    const values = choice_ids.map((id) => {
+      return `(${item_id}, ${id})`
     })
 
-    const query = `INSERT INTO "fm"."menuchoices_to_menuitems" (menu_item_id, menu_choice_id) VALUES ${values} ON CONFLICT DO NOTHING RETURNING *`
+    const query = `INSERT INTO "fm"."choices_to_items" (item_id, choice_id) VALUES ${values} ON CONFLICT DO NOTHING RETURNING *`
 
     try {
       const result = await db.query(query)
@@ -177,12 +177,12 @@ export default class MenuChoiceRepository {
     }
   }
 
-  async removingMenuChoicesMenuItemsConnection({ menu_choice_ids, menu_item_id }: ChoiceWithItemArgs) {
-    const values = menu_choice_ids.map((id) => {
+  async removingMenuChoicesMenuItemsConnection({ choice_ids, item_id }: ChoiceWithItemArgs) {
+    const values = choice_ids.map((id) => {
       return `${id}`
     })
 
-    const query = `DELETE FROM "fm"."menuchoices_to_menuitems" WHERE menu_item_id = ${menu_item_id} AND menu_choice_id IN (${values}) RETURNING *`
+    const query = `DELETE FROM "fm"."choices_to_items" WHERE item_id = ${item_id} AND choice_id IN (${values}) RETURNING *`
 
     try {
       const result = await db.query(query)

@@ -8,14 +8,14 @@ export const createMenuChoices = () =>
     it(`Create Menu Choices`, async () => {
       for (let i = 0; i < 300; i++) {
         const variables = {
-          organization_id: faker.random.number({ max: 10, min: 1 }),
+          tenant_id: faker.random.number({ max: 10, min: 1 }),
           header: faker.random.word(),
           sub_header: faker.random.words(6),
         }
 
         const result = await menuChoiceRepo.createMenuChoice(variables)
 
-        expect(result.menu_choice.organization_id).not.toBeNull()
+        expect(result.menu_choice.tenant_id).not.toBeNull()
         expect(result.menu_choice.header).not.toBeNull()
       }
     })
@@ -26,14 +26,14 @@ export const createMenuChoicesForTestAccount = () =>
     it(`Create Menu Choices`, async () => {
       for (let i = 0; i < 40; i++) {
         const variables = {
-          organization_id: 12,
+          tenant_id: 12,
           header: faker.random.word(),
           sub_header: faker.random.words(6),
         }
 
         const result = await menuChoiceRepo.createMenuChoice(variables)
 
-        expect(result.menu_choice.organization_id).not.toBeNull()
+        expect(result.menu_choice.tenant_id).not.toBeNull()
         expect(result.menu_choice.header).not.toBeNull()
       }
     })

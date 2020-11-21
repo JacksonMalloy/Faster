@@ -12,7 +12,7 @@ type AdminRegistrationArgs = {
 
 type AdminToOrgArgs = {
   admin_id: number
-  organization_id: number
+  tenant_id: number
   auth_token: string
 }
 
@@ -44,9 +44,9 @@ export default class AdminRepository {
     }
   }
 
-  async getAdminsByOrganization(organization_id: number) {
-    const query = `SELECT * FROM "fm"."admins" WHERE organization_id = $1`
-    const params = [organization_id]
+  async getAdminsByTenant(tenant_id: number) {
+    const query = `SELECT * FROM "fm"."admins" WHERE tenant_id = $1`
+    const params = [tenant_id]
 
     try {
       const result = await db.query(query, params)
@@ -225,13 +225,13 @@ export default class AdminRepository {
     }
   }
 
-  async registerAdminToOrganization({ admin_id, organization_id, auth_token }: AdminToOrgArgs) {
-    const query = `UPDATE "fm"."admins" SET organization_id = $1 WHERE admin_id = $2 RETURNING *`
-    const params = [organization_id, admin_id]
+  async registerAdminToTenant({ admin_id, tenant_id, auth_token }: AdminToOrgArgs) {
+    const query = `UPDATE "fm"."admins" SET tenant_id = $1 WHERE admin_id = $2 RETURNING *`
+    const params = [tenant_id, admin_id]
 
-    const getOrganizationAuthToken = async (organization_id: number) => {
-      const query = `SELECT auth_token FROM "fm"."organizations" WHERE organization_id = $1`
-      const params = [organization_id]
+    const getTenantAuthToken = async (tenant_id: number) => {
+      const query = `SELECT auth_token FROM "fm"."tenants" WHERE tenant_id = $1`
+      const params = [tenant_id]
 
       try {
         const result = await db.query(query, params)
@@ -244,7 +244,7 @@ export default class AdminRepository {
     }
 
     try {
-      const authToken = await getOrganizationAuthToken(organization_id)
+      const authToken = await getTenantAuthToken(tenant_id)
 
       // If the passed in token does not match in DB, DON'T connect the accounts
       if (auth_token !== authToken) {
@@ -258,7 +258,7 @@ export default class AdminRepository {
 
         return {
           code: 200,
-          message: 'Successfully joined organization!',
+          message: 'Successfully joined tenant!',
           success: true,
           connection: {
             connect: result.rows,

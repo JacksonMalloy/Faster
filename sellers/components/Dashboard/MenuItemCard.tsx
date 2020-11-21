@@ -47,7 +47,7 @@ export const MenuItemCard = ({ item }) => {
           {item &&
             item.menu_choices &&
             item.menu_choices.map((choice) => (
-              <div key={choice.menu_choice_id}>
+              <div key={choice.choice_id}>
                 <h3>{choice.header}</h3>
                 <h2>{choice.sub_header}</h2>
                 <Selection choice={choice} />

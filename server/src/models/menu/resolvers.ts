@@ -7,24 +7,24 @@ export const MenuQueries = {
     const data = await menuRepo.getMenuById(menu_id)
     return data
   },
-  menusByOrganization: async (
+  menusByTenant: async (
     parent: any,
-    { organization_id }: { organization_id: number },
+    { tenant_id }: { tenant_id: number },
     context: any,
     info: any
   ) => {
     const menuRepo = new MenuRepository()
-    const data = await menuRepo.getAllMenusByOrganization(organization_id)
+    const data = await menuRepo.getAllMenusByTenant(tenant_id)
     return data
   },
   searchMenus: async (
     parent: any,
-    { organization_id, search_query }: { organization_id: number; search_query: string },
+    { tenant_id, search_query }: { tenant_id: number; search_query: string },
     context: any,
     info: any
   ) => {
     const menuRepo = new MenuRepository()
-    const data = await menuRepo.getAllMenusByOrganization(organization_id)
+    const data = await menuRepo.getAllMenusByTenant(tenant_id)
 
     const searchData = data.filter((data) => data.title.toLowerCase().includes(search_query.toLowerCase()))
 
@@ -33,7 +33,7 @@ export const MenuQueries = {
 }
 
 type CreateMenuArgs = {
-  organization_id: number
+  tenant_id: number
   title: string
 }
 

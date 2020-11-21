@@ -1,13 +1,13 @@
 import { gql } from '@apollo/client'
 
 export const SEARCH_MENUS = gql`
-  query($organization_id: ID!, $search_query: String) {
+  query($tenant_id: ID!, $search_query: String) {
     searchMenus(
-      organization_id: $organization_id
+      tenant_id: $tenant_id
       search_query: $search_query
     ) {
       menu_id
-      organization_id
+      tenant_id
       published
       title
       image {

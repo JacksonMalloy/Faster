@@ -12,10 +12,10 @@ cloudinary.config({
 
 type UploadFileArgs = {
   file: any
-  menu_item_id: number
+  item_id: number
   menu_id: number
-  organization_id: number
-  organization_name: string
+  tenant_id: number
+  tenant_name: string
 }
 
 type ConnectImageWithMenu = {
@@ -25,11 +25,11 @@ type ConnectImageWithMenu = {
 
 type ConnectImageWithItem = {
   image_id: number
-  menu_item_id: number
+  item_id: number
 }
 
 export default class ImageRepository {
-  async uploadFile({ file, menu_item_id, menu_id, organization_id, organization_name }: UploadFileArgs) {
+  async uploadFile({ file, item_id, menu_id, tenant_id, tenant_name }: UploadFileArgs) {
     const insertIntoDB = async ({
       public_id: cloudinary_id,
       secure_url: image_url,
@@ -37,8 +37,8 @@ export default class ImageRepository {
       public_id: string
       secure_url: string
     }) => {
-      const query = `INSERT INTO "fm"."images" (cloudinary_id, image_url, menu_item_id, menu_id, organization_id) VALUES ($1, $2, $3, $4, $5) RETURNING *`
-      const params = [cloudinary_id, image_url, menu_item_id, menu_id, organization_id]
+      const query = `INSERT INTO "fm"."images" (cloudinary_id, image_url, item_id, menu_id, tenant_id) VALUES ($1, $2, $3, $4, $5) RETURNING *`
+      const params = [cloudinary_id, image_url, item_id, menu_id, tenant_id]
 
       try {
         const result = await db.query(query, params)
@@ -51,16 +51,16 @@ export default class ImageRepository {
 
     const cloudinaryUpload = async (
       stream: { pipe: (arg0: any) => void },
-      organization_id: number,
-      organization_name: string
+      tenant_id: number,
+      tenant_name: string
     ) => {
       console.log('Cloudinary Upload')
 
       return new Promise((resolve, reject) => {
         const streamLoad = cloudinary.uploader.upload_stream(
           {
-            tags: organization_id,
-            folder: organization_name,
+            tags: tenant_id,
+            folder: tenant_name,
           },
           (error: any, result: unknown) => {
             if (result) {
@@ -79,7 +79,7 @@ export default class ImageRepository {
       const { createReadStream } = await file
 
       const stream = await createReadStream()
-      const result: any = await cloudinaryUpload(stream, organization_id, organization_name)
+      const result: any = await cloudinaryUpload(stream, tenant_id, tenant_name)
 
       const data = await insertIntoDB(result)
 
@@ -158,10 +158,10 @@ export default class ImageRepository {
     }
   }
 
-  async connectingImageToMenuItem({ image_id, menu_item_id }: ConnectImageWithItem) {
-    const resetImageId = async (menu_item_id: any) => {
-      const query = `UPDATE "fm"."images" SET menu_item_id = null WHERE menu_item_id = $1 RETURNING *`
-      const params = [menu_item_id]
+  async connectingImageToMenuItem({ image_id, item_id }: ConnectImageWithItem) {
+    const resetImageId = async (item_id: any) => {
+      const query = `UPDATE "fm"."images" SET item_id = null WHERE item_id = $1 RETURNING *`
+      const params = [item_id]
 
       try {
         const result = await db.query(query, params)
@@ -173,11 +173,11 @@ export default class ImageRepository {
         throw error
       }
     }
-    const query = `UPDATE "fm"."images" SET menu_item_id = $1 WHERE image_id = $2 RETURNING *`
-    const params = [menu_item_id, image_id]
+    const query = `UPDATE "fm"."images" SET item_id = $1 WHERE image_id = $2 RETURNING *`
+    const params = [item_id, image_id]
 
     try {
-      await resetImageId(menu_item_id)
+      await resetImageId(item_id)
       const result = await db.query(query, params)
       //console.log(result)
 
@@ -192,9 +192,9 @@ export default class ImageRepository {
   /////////// QUERIES ////////////////////
   ////////////////////////////////////////
 
-  async getImagesByOrganization(organization_id: number) {
-    const query = `SELECT * FROM "fm"."images" WHERE organization_id = $1`
-    const params = [organization_id]
+  async getImagesByTenant(tenant_id: number) {
+    const query = `SELECT * FROM "fm"."images" WHERE tenant_id = $1`
+    const params = [tenant_id]
 
     try {
       const result = await db.query(query, params)
@@ -231,9 +231,9 @@ export default class ImageRepository {
     }
   }
 
-  async getImageByMenuItem(menu_item_id: number) {
-    const query = `SELECT * FROM "fm"."images" WHERE menu_item_id = $1`
-    const params = [menu_item_id]
+  async getImageByMenuItem(item_id: number) {
+    const query = `SELECT * FROM "fm"."images" WHERE item_id = $1`
+    const params = [item_id]
 
     try {
       const result = await db.query(query, params)

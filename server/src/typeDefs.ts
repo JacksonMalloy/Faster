@@ -4,41 +4,41 @@ export const typeDefs = gql`
   scalar Upload
 
   type Subscription {
-    orderCreated(organization_id: ID!): Order
+    orderCreated(tenant_id: ID!): Order
     # orderArchived(order_id: ID!): Order
   }
 
   type Query {
     admin(admin_id: ID!): Admin
-    adminsByOrganization(organization_id: ID!): [Admin]
+    adminsByTenant(tenant_id: ID!): [Admin]
     customer(customer_id: ID!): Customer
-    customersByOrganization(organization_id: ID!): [Customer]
-    organization(organization_id: ID!): Organization
-    organizationByAccessCode(access_code: String!): Organization
-    organizations: [Organization]
+    customersByTenant(tenant_id: ID!): [Customer]
+    tenant(tenant_id: ID!): Tenant
+    tenantByAccessCode(access_code: String!): Tenant
+    tenants: [Tenant]
     menu(menu_id: ID!): Menu
-    menusByOrganization(organization_id: ID!): [Menu]
+    menusByTenant(tenant_id: ID!): [Menu]
 
     # TODO
-    searchMenus(organization_id: ID!, search_query: String): [Menu]
+    searchMenus(tenant_id: ID!, search_query: String): [Menu]
 
-    menuItem(menu_item_id: ID!): MenuItem
-    menuItemsByOrganization(organization_id: ID!): [MenuItem]
+    menuItem(item_id: ID!): MenuItem
+    menuItemsByTenant(tenant_id: ID!): [MenuItem]
     menuItemsByMenu(menu_id: ID!): [MenuItem]
-    menuChoice(menu_choice_id: ID!): MenuChoice
-    menuChoicesByOrganization(organization_id: ID!): [MenuChoice]
-    menuSelection(menu_selection_id: ID!): MenuSelection
-    menuSelectionsByMenuItem(menu_item_id: ID!): [MenuSelection]
-    menuSelectionsByOrganization(organization_id: ID!): [MenuSelection]
-    menuSelectionsByMenuChoice(menu_choice_id: ID!): [MenuSelection]
-    menuHeader(menu_header_id: ID!): MenuHeader
+    menuChoice(choice_id: ID!): MenuChoice
+    menuChoicesByTenant(tenant_id: ID!): [MenuChoice]
+    menuSelection(selection_id: ID!): MenuSelection
+    menuSelectionsByMenuItem(item_id: ID!): [MenuSelection]
+    menuSelectionsByTenant(tenant_id: ID!): [MenuSelection]
+    menuSelectionsByMenuChoice(choice_id: ID!): [MenuSelection]
+    menuHeader(header_id: ID!): MenuHeader
     menuHeadersByMenu(menu_id: ID!): [MenuHeader]
     activeUserAdmin: Admin
     activeUserCustomer: Customer
-    imagesByOrganization(organization_id: ID!): [File]
+    imagesByTenant(tenant_id: ID!): [File]
     imageByMenu(menu_id: ID!): File
     imageById(image_id: ID!): File
-    imageByMenuItem(menu_item_id: ID!): File
+    imageByMenuItem(item_id: ID!): File
   }
 
   interface MutationResponse {
@@ -62,7 +62,7 @@ export const typeDefs = gql`
     signinCustomer(email: String, phone: String, pin: String!): CustomerMutationResponse
 
     # CREATE
-    createOrganization(
+    createTenant(
       name: String
       address: String
       city: String
@@ -72,32 +72,27 @@ export const typeDefs = gql`
       postal_code: String
       sub_address: String
       province: String
-    ): OrganizationMutationResponse
-    addMenu(organization_id: ID!, title: String!): MenuMutationResponse
+    ): TenantMutationResponse
+    addMenu(tenant_id: ID!, title: String!): MenuMutationResponse
     addMenuItem(
       menu_id: ID!
-      menu_header_id: ID
+      header_id: ID
       base_price: String!
       description: String
       name: String!
     ): MenuItemMutationResponse
     addMenuHeader(menu_id: ID!, name: String!, sub_header: String): MenuHeaderMutationResponse
-    addMenuChoice(organization_id: ID!, header: String!, sub_header: String): MenuChoiceMutationResponse
-    # May remove menu_item_id, check first
-    addMenuSelection(
-      organization_id: ID!
-      menu_item_id: ID
-      name: String!
-      value_add: String
-    ): MenuSelectionMutationResponse
+    addMenuChoice(tenant_id: ID!, header: String!, sub_header: String): MenuChoiceMutationResponse
+    # May remove item_id, check first
+    addMenuSelection(tenant_id: ID!, item_id: ID, name: String!, value_add: String): MenuSelectionMutationResponse
 
-    uploadImage(file: Upload!, menu_item_id: ID, menu_id: ID, organization_id: ID!, organization_name: String!): File
+    uploadImage(file: Upload!, item_id: ID, menu_id: ID, tenant_id: ID!, tenant_name: String!): File
 
-    createOrder(admin_id: ID, customer_id: ID, total: Int, charge: String, organization_id: ID!): OrderMutationResponse
+    createOrder(admin_id: ID, customer_id: ID, total: Int, charge: String, tenant_id: ID!): OrderMutationResponse
 
     # EDIT
-    editOrganization(
-      organization_id: ID!
+    editTenant(
+      tenant_id: ID!
       name: String
       address: String
       city: String
@@ -107,63 +102,56 @@ export const typeDefs = gql`
       postal_code: String
       sub_address: String
       province: String
-    ): OrganizationMutationResponse
+    ): TenantMutationResponse
     editMenu(menu_id: ID!, title: String, published: Boolean): MenuMutationResponse
     editMenuItem(
-      menu_item_id: ID!
+      item_id: ID!
       menu_id: ID
-      menu_header_id: ID
+      header_id: ID
       base_price: String
       description: String
       name: String
     ): MenuItemMutationResponse
-    editMenuHeader(menu_header_id: ID!, menu_id: ID, name: String, sub_header: String): MenuHeaderMutationResponse
-    editMenuChoice(menu_choice_id: ID!, header: String, sub_header: String): MenuChoiceMutationResponse
-    editMenuSelection(menu_selection_id: ID!, name: String, value_add: String): MenuSelectionMutationResponse
+    editMenuHeader(header_id: ID!, menu_id: ID, name: String, sub_header: String): MenuHeaderMutationResponse
+    editMenuChoice(choice_id: ID!, header: String, sub_header: String): MenuChoiceMutationResponse
+    editMenuSelection(selection_id: ID!, name: String, value_add: String): MenuSelectionMutationResponse
 
     # DELETE
-    removeOrganization(organization_id: ID!): OrganizationMutationResponse
+    removeTenant(tenant_id: ID!): TenantMutationResponse
     removeAdmin(admin_id: ID!): AdminMutationResponse
     removeCustomer(customer_id: ID!): CustomerMutationResponse
     removeMenu(menu_id: ID!): MenuMutationResponse
-    removeMenuItem(menu_item_id: ID!): MenuItemMutationResponse
-    removeMenuHeader(menu_header_id: ID!): MenuHeaderMutationResponse
-    removeMenuChoice(menu_choice_id: ID!): MenuChoiceMutationResponse
-    removeMenuSelection(menu_selection_id: ID!): MenuSelectionMutationResponse
+    removeMenuItem(item_id: ID!): MenuItemMutationResponse
+    removeMenuHeader(header_id: ID!): MenuHeaderMutationResponse
+    removeMenuChoice(choice_id: ID!): MenuChoiceMutationResponse
+    removeMenuSelection(selection_id: ID!): MenuSelectionMutationResponse
     deleteImage(image_id: ID!): FileMutationResponse
 
     # CONNECT
-    joinAdminToOrganization(
-      admin_id: ID!
-      organization_id: ID!
-      auth_token: String!
-    ): AdminToOrganizationConnectionResponse
-    joinCustomerToOrganization(customer_id: ID!, organization_id: ID!): CustomerToOrganizationConnectionResponse
+    joinAdminToTenant(admin_id: ID!, tenant_id: ID!, auth_token: String!): AdminToTenantConnectionResponse
+    joinCustomerToTenant(customer_id: ID!, tenant_id: ID!): CustomerToTenantConnectionResponse
 
-    connectMenuChoicesToMenuItem(menu_choice_ids: [ID], menu_item_id: ID!): MenuChoicesToMenuItemConnectionResponse
-    removeMenuChoicesMenuItemsConnection(
-      menu_choice_ids: [ID]
-      menu_item_id: ID!
-    ): MenuChoicesToMenuItemConnectionResponse
+    connectMenuChoicesToMenuItem(choice_ids: [ID], item_id: ID!): MenuChoicesToMenuItemConnectionResponse
+    removeMenuChoicesMenuItemsConnection(choice_ids: [ID], item_id: ID!): MenuChoicesToMenuItemConnectionResponse
 
     connectMenuSelectionsToMenuChoice(
-      menu_selection_ids: [ID]
-      menu_choice_id: ID!
+      selection_ids: [ID]
+      choice_id: ID!
     ): MenuSelectionsToMenuChoicesConnectionResponse
     removeMenuSelectionsMenuChoicesConnection(
-      menu_selection_ids: [ID]
-      menu_choice_id: ID!
+      selection_ids: [ID]
+      choice_id: ID!
     ): MenuSelectionsToMenuChoicesConnectionResponse
 
     # TODO
     connectImageToMenu(image_id: ID!, menu_id: ID!): ImageMenuConnectionResponse
-    connectImageToMenuItem(image_id: ID!, menu_item_id: ID!): ImageMenuItemConnectionResponse
+    connectImageToMenuItem(image_id: ID!, item_id: ID!): ImageMenuItemConnectionResponse
   }
 
   # CONNECTIONS
 
   type ImageMenuItem {
-    menu_item_id: ID!
+    item_id: ID!
     image_id: ID!
   }
 
@@ -195,8 +183,8 @@ export const typeDefs = gql`
   }
 
   type MenuChoicesToMenuItem {
-    menu_choice_id: ID!
-    menu_item_id: ID!
+    choice_id: ID!
+    item_id: ID!
   }
 
   type MenuChoicesToMenuItemConnection {
@@ -211,8 +199,8 @@ export const typeDefs = gql`
   }
 
   type MenuSelectionsToMenuChoices {
-    menu_choice_id: ID!
-    menu_selection_id: ID!
+    choice_id: ID!
+    selection_id: ID!
   }
 
   type MenuSelectionsToMenuChoicesConnection {
@@ -226,36 +214,36 @@ export const typeDefs = gql`
     connection: MenuSelectionsToMenuChoicesConnection
   }
 
-  type AdminToOrganization {
+  type AdminToTenant {
     admin_id: ID!
-    organization_id: ID!
+    tenant_id: ID!
   }
 
-  type AdminToOrganizationConnection {
-    connect: [AdminToOrganization]
+  type AdminToTenantConnection {
+    connect: [AdminToTenant]
   }
 
-  type AdminToOrganizationConnectionResponse implements MutationResponse {
+  type AdminToTenantConnectionResponse implements MutationResponse {
     code: String!
     success: Boolean!
     message: String!
-    connection: AdminToOrganizationConnection
+    connection: AdminToTenantConnection
   }
 
-  type CustomerToOrganization {
+  type CustomerToTenant {
     customer_id: ID!
-    organization_id: ID!
+    tenant_id: ID!
   }
 
-  type CustomerToOrganizationConnection {
-    connect: [CustomerToOrganization]
+  type CustomerToTenantConnection {
+    connect: [CustomerToTenant]
   }
 
-  type CustomerToOrganizationConnectionResponse implements MutationResponse {
+  type CustomerToTenantConnectionResponse implements MutationResponse {
     code: String!
     success: Boolean!
     message: String!
-    connection: CustomerToOrganizationConnection
+    connection: CustomerToTenantConnection
   }
 
   #######################################
@@ -271,8 +259,8 @@ export const typeDefs = gql`
     account_id: ID
   }
 
-  type Organization {
-    organization_id: ID
+  type Tenant {
+    tenant_id: ID
     name: String
     address: String
     city: String
@@ -289,23 +277,23 @@ export const typeDefs = gql`
     menus: [Menu]
   }
 
-  type OrganizationMutationResponse implements MutationResponse {
+  type TenantMutationResponse implements MutationResponse {
     code: String!
     success: Boolean!
     message: String!
-    organization: Organization
+    tenant: Tenant
   }
 
   type Admin {
     admin_id: ID
-    organization_id: ID
+    tenant_id: ID
     phone: String
     email: String
     name: String
     permissions: String
     created_at: String
     token: String
-    organization: Organization
+    tenant: Tenant
   }
 
   type AdminMutationResponse implements MutationResponse {
@@ -324,7 +312,7 @@ export const typeDefs = gql`
     permissions: String
     created_at: String
     token: String
-    organizations: [Organization]
+    tenants: [Tenant]
 
     # TODO
     table_id: String
@@ -339,11 +327,11 @@ export const typeDefs = gql`
 
   type File {
     image_id: ID
-    organization_id: ID!
+    tenant_id: ID!
     updated_at: String
     uploaded_at: String
     image_url: String
-    menu_item_id: ID
+    item_id: ID
     menu_id: ID
   }
 
@@ -356,7 +344,7 @@ export const typeDefs = gql`
 
   type Menu {
     menu_id: ID
-    organization_id: ID!
+    tenant_id: ID!
     title: String
     created_at: String
     updated_at: String
@@ -373,9 +361,9 @@ export const typeDefs = gql`
   }
 
   type MenuChoice {
-    menu_choice_id: ID
-    organization_id: ID!
-    menu_item_id: ID
+    choice_id: ID
+    tenant_id: ID!
+    item_id: ID
     header: String
     sub_header: String
     selections: [MenuSelection]
@@ -389,8 +377,8 @@ export const typeDefs = gql`
   }
 
   type MenuHeader {
-    organization_id: ID
-    menu_header_id: ID
+    tenant_id: ID
+    header_id: ID
     menu_id: ID
     name: String
     sub_header: String
@@ -405,9 +393,9 @@ export const typeDefs = gql`
   }
 
   type MenuItem {
-    organization_id: ID
-    menu_item_id: ID!
-    menu_header_id: ID
+    tenant_id: ID
+    item_id: ID!
+    header_id: ID
     menu_id: ID
     base_price: String
     description: String
@@ -425,10 +413,10 @@ export const typeDefs = gql`
   }
 
   type MenuSelection {
-    menu_selection_id: ID
-    organization_id: ID!
-    menu_choice_id: ID
-    menu_item_id: ID
+    selection_id: ID
+    tenant_id: ID!
+    choice_id: ID
+    item_id: ID
     name: String
     value_add: String
     selected: Boolean
@@ -449,7 +437,7 @@ export const typeDefs = gql`
     charge: String
     created_at: String
     updated_at: String
-    organization_id: ID!
+    tenant_id: ID!
   }
 
   type OrderMutationResponse implements MutationResponse {

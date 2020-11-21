@@ -19,19 +19,19 @@ export default class ActiveUserRepository {
     const query = `SELECT * FROM "fm"."customers" WHERE customer_id = $1`
     const params = [customer_id]
 
-    const getOrganizationsByCustomerId = async (customer_id: number) => {
+    const getTenantsByCustomerId = async (customer_id: number) => {
       const query = `
         SELECT
               o.name,
-              o.organization_id
+              o.tenant_id
         FROM
-              "fm"."customers_to_organizations" c2o
+              "fm"."customers_to_tenants" c2o
         INNER JOIN
               "fm"."customers" c
             ON c2o.customer_id = c.customer_id
         INNER JOIN
-            "fm"."organizations" o
-            ON c2o.organization_id = o.organization_id
+            "fm"."tenants" o
+            ON c2o.tenant_id = o.tenant_id
         WHERE c.customer_id = $1`
 
       const params = [customer_id]
@@ -48,9 +48,9 @@ export default class ActiveUserRepository {
     try {
       const result = await db.query(query, params)
       const customer_id = result.rows[0].customer_id
-      const organizations = await getOrganizationsByCustomerId(customer_id)
+      const tenants = await getTenantsByCustomerId(customer_id)
 
-      return Object.assign(result.rows[0], { organizations })
+      return Object.assign(result.rows[0], { tenants })
     } catch (error) {
       //console.log(error)
       throw error

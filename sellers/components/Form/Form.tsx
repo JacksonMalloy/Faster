@@ -18,7 +18,7 @@ type FormProps = {
     image?: any
     published?: boolean
     title?: string
-    organization_id?: number
+    tenant_id?: number
   }
 }
 

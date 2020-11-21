@@ -6,7 +6,7 @@ const APP_SECRET = 'appsecret321'
 
 export const createToken = (userId: number) => jwt.sign({ userId, expiresIn: '7d' }, APP_SECRET)
 
-export const createOrganizationAuthToken = (name: string) => jwt.sign({ name }, APP_SECRET)
+export const createTenantAuthToken = (name: string) => jwt.sign({ name }, APP_SECRET)
 
 // export const createRefreshToken = (user) => {
 //   return jwt.sign({ userId: user.id, tokenVersion: user.tokenVersion }, process.env.REFRESH_TOKEN_SECRET, {
@@ -56,7 +56,7 @@ export const getUser = async (req: Request) => {
       const { userId } = <any>jwt.verify(token, APP_SECRET)
 
       // Query User
-      const query = `SELECT permissions, admin_id, organization_id FROM "fm"."admins" WHERE admin_id = $1`
+      const query = `SELECT permissions, admin_id, tenant_id FROM "fm"."admins" WHERE admin_id = $1`
       const params = [userId]
 
       try {
@@ -107,9 +107,9 @@ export const isDirector = ({ user }: any) => {
 }
 
 export const isOwner = ({ user }: any, result: any[] | undefined) => {
-  const [{ organization_id }]: any = result
+  const [{ tenant_id }]: any = result
 
-  if (user.organization_id === organization_id) {
+  if (user.tenant_id === tenant_id) {
     return true
   }
 

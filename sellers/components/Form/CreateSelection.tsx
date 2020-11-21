@@ -16,22 +16,22 @@ import { CurrencyField } from '../common/CurrencyField'
 export const CreateSelection = () => {
   const [addMenuSelection, { data }] = useMutation(ADD_MENU_SELECTION)
 
-  const { organizationId, menuId, setFormView } = useUI()
+  const { tenantId, menuId, setFormView } = useUI()
 
   const { values, errors, handleChange, handleBlur, handleSubmit } = useForm({
     onSubmit: async ({ errors, values }) => {
       const variables = {
-        organization_id: organizationId,
+        tenant_id: tenantId,
         name: values.name,
         value_add: values.value_add,
       }
-      const args = { variables, organizationId }
+      const args = { variables, tenantId }
       const { data } = await handleCreateSelection(addMenuSelection, args)
 
       setFormView('CREATE_ITEM_VIEW')
     },
 
-    // $organization_id: ID!
+    // $tenant_id: ID!
     // $name: String!
     // $value_add: String
   })

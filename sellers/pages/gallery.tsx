@@ -23,7 +23,7 @@ const GalleryPage = () => {
   if (userData.activeUserAdmin) {
     return (
       <MainNavigation permissions={userData.activeUserAdmin.permissions}>
-        <Gallery organization_id={userData.activeUserAdmin.organization_id} />
+        <Gallery tenant_id={userData.activeUserAdmin.tenant_id} />
       </MainNavigation>
     )
   }

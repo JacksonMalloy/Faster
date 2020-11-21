@@ -20,21 +20,21 @@ type CardProps = {
     base_price: string
     description: string
     menu_id: number
-    menu_item_id: number
+    item_id: number
     name: string
     image?: {
       image_id: number
       image_url: string
       menu_id?: number
-      menu_item_id?: number
-      organization_id: number
+      item_id?: number
+      tenant_id: number
       uploaded_at: number
     }
   }
 }
 
 export const ItemCard = ({ item }: CardProps) => {
-  const { menu_id, menu_item_id, image } = item
+  const { menu_id, item_id, image } = item
 
   const {
     reset,
@@ -50,20 +50,20 @@ export const ItemCard = ({ item }: CardProps) => {
   const [removeMenuItem] = useMutation(REMOVE_MENU_ITEM)
 
   const [loadItem, { called, loading, data }] = useLazyQuery(MENU_ITEM, {
-    variables: { menu_item_id: menu_item_id },
+    variables: { item_id: item_id },
     fetchPolicy: 'network-only',
   })
 
   const deleteMenuItem = () => {
     removeMenuItem({
-      variables: { menu_item_id: menu_item_id },
+      variables: { item_id: item_id },
       update: (store, { data }) => {
         const menuItemData: any = store.readQuery({
           query: MENU_ITEMS_BY_MENU,
           variables: { menu_id: menu_id },
         })
 
-        const newData = itemDeleter(menuItemData.menuItemsByMenu, data.removeMenuItem.menu_item.menu_item_id)
+        const newData = itemDeleter(menuItemData.menuItemsByMenu, data.removeMenuItem.menu_item.item_id)
 
         store.writeQuery({
           query: MENU_ITEMS_BY_MENU,

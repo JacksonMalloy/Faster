@@ -8,7 +8,7 @@ type CreateMenuHeaderArgs = {
 }
 
 type UpdateMenuHeaderArgs = {
-  menu_header_id: number
+  header_id: number
   name: string
   sub_header: string
 }
@@ -19,7 +19,7 @@ export default class MenuHeaderRepository {
   ////////////////////
 
   async getAllMenuHeadersByMenu(menu_id: number) {
-    const query = `SELECT * FROM "fm"."menuheaders" WHERE menu_id = $1`
+    const query = `SELECT * FROM "fm"."headers" WHERE menu_id = $1`
     const params = [menu_id]
 
     try {
@@ -32,9 +32,9 @@ export default class MenuHeaderRepository {
     }
   }
 
-  async getMenuHeaderById(menu_header_id: number) {
-    const query = `SELECT * FROM "fm"."menuheaders" WHERE menu_header_id = $1`
-    const params = [menu_header_id]
+  async getMenuHeaderById(header_id: number) {
+    const query = `SELECT * FROM "fm"."headers" WHERE header_id = $1`
+    const params = [header_id]
 
     try {
       const result = await db.query(query, params)
@@ -51,7 +51,7 @@ export default class MenuHeaderRepository {
   ////////////////////
 
   async createMenuHeader({ menu_id, name, sub_header }: CreateMenuHeaderArgs) {
-    const query = `INSERT INTO "fm"."menuheaders" (menu_id, name, sub_header) VALUES ($1, $2, $3) RETURNING *`
+    const query = `INSERT INTO "fm"."headers" (menu_id, name, sub_header) VALUES ($1, $2, $3) RETURNING *`
     const params = [menu_id, name, sub_header]
 
     try {
@@ -73,11 +73,11 @@ export default class MenuHeaderRepository {
     }
   }
 
-  async updateMenuHeader({ menu_header_id, name, sub_header }: UpdateMenuHeaderArgs) {
+  async updateMenuHeader({ header_id, name, sub_header }: UpdateMenuHeaderArgs) {
     const fields = { name, sub_header }
-    const conditions = { menu_header_id }
+    const conditions = { header_id }
 
-    const { query, params } = update(`"fm"."menuheaders"`, conditions, fields)
+    const { query, params } = update(`"fm"."headers"`, conditions, fields)
 
     try {
       const result = await db.query(query, params)
@@ -99,9 +99,9 @@ export default class MenuHeaderRepository {
     }
   }
 
-  async deleteMenuHeader(menu_header_id: number) {
-    const query = `DELETE FROM "fm"."menuheaders" WHERE menu_header_id = $1`
-    const params = [menu_header_id]
+  async deleteMenuHeader(header_id: number) {
+    const query = `DELETE FROM "fm"."headers" WHERE header_id = $1`
+    const params = [header_id]
 
     try {
       const result = await db.query(query, params)
@@ -112,7 +112,7 @@ export default class MenuHeaderRepository {
           message: 'The menu header no longer exists!',
           success: false,
           menu_header: {
-            menu_header_id: menu_header_id,
+            header_id: header_id,
             menu_id: '',
           },
         }
@@ -122,7 +122,7 @@ export default class MenuHeaderRepository {
           message: 'The menu header was deleted',
           success: true,
           menu_header: {
-            menu_header_id: menu_header_id,
+            header_id: header_id,
             menu_id: '',
           },
         }

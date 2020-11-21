@@ -9,7 +9,7 @@ import { EDIT_MENU_HEADER } from 'graphql/mutations/menu-header/editMenuHeader'
 import { handleEditHeader } from 'components/Services/Header'
 
 export const EditHeader = () => {
-  const { organizationId, menuId, reset, openToast, selectedHeader, setFormView } = useUI()
+  const { tenantId, menuId, reset, openToast, selectedHeader, setFormView } = useUI()
   const [editMenuHeader] = useMutation(EDIT_MENU_HEADER)
   const initialValues = {
     header: '',
@@ -24,7 +24,7 @@ export const EditHeader = () => {
         name: name,
         sub_header: sub_header,
         menu_id: menuId,
-        menu_header_id: selectedHeader.menu_header_id,
+        header_id: selectedHeader.header_id,
       }
       const args = { variables, menuId }
       const { data } = await handleEditHeader(editMenuHeader, args)

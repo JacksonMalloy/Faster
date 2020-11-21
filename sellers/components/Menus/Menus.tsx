@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { MenuCard } from 'components/Menus/MenuCard'
 import Form from 'components/Form'
-import { MENUS_BY_ORGANIZATION } from 'graphql/queries/menu/menusByOrganization'
+import { MENUS_BY_TENANT } from 'graphql/queries/menu/menusByTenant'
 import { Alert } from 'components/common/Alert'
 import DashboardHeader from 'components/common/DashboardHeader'
 import { QAtools } from 'components/QAtools'
@@ -11,7 +11,7 @@ import { useUI } from '../Context'
 import Skeleton from 'components/UI/Skeleton'
 
 type MenusProps = {
-  organization_id: number
+  tenant_id: number
 }
 
 interface MenuTypes {
@@ -19,13 +19,13 @@ interface MenuTypes {
   image?: any
   published?: boolean
   title?: string
-  organization_id?: number
+  tenant_id?: number
 }
 
-const Menus = ({ organization_id }: MenusProps) => {
+const Menus = ({ tenant_id }: MenusProps) => {
   const [search, setSearch] = useState('')
   const [isRouting, setIsRouting] = useState(false)
-  const { setOrganizationId, setSelectedMenuName, setFormView } = useUI()
+  const { setTenantId, setSelectedMenuName, setFormView } = useUI()
 
   useEffect(() => {
     setSelectedMenuName(null)
@@ -38,12 +38,12 @@ const Menus = ({ organization_id }: MenusProps) => {
   }, [])
 
   useEffect(() => {
-    setOrganizationId(organization_id)
+    setTenantId(tenant_id)
     //eslint-disable-next-line
-  }, [organization_id])
+  }, [tenant_id])
 
-  const { data, loading, error } = useQuery(MENUS_BY_ORGANIZATION, {
-    variables: { organization_id: organization_id },
+  const { data, loading, error } = useQuery(MENUS_BY_TENANT, {
+    variables: { tenant_id: tenant_id },
     fetchPolicy: 'cache-and-network',
   })
 
@@ -98,8 +98,8 @@ const Menus = ({ organization_id }: MenusProps) => {
         <Grid>
           {!isRouting && (
             <>
-              {data.menusByOrganization ? (
-                data.menusByOrganization.map((menu: MenuTypes) => (
+              {data.menusByTenant ? (
+                data.menusByTenant.map((menu: MenuTypes) => (
                   <MenuCard menu={menu} key={menu.menu_id} image={menu.image} setIsRouting={setIsRouting} />
                 ))
               ) : (

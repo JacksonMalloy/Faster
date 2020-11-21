@@ -1,10 +1,10 @@
 export const validate = (name: string, value: string, values: any, errors: any) => {
   switch (name) {
-    case 'organization_name':
+    case 'tenant_name':
       if (value.split('').length === 0) {
-        errors.organization_name = 'Your company must have a name'
+        errors.tenant_name = 'Your company must have a name'
       } else {
-        errors.organization_name = ''
+        errors.tenant_name = ''
       }
       break
     case 'address':

@@ -4,7 +4,7 @@ export const ADMIN = gql`
   query($admin_id: ID!) {
     admin(admin_id: $admin_id) {
       admin_id
-      organization_id
+      tenant_id
       phone
       email
       name
