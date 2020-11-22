@@ -54,6 +54,10 @@ export const EditMenu = () => {
     reset()
   }
 
+  const hasErrors = () => {
+    if (!values.menu_title) return true
+  }
+
   return (
     <Form onSubmit={handleSubmit}>
       <h1>Edit Menu</h1>
@@ -77,7 +81,9 @@ export const EditMenu = () => {
         <Button onClick={handleCancel} type="reset" value="Reset">
           Cancel
         </Button>
-        <Button value="update">Update</Button>
+        <Button value="update" disabled={hasErrors()}>
+          Update
+        </Button>
       </div>
     </Form>
   )

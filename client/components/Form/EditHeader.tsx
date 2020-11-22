@@ -19,8 +19,13 @@ export const EditHeader = () => {
   const { values, errors, handleChange, handleSubmit, initialize, handleBlur } = useForm({
     initialValues,
     onSubmit: async ({ values }) => {
-      const { header, sub_header } = values
-      const variables = { header: header, sub_header: sub_header, menu_id: menuId }
+      const { name, sub_header } = values
+      const variables = {
+        name: name,
+        sub_header: sub_header,
+        menu_id: menuId,
+        menu_header_id: selectedHeader.menu_header_id,
+      }
       const args = { variables, menuId }
       const { data } = await handleEditHeader(editMenuHeader, args)
 
@@ -34,6 +39,11 @@ export const EditHeader = () => {
 
   const handleCancel = () => {
     setFormView('CREATE_ITEM_VIEW')
+  }
+
+  const hasErrors = () => {
+    if (!values.name) return true
+    if (!values.sub_header) return true
   }
 
   return (
@@ -66,7 +76,9 @@ export const EditHeader = () => {
         <Button onClick={handleCancel} type="reset" value="Reset">
           Cancel
         </Button>
-        <Button value="update">Update</Button>
+        <Button value="update" disabled={hasErrors()}>
+          Update
+        </Button>
       </div>
     </Form>
   )

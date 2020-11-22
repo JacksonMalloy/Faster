@@ -40,6 +40,11 @@ export const CreateChoice = () => {
     setFormView('CREATE_ITEM_VIEW')
   }
 
+  const hasErrors = () => {
+    if (!values.header) return true
+    if (!values.sub_header) return true
+  }
+
   return (
     <Form onSubmit={handleSubmit}>
       <h1>Create Choice</h1>
@@ -48,29 +53,29 @@ export const CreateChoice = () => {
         name="header"
         required={true}
         type="text"
-        label="Header"
+        label="Name"
         placeholder=""
         onBlur={handleBlur}
         onChange={handleChange}
         value={values.header}
-        error={errors.header}
+        error={errors.choice_header}
       />
       <Field
         id="sub_header"
         type="text"
         name="sub_header"
-        label="Sub Header"
+        label="Description"
         placeholder=""
         onBlur={handleBlur}
         onChange={handleChange}
         value={values.sub_header}
-        error={errors.sub_header}
+        error={errors.choice_sub_header}
       />
       <div className="form-btns">
         <Button onClick={handleCancel} type="button" value="Cancel">
           Cancel
         </Button>
-        <Button type="button" value="Create">
+        <Button type="submit" value="Create" disabled={hasErrors()}>
           Create
         </Button>
       </div>

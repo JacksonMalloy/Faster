@@ -13,7 +13,7 @@ import { useUI } from 'components/Context'
 import { Form } from 'components/UI'
 
 export const CreateHeader = () => {
-  const [addMenuHeader, { data }] = useMutation(ADD_MENU_HEADER)
+  const [addMenuHeader] = useMutation(ADD_MENU_HEADER)
 
   const { organizationId, menuId, setFormView } = useUI()
 
@@ -34,7 +34,7 @@ export const CreateHeader = () => {
               query: MENU_HEADERS_BY_MENU,
               variables: { menu_id: menuId },
               data: {
-                menuHeadersByMenu: [...menuHeaderData.menuHeadersByMenu, data.addMenuHeader],
+                menuHeadersByMenu: [...menuHeaderData.menuHeadersByMenu, data.addMenuHeader.menu_header],
               },
             })
           } catch (error) {
@@ -52,6 +52,11 @@ export const CreateHeader = () => {
     setFormView('CREATE_ITEM_VIEW')
   }
 
+  const hasErrors = () => {
+    if (!values.name) return true
+    if (!values.sub_header) return true
+  }
+
   return (
     <Form onSubmit={handleSubmit}>
       <h1>Create Header</h1>
@@ -61,7 +66,7 @@ export const CreateHeader = () => {
         name="name"
         required={true}
         type="text"
-        label="Header"
+        label="Name"
         placeholder=""
         onBlur={handleBlur}
         onChange={handleChange}
@@ -72,7 +77,7 @@ export const CreateHeader = () => {
         id="sub_header"
         type="text"
         name="sub_header"
-        label="Sub Header"
+        label="Description"
         placeholder=""
         onBlur={handleBlur}
         onChange={handleChange}
@@ -83,7 +88,7 @@ export const CreateHeader = () => {
         <Button onClick={handleCancel} type="button" value="Cancel">
           Cancel
         </Button>
-        <Button type="button" value="Create">
+        <Button type="submit" value="Create" disabled={hasErrors()}>
           Create
         </Button>
       </div>

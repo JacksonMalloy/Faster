@@ -41,6 +41,11 @@ export const EditChoice = () => {
     setFormView('CREATE_ITEM_VIEW')
   }
 
+  const hasErrors = () => {
+    if (!values.header) return true
+    if (!values.sub_header) return true
+  }
+
   return (
     <Form onSubmit={handleSubmit}>
       <h1>Edit Choice</h1>
@@ -53,7 +58,8 @@ export const EditChoice = () => {
         placeholder="Ex. Ice Cream"
         value={values.header}
         onChange={handleChange}
-        error={errors.header}
+        onBlur={handleBlur}
+        error={errors.choice_header}
         type="text"
       />
       <Field
@@ -64,14 +70,17 @@ export const EditChoice = () => {
         placeholder="Ex. Flavours of IceCream for everyone to enjoy!"
         value={values.sub_header}
         onChange={handleChange}
-        error={errors.sub_header}
+        onBlur={handleBlur}
+        error={errors.choice_sub_header}
         type="text"
       />
       <div className="form-btns">
         <Button onClick={handleCancel} type="reset" value="Reset">
           Cancel
         </Button>
-        <Button value="update">Update</Button>
+        <Button value="update" disabled={hasErrors()}>
+          Update
+        </Button>
       </div>
     </Form>
   )

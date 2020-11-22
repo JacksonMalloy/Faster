@@ -140,9 +140,25 @@ export const EditItem = () => {
     initialize({ title: selectedItem?.name, description: selectedItem?.description, price: selectedItem?.base_price })
   }, [initialize, selectedItem])
 
+  const hasErrors = () => {
+    if (!values.title) return true
+    if (!values.description) return true
+    if (!values.price) return true
+    if (!formHeader) return true
+  }
+
   return (
     <Form onSubmit={handleSubmit}>
       <h1>Edit Item</h1>
+
+      {headerData && headerData.menuHeadersByMenu && (
+        <DropdownSelect
+          items={headerData.menuHeadersByMenu}
+          title="Select a value"
+          label={'Header'}
+          multiSelect={false}
+        />
+      )}
 
       <section>
         <Field
@@ -150,7 +166,7 @@ export const EditItem = () => {
           name="title"
           type="name"
           required
-          label="Item Title"
+          label="Name"
           placeholder=""
           onChange={handleChange}
           onBlur={handleBlur}
@@ -161,7 +177,7 @@ export const EditItem = () => {
           id="description"
           name="description"
           type="textarea"
-          label="Item Description"
+          label="Description"
           placeholder=""
           onChange={handleChange}
           onBlur={handleBlur}
@@ -172,7 +188,7 @@ export const EditItem = () => {
         <CurrencyField
           placeholder="$0.00"
           type="text"
-          label="Item Price"
+          label="Price"
           id="price"
           name="price"
           onChange={handleChange}
@@ -186,15 +202,6 @@ export const EditItem = () => {
         </section>
       </section>
       <section>
-        {headerData && headerData.menuHeadersByMenu && (
-          <DropdownSelect
-            items={headerData.menuHeadersByMenu}
-            title="Select a value"
-            label={'Header'}
-            multiSelect={false}
-          />
-        )}
-
         <AddOn selectionData={selectionData} />
 
         <div className="form-btns">
@@ -210,7 +217,9 @@ export const EditItem = () => {
           <Button onClick={handleCancel} type="reset" value="Reset">
             Cancel
           </Button>
-          <Button value="update">Update</Button>
+          <Button value="update" disabled={hasErrors()}>
+            Update
+          </Button>
         </div>
       </section>
     </Form>

@@ -11,6 +11,7 @@ import { ADD_MENU_CHOICE } from 'graphql/mutations/menu-choice/addMenuChoice'
 import { handleCreateChoice } from 'components/Services/Choice'
 import { handleCreateSelection } from 'components/Services/Selection'
 import { ADD_MENU_SELECTION } from 'graphql/mutations/menu-selection/addMenuSelection'
+import { CurrencyField } from '../common/CurrencyField'
 
 export const CreateSelection = () => {
   const [addMenuSelection, { data }] = useMutation(ADD_MENU_SELECTION)
@@ -31,42 +32,50 @@ export const CreateSelection = () => {
     },
 
     // $organization_id: ID!
-    // $menu_choice_id: ID
-    // $menu_item_id: ID
     // $name: String!
     // $value_add: String
   })
+
+  const handleCancel = (event) => {
+    event.preventDefault()
+    setFormView('CREATE_ITEM_VIEW')
+  }
+
+  const hasErrors = () => {
+    if (!values.name) return true
+  }
 
   return (
     <Form onSubmit={handleSubmit}>
       <h1>Create Selection</h1>
 
       <Field
-        id="header"
-        name="header"
+        id="name"
+        name="name"
         required={true}
         type="text"
-        label="Header"
+        label="Name"
         placeholder=""
         onBlur={handleBlur}
         onChange={handleChange}
-        value={values.header}
-        error={errors.header}
+        value={values.name}
+        error={errors.selection_name}
       />
-      <Field
-        id="sub_header"
+      <CurrencyField
+        id="value_add"
         type="text"
-        name="sub_header"
-        label="Sub Header"
+        name="value_add"
+        label="Additional Cost"
         placeholder=""
         onBlur={handleBlur}
         onChange={handleChange}
-        value={values.sub_header}
-        error={errors.sub_header}
+        value={values.value_add}
       />
       <div className="form-btns">
-        <div />
-        <Button type="button" value="Create">
+        <Button onClick={handleCancel} type="button" value="Cancel">
+          Cancel
+        </Button>
+        <Button type="submit" value="Create" disabled={hasErrors()}>
           Create
         </Button>
       </div>

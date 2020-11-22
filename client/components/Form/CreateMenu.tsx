@@ -15,7 +15,7 @@ export const CreateMenu = () => {
   const [addMenu, { data }] = useMutation(ADD_MENU)
   const [connectImageToMenu] = useMutation(CONNECT_IMAGE_TO_MENU)
 
-  const { values, errors, handleChange, handleSubmit } = useForm({
+  const { values, errors, handleChange, handleSubmit, handleBlur } = useForm({
     onSubmit: async ({ values }) => {
       const { menu_title } = values
       const variables = { organization_id: organizationId, title: menu_title }
@@ -42,6 +42,10 @@ export const CreateMenu = () => {
     },
   })
 
+  const hasErrors = () => {
+    if (!values.menu_title) return true
+  }
+
   return (
     <Form onSubmit={handleSubmit}>
       <h1>Create Menu</h1>
@@ -54,6 +58,7 @@ export const CreateMenu = () => {
         placeholder="Ex. Drink Menu"
         value={values.menu_title}
         onChange={handleChange}
+        onBlur={handleBlur}
         type="text"
         error={errors.menu_title}
       />
@@ -63,7 +68,7 @@ export const CreateMenu = () => {
       </section>
       <div className="form-btns">
         <div />
-        <Button type="submit" value="Submit">
+        <Button type="submit" value="Submit" disabled={hasErrors()}>
           Create
         </Button>
       </div>

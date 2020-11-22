@@ -16,59 +16,7 @@ import { useRouter } from 'next/router'
 import { useUI } from '../Context'
 import { handleDeleteMenu, handlePublishMenu } from '../Services/Menu'
 import { Card } from '../UI'
-
-const StyledActions = styled.div`
-  width: 100%;
-  padding: 1rem;
-  flex: 1;
-  display: flex;
-
-  button {
-    cursor: pointer;
-    padding: 0.4rem;
-    border: 0.1rem solid #ffffff;
-    border-radius: 500px;
-    background-color: white;
-    box-sizing: border-box;
-    text-decoration: none;
-    font-weight: 300;
-    color: #010101;
-    text-align: center;
-    transition: all 0.2s;
-
-    &:hover {
-      color: #010101;
-      background-color: #f6f6f6;
-      border: 0.1rem solid #f6f6f6;
-    }
-
-    &:disabled {
-      border: 0.1rem solid #f6f6f6;
-      background-color: white;
-      color: #cccccc;
-    }
-  }
-
-  svg {
-    fill: #010101;
-  }
-
-  span {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    width: 100%;
-    height: 100%;
-  }
-
-  button {
-    &:hover {
-      svg {
-        fill: #000000;
-      }
-    }
-  }
-`
+import { Button } from '../common/Button'
 
 type CardProps = {
   menu: {
@@ -130,33 +78,25 @@ export const MenuCard = ({ menu, image, setIsRouting }: CardProps) => {
 
   return (
     <Card>
-      <div className="actions">
+      <div>
         <header>
           <h2>{title}</h2>
           {published ? <CheckCircleFill className="published" /> : <></>}
         </header>
-        <StyledActions>
-          <button onClick={handleEditMenu}>
-            <span>
-              <Tools />
-            </span>
-          </button>
-          <button onClick={handleRouteChange}>
-            <span>
-              <Eye />
-            </span>
-          </button>
-          <button onClick={publishMenu}>
-            <span>
-              <GitBranch />
-            </span>
-          </button>
-          <button onClick={deleteMenu}>
-            <span>
-              <Trash />
-            </span>
-          </button>
-        </StyledActions>
+        <section>
+          <Button onClick={handleEditMenu} value="edit">
+            Edit
+          </Button>
+          <Button onClick={handleRouteChange} value="view">
+            View
+          </Button>
+          <Button onClick={publishMenu} value="publish">
+            Publish
+          </Button>
+          <Button onClick={deleteMenu} value="delete">
+            Delete
+          </Button>
+        </section>
       </div>
       <aside>{image && image.image_url ? <img src={image.image_url} alt="" /> : <div className="placeholder" />}</aside>
     </Card>

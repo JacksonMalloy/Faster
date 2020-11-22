@@ -1,5 +1,6 @@
-import { MENU_HEADERS_BY_MENU } from 'graphql/queries/menu-header/menuHeadersByMenu'
+import { MENU_HEADERS_BY_MENU } from 'graphql/queries/menu-header/menuSelectionsByOrganization'
 import { itemDeleter, itemReplacer } from 'utils'
+import { MENU_SELECTIONS_BY_ORGANIZATION } from '../../graphql/queries/menu-selection/menuSelectionsByOrganization'
 
 export const handleDeleteSelection = async (mutation, args) => {
   const { variables, menuId } = args
@@ -8,21 +9,21 @@ export const handleDeleteSelection = async (mutation, args) => {
     // update: (store, { data }) => {
     //   const menuHeaderData: any = store.readQuery({
     //     query: MENU_HEADERS_BY_MENU,
-    //     variables: { menu_id: menuId },
+    //     variables: { menu_selection_id: menuId },
     //   })
 
     //   console.log({ menuHeaderData })
     //   console.log({ data })
 
-    //   const newData = itemDeleter(menuHeaderData.menuHeadersByMenu, data.removeMenuHeader.menu_header.menu_header_id)
+    //   const newData = itemDeleter(menuHeaderData.menuSelectionsByOrganization, data.removeMenuHeader.menu_header.menu_selection_id)
 
     //   console.log({ newData })
 
     //   store.writeQuery({
     //     query: MENU_HEADERS_BY_MENU,
-    //     variables: { menu_id: menuId },
+    //     variables: { menu_selection_id: menuId },
     //     data: {
-    //       menuHeadersByMenu: [...newData],
+    //       menuSelectionsByOrganization: [...newData],
     //     },
     //   })
     // },
@@ -32,70 +33,67 @@ export const handleDeleteSelection = async (mutation, args) => {
 }
 
 export const handleEditSelection = async (mutation, args) => {
-  const { variables, menuId } = args
+  const { variables, organizationId } = args
 
   const data = await mutation({
     variables: variables,
-    // update: (store, { data }) => {
-    //   try {
-    //     const variables = { menu_id: menuId }
+    update: (store, { data }) => {
+      const variables = { organization_id: organizationId }
 
-    //     const menuData: any = store.readQuery({
-    //       query: MENU_HEADERS_BY_MENU,
-    //       variables: variables,
-    //     })
+      const selectionData: any = store.readQuery({
+        query: MENU_SELECTIONS_BY_ORGANIZATION,
+        variables: variables,
+      })
 
-    //     const oldItem = menuData.menusByOrganization.find(
-    //       (obj: { menu_id: any }) => obj.menu_id === data.editMenu.menu.menu_id
-    //     )
-    //     const newData = itemReplacer(menuData.menusByOrganization, oldItem, data.editMenu.menu)
+      const oldItem = selectionData.menuSelectionsByOrganization.find(
+        (obj: { menu_selection_id: number }) =>
+          obj.menu_selection_id === data.editMenuSelection.menu_selection.menu_selection_id
+      )
 
-    //     store.writeQuery({
-    //       query: MENU_HEADERS_BY_MENU,
-    //       variables: { menu_id: menuId },
-    //       data: {
-    //         menuHeadersByMenu: [...newData],
-    //       },
-    //     })
-    //   } catch (error) {
-    //     console.log(`THERE WAS AN ERROR UPDATING THE CACHE: `, error)
-    //   }
-    // },
+      const newData = itemReplacer(
+        selectionData.menuSelectionsByOrganization,
+        oldItem,
+        data.editMenuSelection.menu_selection
+      )
+
+      store.writeQuery({
+        query: MENU_SELECTIONS_BY_ORGANIZATION,
+        variables: variables,
+        data: {
+          menuSelectionsByOrganization: [...newData],
+        },
+      })
+    },
   })
 
   return data
 }
 
 export const handleCreateSelection = async (mutation, args) => {
-  const { variables, menuId } = args
+  const { variables, organizationId } = args
 
   const data = await mutation({
     variables: variables,
-    // update: (store, { data }) => {
-    //   try {
-    //     const variables = { menu_id: menuId }
+    update: (store, { data }) => {
+      try {
+        const variables = { organization_id: organizationId }
 
-    //     const menuData: any = store.readQuery({
-    //       query: MENU_HEADERS_BY_MENU,
-    //       variables: variables,
-    //     })
+        const selectionData: any = store.readQuery({
+          query: MENU_SELECTIONS_BY_ORGANIZATION,
+          variables: variables,
+        })
 
-    //     const oldItem = menuData.menusByOrganization.find(
-    //       (obj: { menu_id: any }) => obj.menu_id === data.editMenu.menu.menu_id
-    //     )
-    //     const newData = itemReplacer(menuData.menusByOrganization, oldItem, data.editMenu.menu)
-
-    //     store.writeQuery({
-    //       query: MENU_HEADERS_BY_MENU,
-    //       variables: { menu_id: menuId },
-    //       data: {
-    //         menuHeadersByMenu: [...newData],
-    //       },
-    //     })
-    //   } catch (error) {
-    //     console.log(`THERE WAS AN ERROR UPDATING THE CACHE: `, error)
-    //   }
-    // },
+        store.writeQuery({
+          query: MENU_SELECTIONS_BY_ORGANIZATION,
+          variables: variables,
+          data: {
+            menuSelectionsByOrganization: [...selectionData.menuSelectionsByOrganization, data.addMenuSelection],
+          },
+        })
+      } catch (error) {
+        console.log(`THERE WAS AN ERROR UPDATING THE CACHE: `, error)
+      }
+    },
   })
 
   return data

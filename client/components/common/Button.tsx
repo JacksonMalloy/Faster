@@ -19,6 +19,9 @@ const StyledButton = styled.button<Props>`
   text-align: center;
   transition: all 0.2s;
   border-radius: 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
     color: #000000;

@@ -11,12 +11,7 @@ export const handleDeleteHeader = async (mutation, args) => {
         variables: { menu_id: menuId },
       })
 
-      console.log({ menuHeaderData })
-      console.log({ data })
-
       const newData = itemDeleter(menuHeaderData.menuHeadersByMenu, data.removeMenuHeader.menu_header.menu_header_id)
-
-      console.log({ newData })
 
       store.writeQuery({
         query: MENU_HEADERS_BY_MENU,
@@ -36,31 +31,30 @@ export const handleEditHeader = async (mutation, args) => {
 
   const data = await mutation({
     variables: variables,
-    // update: (store, { data }) => {
-    //   try {
-    //     const variables = { menu_id: menuId }
+    update: (store, { data }) => {
+      try {
+        const headerData: any = store.readQuery({
+          query: MENU_HEADERS_BY_MENU,
+          variables: { menu_id: menuId },
+        })
 
-    //     const menuData: any = store.readQuery({
-    //       query: MENU_HEADERS_BY_MENU,
-    //       variables: variables,
-    //     })
+        const oldItem = headerData.menuHeadersByMenu.find(
+          (obj: { menu_header_id: any }) => obj.menu_header_id === data.editMenuHeader.menu_header.menu_header_id
+        )
 
-    //     const oldItem = menuData.menusByOrganization.find(
-    //       (obj: { menu_id: any }) => obj.menu_id === data.editMenu.menu.menu_id
-    //     )
-    //     const newData = itemReplacer(menuData.menusByOrganization, oldItem, data.editMenu.menu)
+        const newData = itemReplacer(headerData.menuHeadersByMenu, oldItem, data.editMenuHeader.menu_header)
 
-    //     store.writeQuery({
-    //       query: MENU_HEADERS_BY_MENU,
-    //       variables: { menu_id: menuId },
-    //       data: {
-    //         menuHeadersByMenu: [...newData],
-    //       },
-    //     })
-    //   } catch (error) {
-    //     console.log(`THERE WAS AN ERROR UPDATING THE CACHE: `, error)
-    //   }
-    // },
+        store.writeQuery({
+          query: MENU_HEADERS_BY_MENU,
+          variables: { menu_id: menuId },
+          data: {
+            menuHeadersByMenu: [...newData],
+          },
+        })
+      } catch (error) {
+        console.log(`THERE WAS AN ERROR UPDATING THE CACHE: `, error)
+      }
+    },
   })
 
   return data

@@ -48,7 +48,7 @@ const StyledCreateMenuForm = styled.form`
     top: -0.1rem;
     left: 1.3rem;
     width: 100%;
-    color: #cccccc;
+    color: black;
     font-size: 0.8rem;
   }
 `

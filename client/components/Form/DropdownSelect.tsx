@@ -205,7 +205,20 @@ const DropDownSelect = ({
 
   const changeView = (event) => {
     event.preventDefault()
-    setFormView('CREATE_HEADER_VIEW')
+
+    switch (variant) {
+      case 'HEADER':
+        setFormView('CREATE_HEADER_VIEW')
+        break
+      case 'CHOICE':
+        setFormView('CREATE_CHOICE_VIEW')
+        break
+      case 'SELECTION':
+        setFormView('CREATE_SELECTION_VIEW')
+        break
+      default:
+        break
+    }
   }
 
   const handleSearch = (event) => {
@@ -320,7 +333,7 @@ const DropDownSelect = ({
 
         {open && (
           <ul className="dd-list">
-            <h1>Select Header</h1>
+            <h1>Select {variant.toLowerCase()}</h1>
             <header tabIndex={0} className="dd-header" onKeyPress={() => toggle(!open)} onClick={() => toggle(!open)}>
               {renderTags()}
               <Plus onClick={changeView} />
@@ -338,8 +351,8 @@ const DropDownSelect = ({
               <Search onClick={handleSearch} className="search-btn" />
             </li>
 
-            {data.map((item) => (
-              <li className="dd-list-item" key={item.menu_header_id}>
+            {data.map((item, i) => (
+              <li className="dd-list-item" key={`${i}-${item.menu_header_id}`}>
                 <button type="button" onClick={() => handleOnClick(item)}>
                   <div className="rows">
                     <span>{variant === 'CHOICE' ? item.header : item.name}</span>

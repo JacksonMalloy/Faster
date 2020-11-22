@@ -3,11 +3,9 @@ import styled from 'styled-components'
 
 const StyledDropdown = styled.div`
   position: relative;
-  margin-top: 1rem;
   display: flex;
-  padding: 0.2rem 1rem 0.2rem 1rem;
+  padding: 1rem;
   flex-direction: column !important;
-  margin: 0.4rem;
 
   main {
     position: relative;
@@ -181,12 +179,16 @@ const StyledDropdown = styled.div`
       text-align: left;
     }
   }
+
+  .dropdown-label {
+    top: 0.8rem;
+  }
 `
 
 const Dropdown = ({ children, node, label }) => {
   return (
     <StyledDropdown ref={node}>
-      <label>{label}</label>
+      <label className="dropdown-label">{label}</label>
       {children}
     </StyledDropdown>
   )

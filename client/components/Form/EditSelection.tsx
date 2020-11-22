@@ -9,6 +9,7 @@ import { useEffect } from 'react'
 import { handleEditChoice } from 'components/Services/Choice'
 import { EDIT_MENU_SELECTION } from 'graphql/mutations/menu-selection/editMenuSelection'
 import { handleEditSelection } from 'components/Services/Selection'
+import { CurrencyField } from '../common/CurrencyField'
 
 export const EditSelection = () => {
   const { organizationId, reset, openToast, selectedHeader, selectedSelection, setFormView } = useUI()
@@ -44,6 +45,10 @@ export const EditSelection = () => {
     setFormView('CREATE_ITEM_VIEW')
   }
 
+  const hasErrors = () => {
+    if (!values.name) return true
+  }
+
   return (
     <Form onSubmit={handleSubmit}>
       <h1>Edit Selection</h1>
@@ -53,20 +58,21 @@ export const EditSelection = () => {
         name="name"
         required
         label="Name"
-        placeholder="Add Ketchup"
+        placeholder=""
         value={values.name}
         onChange={handleChange}
+        onBlur={handleBlur}
         error={errors.name}
         type="text"
       />
-      <Field
+      <CurrencyField
         id="value_add"
         name="value_add"
-        required
-        label="Value Added"
-        placeholder="Ex. $2.99"
+        label="Additional Cost"
+        placeholder=""
         value={values.value_add}
         onChange={handleChange}
+        onBlur={handleBlur}
         error={errors.value_add}
         type="text"
       />
@@ -74,7 +80,9 @@ export const EditSelection = () => {
         <Button onClick={handleCancel} type="reset" value="Reset">
           Cancel
         </Button>
-        <Button value="update">Update</Button>
+        <Button value="update" disabled={hasErrors()}>
+          Update
+        </Button>
       </div>
     </Form>
   )

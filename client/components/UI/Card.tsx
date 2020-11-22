@@ -7,21 +7,14 @@ const StyledCard = styled.article`
   box-shadow: 0px 0px 20px 0px #f6f6f6;
   position: relative;
   width: 100%;
-
-  .actions {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-  }
+  padding: 1rem;
 
   aside {
     display: flex;
     flex: 1;
     justify-content: flex-end;
     align-items: center;
-    padding: 1rem;
+
     overflow: hidden;
 
     img {
@@ -41,32 +34,6 @@ const StyledCard = styled.article`
       border-radius: 50%;
       height: 150px;
       max-width: 150px;
-    }
-  }
-
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top-left-radius: 0.5rem;
-    border-top-right-radius: 0.5rem;
-    height: 100%;
-
-    h2 {
-      padding: 1.5rem;
-      padding-bottom: 0rem;
-      margin: 0;
-      text-transform: uppercase;
-    }
-
-    svg {
-      margin: 0 1.5rem;
-      height: 1.5rem;
-      width: 1.5rem;
-    }
-
-    .published {
-      fill: limegreen;
     }
   }
 `

@@ -81,11 +81,46 @@ export const validate = (name: string, value: string, values: any, errors: any) 
         errors.title = ''
       }
       break
+    case 'menu_title':
+      if (value.split('').length === 0) {
+        errors.menu_title = 'Menu must have a name'
+      } else {
+        errors.menu_title = ''
+      }
+      break
     case 'description':
       if (value.split('').length === 0) {
         errors.description = 'Item must have a description'
       } else {
         errors.description = ''
+      }
+      break
+    case 'name':
+      if (value.split('').length === 0) {
+        errors.name = 'Header must have a name'
+      } else {
+        errors.name = ''
+      }
+      break
+    case 'sub_header':
+      if (value.split('').length === 0) {
+        errors.sub_header = 'Header must have a description'
+      } else {
+        errors.sub_header = ''
+      }
+      break
+    case 'choice_header':
+      if (value.split('').length === 0) {
+        errors.choice_header = 'Choice must have a Name'
+      } else {
+        errors.choice_header = ''
+      }
+      break
+    case 'choice_sub_header':
+      if (value.split('').length === 0) {
+        errors.choice_sub_header = 'Header must have a description'
+      } else {
+        errors.choice_sub_header = ''
       }
       break
     case 'price':

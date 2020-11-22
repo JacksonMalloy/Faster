@@ -15,59 +15,6 @@ import { Card } from '../UI'
 import { MENU_ITEM } from 'graphql/queries/menu-item/menuItem'
 import { useEffect } from 'react'
 
-const StyledActions = styled.div`
-  width: 100%;
-  padding: 1rem;
-  flex: 1;
-  display: flex;
-
-  button {
-    cursor: pointer;
-    padding: 0.4rem;
-    border: 0.1rem solid #ffffff;
-    border-radius: 500px;
-    background-color: white;
-    box-sizing: border-box;
-    text-decoration: none;
-    font-weight: 300;
-    color: #010101;
-    text-align: center;
-    transition: all 0.2s;
-
-    &:hover {
-      color: #010101;
-      background-color: #f6f6f6;
-      border: 0.1rem solid #f6f6f6;
-    }
-
-    &:disabled {
-      border: 0.1rem solid #f6f6f6;
-      background-color: white;
-      color: #cccccc;
-    }
-  }
-
-  svg {
-    fill: #010101;
-  }
-
-  span {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    width: 100%;
-    height: 100%;
-  }
-
-  button {
-    &:hover {
-      svg {
-        fill: #000000;
-      }
-    }
-  }
-`
-
 type CardProps = {
   item: {
     base_price: string
@@ -202,25 +149,21 @@ export const ItemCard = ({ item }: CardProps) => {
 
   return (
     <Card>
-      <div className="actions">
+      <div>
         <header>
           <h2>{item.name}</h2>
           <span>{item.description}</span>
-          <p>${item.base_price}</p>
+          <p>{item.base_price}</p>
         </header>
-        <StyledActions>
+        <section>
           <Button value="edit" onClick={handleEditItem}>
-            <span>
-              <Tools />
-            </span>
+            Edit
           </Button>
 
           <Button value="delete" onClick={deleteMenuItem}>
-            <span>
-              <Trash />
-            </span>
+            Delete
           </Button>
-        </StyledActions>
+        </section>
       </div>
       <aside>{image && image.image_url ? <img src={image.image_url} alt="" /> : <div className="placeholder" />}</aside>
     </Card>

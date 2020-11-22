@@ -183,9 +183,6 @@ export const CreateItem = () => {
     if (!values.description) return true
     if (!values.price) return true
     if (!formHeader) return true
-
-    const postalCodeRegex = /^[ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy]{1}\d{1}[A-Za-z]{1}[ ]{0,1}\d{1}[A-Za-z]{1}\d{1}$/i
-    if (!postalCodeRegex.test(values.postal_code.trim())) return true
   }
 
   return (
@@ -193,6 +190,14 @@ export const CreateItem = () => {
       <h1>Create Item</h1>
 
       <section>
+        {headerData && headerData.menuHeadersByMenu && (
+          <DropdownSelect
+            items={headerData.menuHeadersByMenu}
+            title="Select a value"
+            label={'Header'}
+            multiSelect={false}
+          />
+        )}
         <Field
           id="title"
           name="title"
@@ -232,15 +237,6 @@ export const CreateItem = () => {
           <label>Item Image (Optional)</label>
           <UploadFile />
         </section>
-
-        {headerData && headerData.menuHeadersByMenu && (
-          <DropdownSelect
-            items={headerData.menuHeadersByMenu}
-            title="Select a value"
-            label={'Header'}
-            multiSelect={false}
-          />
-        )}
 
         <AddOn selectionData={selectionData} />
 
