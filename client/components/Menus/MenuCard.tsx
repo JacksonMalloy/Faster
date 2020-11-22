@@ -17,6 +17,7 @@ import { useUI } from '../Context'
 import { handleDeleteMenu, handlePublishMenu } from '../Services/Menu'
 import { Card } from '../UI'
 import { Button } from '../common/Button'
+import Image from 'next/image'
 
 type CardProps = {
   menu: {
@@ -98,7 +99,13 @@ export const MenuCard = ({ menu, image, setIsRouting }: CardProps) => {
           </Button>
         </section>
       </div>
-      <aside>{image && image.image_url ? <img src={image.image_url} alt="" /> : <div className="placeholder" />}</aside>
+      <aside>
+        {image && image.image_url ? (
+          <Image layout="fill" src={image.image_url} alt="" width="150" height="150" className="card-img" />
+        ) : (
+          <div className="placeholder" />
+        )}
+      </aside>
     </Card>
   )
 }

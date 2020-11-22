@@ -4,6 +4,8 @@ import { useMutation } from '@apollo/client'
 import { UPLOAD_IMAGE } from 'graphql/mutations/image/uploadImage'
 import { useUI } from './Context'
 
+import Image from 'next/image'
+
 type UploadFileProps = {
   image?: any
 }
@@ -33,7 +35,8 @@ export default function UploadFile({ image }: UploadFileProps) {
     if (data && data.uploadImage) {
       setFormImage(data)
     }
-  }, [data, setFormImage])
+    // eslint-disable-next-line
+  }, [data])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
 

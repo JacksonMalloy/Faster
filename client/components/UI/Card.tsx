@@ -14,21 +14,24 @@ const StyledCard = styled.article`
     flex: 1;
     justify-content: flex-end;
     align-items: center;
-
     overflow: hidden;
 
-    img {
-      object-fit: cover;
-      padding: 1rem 1rem 1rem 0;
-      width: 100%;
+    .card-img {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 1rem;
       flex: 3;
+      background-color: #f7f7f7;
+      border-radius: 50%;
+      height: 150px;
+      max-width: 150px;
     }
 
     .placeholder {
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-right: 1rem;
       flex: 3;
       background-color: #f7f7f7;
       border-radius: 50%;
