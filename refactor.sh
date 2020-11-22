@@ -1,4 +1,4 @@
-for file in client/**/**/**/**.js.tsx
+for file in clientv2/**/**/**/**/**.js
 do
-  mv "$file" "${file%.js.tsx}.tsx"
+  mv "$file" "${file%.js}.tsx"
 done

@@ -1,11 +1,20 @@
-FROM node:13-alpine
+FROM node:12-alpine AS base
 
 WORKDIR /app
 
+#---------- PRE-REQS ----------
+FROM base AS prereq
+
 COPY ./package.json .
+COPY ./nodemon.json .
+COPY ./tsconfig.json .
+COPY ./jest.config.js .
 
-RUN npm install
+RUN npm install --quiet --unsafe-perm --no-progress --no-audit --only=production
 
-COPY src ./src
+#---------- DEVELOPMENT ----------
+FROM prereq AS development
 
-CMD [ "npm", "run", "dev" ]
+RUN npm install --quiet --unsafe-perm --no-progress --no-audit --only=development
+
+CMD [ "npm", "run", "start:dev" ]

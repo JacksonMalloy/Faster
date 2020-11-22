@@ -1,12 +1,12 @@
 version: '3.7'
 
 services:
-  fm-server-v2:
-    container_name: fm-server-v2
+  fm-server:
+    container_name: fm-server
     networks:
       - fm-net
     build:
-      context: ./serverv2
+      context: ./server
       dockerfile: dev.Dockerfile
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
@@ -20,43 +20,49 @@ services:
       REDIS_HOST: fm-redis
       SENDGRID: ${SENDGRID}
     volumes:
-      - ./serverv2/src:/app/src
+      - ./server/src:/app/src
     ports:
       - 5050:8080
     depends_on:
       - fm-redis
 
-  fm-client:
-    container_name: fm-client
+  fm-sellers:
+    container_name: fm-sellers
     networks:
       - fm-net
     build:
-      context: ./client
+      context: ./sellers
       dockerfile: dev.Dockerfile
     ports:
       - 3030:80
     volumes:
-      - ./client/assets:/app/assets
-      - ./client/components:/app/components
-      - ./client/fonts:/app/fonts
-      - ./client/graphql:/app/graphql
-      - ./client/lib:/app/lib
-      - ./client/pages:/app/pages
-      - ./client/public:/app/public
-      - ./client/utils:/app/utils
+      - ./sellers/assets:/app/assets
+      - ./sellers/components:/app/components
+      - ./sellers/fonts:/app/fonts
+      - ./sellers/graphql:/app/graphql
+      - ./sellers/lib:/app/lib
+      - ./sellers/pages:/app/pages
+      - ./sellers/public:/app/public
+      - ./sellers/utils:/app/utils
 
-  fm-client-v2:
-    container_name: fm-client-v2
+  fm-buyers:
+    container_name: fm-buyers
     networks:
       - fm-net
     build:
-      context: ./clientv2
+      context: ./buyers
       dockerfile: dev.Dockerfile
     ports:
       - 2020:80
     volumes:
-      - ./clientv2/src:/app/src
-      - ./clientv2/public:/app/public
+      - ./buyers/assets:/app/assets
+      - ./buyers/components:/app/components
+      - ./buyers/fonts:/app/fonts
+      - ./buyers/graphql:/app/graphql
+      - ./buyers/lib:/app/lib
+      - ./buyers/pages:/app/pages
+      - ./buyers/public:/app/public
+      - ./buyers/utils:/app/utils
 
   fm-redis:
     container_name: fm-redis
@@ -77,6 +83,8 @@ services:
       POSTGRES_DB: ${POSTGRES_NAME}
     ports:
       - 15432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
 
   nginx:
     container_name: fm-nginx
@@ -91,9 +99,12 @@ services:
       - 8080:80
     depends_on:
       - fm-db
-      - fm-server-v2
+      - fm-server
     logging:
       driver: none
+
+volumes:
+  pgdata:
 
 networks:
   fm-net:
