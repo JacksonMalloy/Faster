@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import styled from 'styled-components'
 
 const StyledMenuLink = styled(Link)`
@@ -53,7 +53,7 @@ export const Menus = ({ menus, accessCode }) => {
         {menus.map(({ title, menu_id, image }) => {
           console.log({ image })
           return (
-            <StyledMenuLink key={menu_id} to={`/${accessCode}/menu/${menu_id}`}>
+            <StyledMenuLink key={menu_id} href={`/${accessCode}/menu/${menu_id}`}>
               <article>
                 {image && image.image_url && (
                   <header>

@@ -7,33 +7,7 @@ import { Menu } from 'components/Dashboard/Menu'
 // GraphQL
 import { MENUS_BY_ORGANIZATION } from 'graphql/queries/menu/menusByOrganization'
 import Organization from '../Organization'
-
-const StyledContainer = styled.section`
-  padding-left: calc(300px + 1rem);
-  padding-top: 1rem;
-  padding-right: 1rem;
-  padding-bottom: 1rem;
-  position: absolute;
-  top: 0;
-  background-color: white;
-  min-height: 100%;
-  width: 100%;
-
-  a {
-    text-transform: none;
-    text-decoration: none;
-    color: black;
-  }
-
-  h1 {
-    text-align: center;
-  }
-
-  .page-title {
-    font-size: 4rem;
-    font-weight: 900;
-  }
-`
+import Entry from '../Entry'
 
 const StyledGrid = styled.div`
   display: grid;
@@ -53,7 +27,8 @@ const Dashboard = () => {
               .filter((menu) => menu.published)
               .map((menu) => <Menu menu={menu} key={menu.menu_id} image={menu.image} />)
           : null} */}
-        <Organization />
+        {/* <Organization /> */}
+        <Entry />
       </StyledGrid>
     </>
   )

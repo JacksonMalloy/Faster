@@ -1,9 +1,6 @@
-import React from 'react'
 import styled from 'styled-components'
 import { useQuery, gql } from '@apollo/client'
-import { useHistory } from 'react-router-dom'
-import { Header } from '../common/Header'
-import { Link, useParams } from 'react-router-dom'
+import Link from 'next/link'
 
 const StyledItemLink = styled(Link)`
   display: flex;
@@ -43,20 +40,39 @@ const StyledItemLink = styled(Link)`
   }
 `
 
-const Menu = () => {
-  const { accessCode, menuId } = useParams()
-
+const Menu = ({ accessCode, menuId }) => {
   const { loading, error, data } = useQuery(MENU, { variables: { menu_id: menuId } })
   if (loading) return <p>Loading...</p>
   if (error) return <p>Error :(</p>
 
-  return (
-    <>
-      <h2>{data.menu.title}</h2>
+  const items = data.menu.menu_items.slice()
+  const result = []
+  const map = new Map()
 
-      {data.menu.menu_items.map((item) => {
+  // Set up array of unique Menu Headers
+  for (const item of items) {
+    if (!map.has(item.menu_header.menu_header_id)) {
+      map.set(item.menu_header.menu_header_id, true) // set any value to Map
+      result.push({
+        menu_header_id: item.menu_header.menu_header_id,
+        name: item.menu_header.name,
+        sub_header: item.menu_header.sub_header,
+      })
+    }
+  }
+
+  const jsx = []
+
+  // Create array of Item Sets beneath Headers
+  for (const header of result) {
+    const itemSet = items
+      .filter((item) => item.menu_header.menu_header_id === header.menu_header_id)
+      .map((item, i) => {
         return (
-          <StyledItemLink to={`/${accessCode}/menu/${menuId}/item/${item.menu_item_id}`}>
+          <StyledItemLink
+            href={`/${accessCode}/menu/${menuId}/item/${item.menu_item_id}`}
+            key={`${i}-${accessCode}-${menuId}`}
+          >
             <article>
               {item.image && item.image.image_id && (
                 <header>
@@ -66,12 +82,31 @@ const Menu = () => {
 
               <h2>{item.name}</h2>
               <p>{item.description}</p>
-              <span>${item.base_price}</span>
+              <span>{item.base_price}</span>
             </article>
           </StyledItemLink>
         )
-      })}
-      {/* <pre style={{ fontSize: '0.8rem' }}>{JSON.stringify(data, null, 2)}</pre> */}
+      })
+
+    const headerSet = () => {
+      return (
+        <section>
+          <h1>{header.name}</h1>
+          <p>{header.sub_header}</p>
+          <small>{header.menu_header_id}</small>
+          {itemSet}
+        </section>
+      )
+    }
+
+    jsx.push(headerSet())
+  }
+
+  return (
+    <>
+      <h2>{data.menu.title}</h2>
+      {jsx}
+      <pre style={{ fontSize: '0.8rem' }}>{JSON.stringify(data, null, 2)}</pre>
     </>
   )
 }
