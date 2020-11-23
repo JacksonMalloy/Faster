@@ -6,7 +6,7 @@ import { setContext } from '@apollo/client/link/context'
 
 // Use on the server
 const httpLink = new HttpLink({
-  uri: `http://fm-server-v2:8080/graphql/`,
+  uri: `http://fm-server:8080/graphql/`,
   credentials: `include`,
 })
 

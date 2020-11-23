@@ -35,7 +35,7 @@ export const getUser = async (req: Request) => {
   if (Authorization) {
     const token = Authorization.replace('Bearer ', '')
 
-    if (referrer === 'http://faster.menu:8080') {
+    if (referrer === 'http://buy.faster.menu:8080') {
       const { userId } = <any>jwt.verify(token, APP_SECRET)
 
       // Query User
@@ -52,7 +52,7 @@ export const getUser = async (req: Request) => {
       }
     }
 
-    if (referrer === 'http://admin.faster.menu:8080') {
+    if (referrer === 'http://sell.faster.menu:8080') {
       const { userId } = <any>jwt.verify(token, APP_SECRET)
 
       // Query User

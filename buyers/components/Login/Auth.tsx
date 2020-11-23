@@ -1,9 +1,9 @@
 import { useState } from 'react'
 
-import { LoginScaffold } from './LoginScaffold'
+import Login from './Login'
 import { Recovery } from './Recovery'
 
-export const LoginForm = () => {
+const Auth = () => {
   const [formPhase, setFormPhase] = useState('login')
 
   const handlePhase = (event) => {
@@ -17,7 +17,7 @@ export const LoginForm = () => {
       {formPhase === 'login' ? (
         <>
           <h2>Login</h2>
-          <LoginScaffold />
+          <Login />
         </>
       ) : (
         <>
@@ -28,3 +28,5 @@ export const LoginForm = () => {
     </>
   )
 }
+
+export default Auth
