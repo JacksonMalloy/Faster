@@ -10,12 +10,7 @@ export const AdminQueries = {
 
     return data
   },
-  adminsByTenant: async (
-    parent: any,
-    { tenantId }: { tenantId: number },
-    context: { user: any },
-    info: any
-  ) => {
+  adminsByTenant: async (parent: any, { tenantId }: { tenantId: number }, context: { user: any }, info: any) => {
     if (!isDirector(context)) return null
 
     const adminRepo = new AdminRepository()
@@ -44,22 +39,22 @@ type LoginArgs = {
 }
 
 export const AdminMutations = {
-  signupAdmin: async (parent: any, args: AdminRegistrationArgs, context: any, info: any) => {
+  registerAdmin: async (parent: any, args: AdminRegistrationArgs, context: any, info: any) => {
     const adminRepo = new AdminRepository()
     const admin = await adminRepo.registerAdmin(args)
     return admin
   },
-  signupDirector: async (parent: any, args: AdminRegistrationArgs, context: any, info: any) => {
+  registerDirector: async (parent: any, args: AdminRegistrationArgs, context: any, info: any) => {
     const adminRepo = new AdminRepository()
     const admin = await adminRepo.registerDirector(args)
     return admin
   },
-  signinAdmin: async (parent: any, args: LoginArgs, context: any, info: any) => {
+  loginAdmin: async (parent: any, args: LoginArgs, context: any, info: any) => {
     const adminRepo = new AdminRepository()
     const admin = await adminRepo.loginAdmin(args)
     return admin
   },
-  removeAdmin: async (parent: any, { adminId }: { adminId: number }, context: any, info: any) => {
+  deleteAdmin: async (parent: any, { adminId }: { adminId: number }, context: any, info: any) => {
     const adminRepo = new AdminRepository()
     const admin = await adminRepo.deleteAdmin(adminId)
     return admin

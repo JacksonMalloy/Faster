@@ -1,4 +1,5 @@
 import db from '../../db/config'
+import { keysToCamel } from '../../utils'
 
 export default class ActiveUserRepository {
   async getAdminById(adminId: number) {
@@ -7,10 +8,7 @@ export default class ActiveUserRepository {
 
     try {
       const result = await db.query(query, params)
-
-      console.log({ result })
-
-      return result.rows[0]
+      return keysToCamel(result.rows[0])
     } catch (error) {
       throw error
     }
@@ -39,7 +37,7 @@ export default class ActiveUserRepository {
 
       try {
         const result = await db.query(query, params)
-        return result.rows
+        return keysToCamel(result.rows)
       } catch (error) {
         throw error
       }
@@ -50,7 +48,7 @@ export default class ActiveUserRepository {
       const customerId = result.rows[0].customerId
       const tenants = await getTenantsByCustomerId(customerId)
 
-      return Object.assign(result.rows[0], { tenants })
+      return Object.assign(keysToCamel(result.rows[0]), { tenants })
     } catch (error) {
       throw error
     }

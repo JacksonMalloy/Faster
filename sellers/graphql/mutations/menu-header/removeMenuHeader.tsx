@@ -2,7 +2,7 @@ import { gql } from '@apollo/client'
 
 export const REMOVE_MENU_HEADER = gql`
   mutation($headerId: ID!) {
-    removeMenuHeader(headerId: $headerId) {
+    deleteMenuHeader(headerId: $headerId) {
       code
       success
       message

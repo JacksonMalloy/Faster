@@ -1,6 +1,6 @@
 import db from '../../db/config'
 import { hash, compare } from 'bcryptjs'
-import { createToken } from '../../utils'
+import { createToken, keysToCamel } from '../../utils'
 import { update } from '../../helpers'
 
 type RegistrationArgs = {
@@ -33,50 +33,48 @@ export default class CustomerRepository {
                     "fm"."customers_to_tenants" c2o
             INNER JOIN
                     "fm"."customers" c
-                  ON c2o.customerId = c.customerId
+                  ON c2o.customer_id = c.customer_id
             INNER JOIN
                   "fm"."tenants" o
-                  ON c2o.tenantId = o.tenantId
-            WHERE o.tenantId = $1`
+                  ON c2o.tenant_id = o.tenant_id
+            WHERE o.tenant_id = $1`
 
     const params = [tenantId]
 
     try {
       const result = await db.query(query, params)
-
-      //console.log(result)
-      return result.rows
+      return keysToCamel(result.rows)
     } catch (error) {
-       throw error
+      throw error
     }
   }
 
   async getCustomerById(customerId: number) {
-    const query = `SELECT * FROM "fm"."customers" WHERE customerId = $1`
+    const query = `SELECT * FROM "fm"."customers" WHERE customer_id = $1`
     const params = [customerId]
 
     const getTenantsByCustomerId = async (customerId: number) => {
       const query = `
         SELECT
               o.name,
-              o.tenantId
+              o.tenant_id
         FROM
               "fm"."customers_to_tenants" c2o
         INNER JOIN
               "fm"."customers" c
-            ON c2o.customerId = c.customerId
+            ON c2o.customer_id = c.customer_id
         INNER JOIN
             "fm"."tenants" o
-            ON c2o.tenantId = o.tenantId
-        WHERE c.customerId = $1`
+            ON c2o.tenant_id = o.tenant_id
+        WHERE c.customer_id = $1`
 
       const params = [customerId]
 
       try {
         const result = await db.query(query, params)
-        return result.rows
+        return keysToCamel(result.rows)
       } catch (error) {
-           throw error
+        throw error
       }
     }
 
@@ -85,9 +83,9 @@ export default class CustomerRepository {
       const customerId = result.rows[0].customerId
       const tenants = await getTenantsByCustomerId(customerId)
 
-      return Object.assign(result.rows[0], { tenants })
+      return Object.assign(keysToCamel(result.rows[0]), { tenants })
     } catch (error) {
-       throw error
+      throw error
     }
   }
 
@@ -96,8 +94,6 @@ export default class CustomerRepository {
   ////////////////////
   async registerCustomer(args: RegistrationArgs) {
     const { phone, email, name } = args
-
-    console.log({ args })
 
     // REGISTER WITH EMAIL
     if (!phone) {
@@ -114,9 +110,9 @@ export default class CustomerRepository {
             try {
               const result = await db.query(query, params)
 
-              return result.rows[0]
+              return keysToCamel(result.rows[0])
             } catch (error) {
-                       throw error
+              throw error
             }
           }
 
@@ -128,9 +124,9 @@ export default class CustomerRepository {
           }
         }
 
-        return { code: 201, message: 'User created.', success: true, customer: result.rows[0] }
+        return { code: 201, message: 'User created.', success: true, customer: keysToCamel(result.rows[0]) }
       } catch (error) {
-           throw error
+        throw error
       }
     }
 
@@ -139,17 +135,15 @@ export default class CustomerRepository {
       const params = [phone]
       try {
         const result = await db.query(query, params)
-
-        return result.rows
+        return keysToCamel(result.rows)
       } catch (error) {
-           throw error
+        throw error
       }
     }
 
     // REGISTER WITH PHONE
     if (!email) {
       const getCustomerData = await getCustomer(phone)
-      console.log({ getCustomerData })
 
       if (getCustomerData.length === 0) {
         const query = `INSERT INTO "fm"."customers" (phone, name) VALUES ($1, $2) RETURNING *`
@@ -158,11 +152,9 @@ export default class CustomerRepository {
 
         try {
           const result = await db.query(query, params)
-          console.log({ result })
-
-          return { code: 201, message: 'User created.', success: true, customer: result.rows[0] }
+          return { code: 201, message: 'User created.', success: true, customer: keysToCamel(result.rows[0]) }
         } catch (error) {
-               throw error
+          throw error
         }
       }
 
@@ -178,6 +170,8 @@ export default class CustomerRepository {
       code: 409,
       message: 'A user with this phone and email already exists.',
       success: false,
+
+      // Do we want to return something here?
       customer: await getCustomer(phone),
     }
   }
@@ -186,14 +180,14 @@ export default class CustomerRepository {
     const { email, pin, phone } = args
 
     const getPin = async (customerId: string) => {
-      const query = `SELECT * FROM "fm"."sms" WHERE customerId = $1`
+      const query = `SELECT * FROM "fm"."sms" WHERE customer_id = $1`
       const params = [customerId]
 
       try {
         const result = await db.query(query, params)
-        return result.rows
+        return keysToCamel(result.rows)
       } catch (error) {
-           throw error
+        throw error
       }
     }
 
@@ -202,9 +196,10 @@ export default class CustomerRepository {
       const params = [email, phone]
       try {
         const result = await db.query(query, params)
-        return result.rows
+        return keysToCamel(result.rows)
       } catch (error) {
         console.log(error)
+        throw error
       }
     }
 
@@ -226,7 +221,6 @@ export default class CustomerRepository {
           code: 404,
           message: `User does not exist!`,
           success: false,
-          customer: {},
         }
       }
 
@@ -240,24 +234,22 @@ export default class CustomerRepository {
           code: 401,
           message: 'Invalid pin!',
           success: false,
-          customer: {},
         }
       }
 
-      const token = createToken(result.rows[0].customerId)
+      const token = createToken(keysToCamel(result.rows[0]).customerId)
 
       return {
         code: 200,
         message: 'Successfully logged in!',
         success: true,
-        customer: Object.assign(result.rows[0], { token }),
+        customer: Object.assign(keysToCamel(result.rows[0]), { token }),
       }
     } catch (error) {
       return {
         code: 503,
         message: `Sorry!`,
         success: false,
-        customer: {},
       }
     }
   }
@@ -265,7 +257,7 @@ export default class CustomerRepository {
   async connectCustomerToTenant(args: ConnectCustomerWithOrgArgs) {
     const { customerId, tenantId } = args
 
-    const query = `INSERT INTO "fm"."customers_to_tenants" (customerId, tenantId) VALUES ($1, $2) RETURNING *`
+    const query = `INSERT INTO "fm"."customers_to_tenants" (customer_id, tenant_id) VALUES ($1, $2) RETURNING *`
     const params = [customerId, tenantId]
 
     try {
@@ -276,7 +268,7 @@ export default class CustomerRepository {
         message: 'Successfully joined tenant!',
         success: true,
         connection: {
-          connect: result.rows,
+          connect: keysToCamel(result.rows),
         },
       }
     } catch (error) {
@@ -284,13 +276,12 @@ export default class CustomerRepository {
         code: 503,
         message: error,
         success: false,
-        customer: {},
       }
     }
   }
 
   async deleteCustomer(customerId: number) {
-    const query = `DELETE FROM "fm"."customers" WHERE customerId = $1`
+    const query = `DELETE FROM "fm"."customers" WHERE customer_id = $1`
     const params = [customerId]
 
     try {
@@ -301,16 +292,12 @@ export default class CustomerRepository {
           code: 410,
           message: 'The account no longer exists!',
           success: false,
-          customer: {},
         }
       } else {
         return {
           code: 204,
           message: 'The account was deleted',
           success: true,
-          customer: {
-            customerId: customerId,
-          },
         }
       }
     } catch (error) {
@@ -318,7 +305,6 @@ export default class CustomerRepository {
         code: 503,
         message: error,
         success: false,
-        customer: {},
       }
     }
   }

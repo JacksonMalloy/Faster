@@ -2,7 +2,7 @@ import { gql } from '@apollo/client'
 
 export const SIGNIN_CUSTOMER = gql`
   mutation($email: String, $phone: String, $pin: String!) {
-    signinCustomer(email: $email, phone: $phone, pin: $pin) {
+    loginCustomer(email: $email, phone: $phone, pin: $pin) {
       code
       message
       success

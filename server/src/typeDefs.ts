@@ -55,11 +55,11 @@ export const typeDefs = gql`
 
     resetPassword(email: String!): AdminMutationResponse
 
-    signupAdmin(phone: String!, email: String!, name: String!, password: String!): AdminMutationResponse
-    signupDirector(phone: String!, email: String!, name: String!, password: String!): AdminMutationResponse
-    signupCustomer(phone: String, email: String, name: String!): CustomerMutationResponse
-    signinAdmin(email: String!, password: String!): AdminMutationResponse
-    signinCustomer(email: String, phone: String, pin: String!): CustomerMutationResponse
+    registerAdmin(phone: String!, email: String!, name: String!, password: String!): AdminMutationResponse
+    registerDirector(phone: String!, email: String!, name: String!, password: String!): AdminMutationResponse
+    registerCustomer(phone: String, email: String, name: String!): CustomerMutationResponse
+    loginAdmin(email: String!, password: String!): AdminMutationResponse
+    loginCustomer(email: String, phone: String, pin: String!): CustomerMutationResponse
 
     # CREATE
     createTenant(
@@ -73,25 +73,25 @@ export const typeDefs = gql`
       subAddress: String
       province: String
     ): TenantMutationResponse
-    addMenu(tenantId: ID!, title: String!): MenuMutationResponse
-    addMenuItem(
+    createMenu(tenantId: ID!, title: String!): MenuMutationResponse
+    createMenuItem(
       menuId: ID!
       headerId: ID
       basePrice: String!
       description: String
       name: String!
     ): MenuItemMutationResponse
-    addMenuHeader(menuId: ID!, name: String!, description: String): MenuHeaderMutationResponse
-    addMenuChoice(tenantId: ID!, header: String!, description: String): MenuChoiceMutationResponse
+    createMenuHeader(menuId: ID!, name: String!, description: String): MenuHeaderMutationResponse
+    createMenuChoice(tenantId: ID!, header: String!, description: String): MenuChoiceMutationResponse
     # May remove itemId, check first
-    addMenuSelection(tenantId: ID!, itemId: ID, name: String!, valueAdd: String): MenuSelectionMutationResponse
+    createMenuSelection(tenantId: ID!, itemId: ID, name: String!, valueAdd: String): MenuSelectionMutationResponse
 
     uploadImage(file: Upload!, itemId: ID, menuId: ID, tenantId: ID!, tenantName: String!): File
 
     createOrder(adminId: ID, customerId: ID, total: Int, charge: String, tenantId: ID!): OrderMutationResponse
 
     # EDIT
-    editTenant(
+    updateTenant(
       tenantId: ID!
       name: String
       address: String
@@ -103,8 +103,8 @@ export const typeDefs = gql`
       subAddress: String
       province: String
     ): TenantMutationResponse
-    editMenu(menuId: ID!, title: String, published: Boolean): MenuMutationResponse
-    editMenuItem(
+    updateMenu(menuId: ID!, title: String, published: Boolean): MenuMutationResponse
+    updateMenuItem(
       itemId: ID!
       menuId: ID
       headerId: ID
@@ -112,24 +112,24 @@ export const typeDefs = gql`
       description: String
       name: String
     ): MenuItemMutationResponse
-    editMenuHeader(headerId: ID!, menuId: ID, name: String, description: String): MenuHeaderMutationResponse
-    editMenuChoice(choiceId: ID!, header: String, description: String): MenuChoiceMutationResponse
-    editMenuSelection(selectionId: ID!, name: String, valueAdd: String): MenuSelectionMutationResponse
+    updateMenuHeader(headerId: ID!, menuId: ID, name: String, description: String): MenuHeaderMutationResponse
+    updateMenuChoice(choiceId: ID!, header: String, description: String): MenuChoiceMutationResponse
+    updateMenuSelection(selectionId: ID!, name: String, valueAdd: String): MenuSelectionMutationResponse
 
     # DELETE
-    removeTenant(tenantId: ID!): TenantMutationResponse
-    removeAdmin(adminId: ID!): AdminMutationResponse
-    removeCustomer(customerId: ID!): CustomerMutationResponse
-    removeMenu(menuId: ID!): MenuMutationResponse
-    removeMenuItem(itemId: ID!): MenuItemMutationResponse
-    removeMenuHeader(headerId: ID!): MenuHeaderMutationResponse
-    removeMenuChoice(choiceId: ID!): MenuChoiceMutationResponse
-    removeMenuSelection(selectionId: ID!): MenuSelectionMutationResponse
+    deleteTenant(tenantId: ID!): TenantMutationResponse
+    deleteAdmin(adminId: ID!): AdminMutationResponse
+    deleteCustomer(customerId: ID!): CustomerMutationResponse
+    deleteMenu(menuId: ID!): MenuMutationResponse
+    deleteMenuItem(itemId: ID!): MenuItemMutationResponse
+    deleteMenuHeader(headerId: ID!): MenuHeaderMutationResponse
+    deleteMenuChoice(choiceId: ID!): MenuChoiceMutationResponse
+    deleteMenuSelection(selectionId: ID!): MenuSelectionMutationResponse
     deleteImage(imageId: ID!): FileMutationResponse
 
     # CONNECT
     joinAdminToTenant(adminId: ID!, tenantId: ID!, authToken: String!): AdminToTenantConnectionResponse
-    joinCustomerToTenant(customerId: ID!, tenantId: ID!): CustomerToTenantConnectionResponse
+    connectCustomerToTenant(customerId: ID!, tenantId: ID!): CustomerToTenantConnectionResponse
 
     connectMenuChoicesToMenuItem(choiceIds: [ID], itemId: ID!): MenuChoicesToMenuItemConnectionResponse
     removeMenuChoicesMenuItemsConnection(choiceIds: [ID], itemId: ID!): MenuChoicesToMenuItemConnectionResponse

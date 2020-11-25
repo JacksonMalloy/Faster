@@ -31,60 +31,55 @@ export default class TenantRepository {
   ////////////////////
   ///////READS////////
   ////////////////////
-
   async getAllTenants() {
     const query = `SELECT * FROM "fm"."tenants"`
 
     try {
       const result = await db.query(query)
-
-      console.log(result.rows)
-      return result.rows
+      return keysToCamel(result.rows)
     } catch (error) {
       throw error
     }
   }
 
   async getTenantByAccessCode(accessCode: string) {
-    const query = `SELECT * FROM "fm"."tenants" WHERE accessCode = $1`
+    const query = `SELECT * FROM "fm"."tenants" WHERE access_code = $1`
     const params = [accessCode]
 
     try {
       const result = await db.query(query, params)
 
-      console.log(result.rows)
-
-      return result.rows
+      return keysToCamel(result.rows)
     } catch (error) {
       throw error
     }
   }
 
   async getTenantById(tenantId: number) {
-    const query = `SELECT * FROM "fm"."tenants" WHERE tenantId = $1`
+    const query = `SELECT * FROM "fm"."tenants" WHERE tenant_id = $1`
     const params = [tenantId]
 
     const getAdminsByTenant = async (tenantId: number) => {
-      const query = `SELECT * FROM "fm"."admins" WHERE tenantId = $1 AND (permissions = 'ADMIN')`
+      const query = `SELECT * FROM "fm"."admins" WHERE tenant_id = $1 AND (permissions = 'ADMIN')`
       const params = [tenantId]
 
       try {
         const result = await db.query(query, params)
 
-        return result.rows
+        return keysToCamel(result.rows)
       } catch (error) {
         throw error
       }
     }
 
     const getDirectorsByTenant = async (tenantId: number) => {
-      const query = `SELECT * FROM "fm"."admins" WHERE tenantId = $1 AND (permissions = 'DIRECTOR')`
+      const query = `SELECT * FROM "fm"."admins" WHERE tenant_id = $1 AND (permissions = 'DIRECTOR')`
       const params = [tenantId]
 
       try {
         const result = await db.query(query, params)
 
-        return result.rows
+        return keysToCamel(result.rows)
       } catch (error) {
         throw error
       }
@@ -96,7 +91,7 @@ export default class TenantRepository {
       const admins = await getAdminsByTenant(tenantId)
       const directors = await getDirectorsByTenant(tenantId)
 
-      return Object.assign(result.rows[0], { admins }, { directors })
+      return Object.assign(keysToCamel(result.rows[0]), { admins }, { directors })
     } catch (error) {
       throw error
     }
@@ -170,7 +165,7 @@ export default class TenantRepository {
   }
 
   async deleteTenant(tenantId: number) {
-    const query = `DELETE FROM "fm"."tenants" WHERE tenantId = $1`
+    const query = `DELETE FROM "fm"."tenants" WHERE tenant_id = $1`
     const params = [tenantId]
 
     try {
@@ -207,7 +202,7 @@ export default class TenantRepository {
     const fields = { name, address, city, countryRegion, phone, websiteUrl, postalCode, subAddress, province }
     const conditions = { tenantId }
 
-    const { query, params } = update(`"fm"."items"`, conditions, fields)
+    const { query, params } = update(`"fm"."tenants"`, conditions, fields)
 
     try {
       const result = await db.query(query, params)
@@ -216,7 +211,7 @@ export default class TenantRepository {
         code: 200,
         message: 'Tenant updated!',
         success: true,
-        tenant: result.rows[0],
+        tenant: keysToCamel(result.rows[0]),
       }
     } catch (error) {
       return {

@@ -3,8 +3,8 @@ import { useState } from 'react'
 
 // GraphQL
 import { useMutation } from '@apollo/client'
-import { REMOVE_MENU } from 'graphql/mutations/menu/removeMenu'
-import { EDIT_MENU } from 'graphql/mutations/menu/editMenu'
+import { REMOVE_MENU } from 'graphql/mutations/menu/deleteMenu'
+import { EDIT_MENU } from 'graphql/mutations/menu/updateMenu'
 
 // SVGs
 import Trash from 'assets/trash.svg'
@@ -41,8 +41,8 @@ type CardProps = {
 export const MenuCard = ({ menu, image, setIsRouting }: CardProps) => {
   const { setSelectedMenuName, setSelectedMenu, setFormView, openToast, reset } = useUI()
   const [isOpen, setIsOpen] = useState(false)
-  const [removeMenu] = useMutation(REMOVE_MENU)
-  const [editMenu] = useMutation(EDIT_MENU)
+  const [deleteMenu] = useMutation(REMOVE_MENU)
+  const [updateMenu] = useMutation(EDIT_MENU)
 
   const router = useRouter()
 
@@ -51,7 +51,7 @@ export const MenuCard = ({ menu, image, setIsRouting }: CardProps) => {
   const deleteMenu = async () => {
     const variables = { menuId: menuId }
     const args = { variables, tenantId }
-    const data = await handleDeleteMenu(removeMenu, args).then(() => {
+    const data = await handleDeleteMenu(deleteMenu, args).then(() => {
       openToast('Menu was successfully deleted', 'SUCCESS')
     })
   }
@@ -59,7 +59,7 @@ export const MenuCard = ({ menu, image, setIsRouting }: CardProps) => {
   const publishMenu = async () => {
     const variables = { menuId: menuId, published: !published }
     const args = { variables, tenantId }
-    const data = await handlePublishMenu(editMenu, args).then(() => {
+    const data = await handlePublishMenu(updateMenu, args).then(() => {
       openToast('Menu was successfully published', 'SUCCESS')
     })
   }

@@ -15,7 +15,7 @@ export const handleDeleteSelection = async (mutation, args) => {
     //   console.log({ menuHeaderData })
     //   console.log({ data })
 
-    //   const newData = itemDeleter(menuHeaderData.menuSelectionsByTenant, data.removeMenuHeader.menuHeader.selectionId)
+    //   const newData = itemDeleter(menuHeaderData.menuSelectionsByTenant, data.deleteMenuHeader.menuHeader.selectionId)
 
     //   console.log({ newData })
 
@@ -46,10 +46,14 @@ export const handleEditSelection = async (mutation, args) => {
       })
 
       const oldItem = selectionData.menuSelectionsByTenant.find(
-        (obj: { selectionId: number }) => obj.selectionId === data.editMenuSelection.menuSelection.selectionId
+        (obj: { selectionId: number }) => obj.selectionId === data.updateMenuSelection.menuSelection.selectionId
       )
 
-      const newData = itemReplacer(selectionData.menuSelectionsByTenant, oldItem, data.editMenuSelection.menuSelection)
+      const newData = itemReplacer(
+        selectionData.menuSelectionsByTenant,
+        oldItem,
+        data.updateMenuSelection.menuSelection
+      )
 
       store.writeQuery({
         query: MENU_SELECTIONS_BY_TENANT,
@@ -82,7 +86,7 @@ export const handleCreateSelection = async (mutation, args) => {
           query: MENU_SELECTIONS_BY_TENANT,
           variables: variables,
           data: {
-            menuSelectionsByTenant: [...selectionData.menuSelectionsByTenant, data.addMenuSelection],
+            menuSelectionsByTenant: [...selectionData.menuSelectionsByTenant, data.createMenuSelection],
           },
         })
       } catch (error) {

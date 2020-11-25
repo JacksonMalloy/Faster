@@ -1,5 +1,6 @@
 import db from '../../db/config'
 import { update } from '../../helpers'
+import { keysToCamel } from '../../utils'
 
 type CreateMenuHeaderArgs = {
   menuId: number
@@ -19,28 +20,27 @@ export default class MenuHeaderRepository {
   ////////////////////
 
   async getAllMenuHeadersByMenu(menuId: number) {
-    const query = `SELECT * FROM "fm"."headers" WHERE menuId = $1`
+    const query = `SELECT * FROM "fm"."headers" WHERE menu_id = $1`
     const params = [menuId]
 
     try {
       const result = await db.query(query, params)
-
-      return result.rows
+      return keysToCamel(result.rows)
     } catch (error) {
-       throw error
+      throw error
     }
   }
 
   async getMenuHeaderById(headerId: number) {
-    const query = `SELECT * FROM "fm"."headers" WHERE headerId = $1`
+    const query = `SELECT * FROM "fm"."headers" WHERE header_id = $1`
     const params = [headerId]
 
     try {
       const result = await db.query(query, params)
 
-      return result.rows[0]
+      return keysToCamel(result.rows[0])
     } catch (error) {
-       throw error
+      throw error
     }
   }
 
@@ -49,7 +49,7 @@ export default class MenuHeaderRepository {
   ////////////////////
 
   async createMenuHeader({ menuId, name, description }: CreateMenuHeaderArgs) {
-    const query = `INSERT INTO "fm"."headers" (menuId, name, description) VALUES ($1, $2, $3) RETURNING *`
+    const query = `INSERT INTO "fm"."headers" (menu_id, name, description) VALUES ($1, $2, $3) RETURNING *`
     const params = [menuId, name, description]
 
     try {
@@ -58,14 +58,13 @@ export default class MenuHeaderRepository {
         code: 201,
         message: 'Menu header created!',
         success: true,
-        menuHeader: result.rows[0],
+        menuHeader: keysToCamel(result.rows[0]),
       }
     } catch (error) {
-       return {
+      return {
         code: 503,
         message: error,
         success: false,
-        menuHeader: {},
       }
     }
   }
@@ -83,20 +82,19 @@ export default class MenuHeaderRepository {
         code: 200,
         message: 'Menu header updated!',
         success: true,
-        menuHeader: result.rows[0],
+        menuHeader: keysToCamel(result.rows[0]),
       }
     } catch (error) {
-       return {
+      return {
         code: 503,
         message: error,
         success: false,
-        menuHeader: {},
       }
     }
   }
 
   async deleteMenuHeader(headerId: number) {
-    const query = `DELETE FROM "fm"."headers" WHERE headerId = $1`
+    const query = `DELETE FROM "fm"."headers" WHERE header_id = $1`
     const params = [headerId]
 
     try {
@@ -107,28 +105,19 @@ export default class MenuHeaderRepository {
           code: 410,
           message: 'The menu header no longer exists!',
           success: false,
-          menuHeader: {
-            headerId: headerId,
-            menuId: '',
-          },
         }
       } else {
         return {
           code: 204,
           message: 'The menu header was deleted',
           success: true,
-          menuHeader: {
-            headerId: headerId,
-            menuId: '',
-          },
         }
       }
     } catch (error) {
-       return {
+      return {
         code: 503,
         message: error,
         success: false,
-        menuHeader: {},
       }
     }
   }

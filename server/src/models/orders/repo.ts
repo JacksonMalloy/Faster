@@ -1,4 +1,5 @@
 import db from '../../db/config'
+import { keysToCamel } from '../../utils'
 
 type CreateOrderArgs = {
   adminId: number
@@ -11,7 +12,7 @@ type CreateOrderArgs = {
 export default class OrderRepository {
   async createMenuOrder(args: CreateOrderArgs) {
     const { adminId, customerId, total, charge, tenantId } = args
-    const query = `INSERT INTO "fm"."orders" (adminId, customerId, total, charge, tenantId) VALUES ($1, $2, $3, $4, $5) RETURNING *`
+    const query = `INSERT INTO "fm"."orders" (admin_id, customer_id, total, charge, tenant_id) VALUES ($1, $2, $3, $4, $5) RETURNING *`
     const params = [adminId, customerId, total, charge, tenantId]
 
     try {
@@ -21,7 +22,7 @@ export default class OrderRepository {
         code: 201,
         message: 'Order created!',
         success: true,
-        order: result.rows[0],
+        order: keysToCamel(result.rows[0]),
       }
     } catch (error) {
       return {

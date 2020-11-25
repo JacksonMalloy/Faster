@@ -27,19 +27,19 @@ export const MenuHeaderQueries = {
 }
 
 export const MenuHeaderMutations = {
-  addMenuHeader: async (parent: any, args: CreateMenuHeaderArgs, context: any, info: any) => {
+  createMenuHeader: async (parent: any, args: CreateMenuHeaderArgs, context: any, info: any) => {
     if (!isDirector(context)) return { code: 401, message: 'Not Authorized', success: false }
     const menuHeaderRepository = new MenuHeaderRepository()
     const menuHeader = await menuHeaderRepository.createMenuHeader(args)
     return menuHeader
   },
-  editMenuHeader: async (parent: any, args: UpdateMenuHeaderArgs, context: any, info: any) => {
+  updateMenuHeader: async (parent: any, args: UpdateMenuHeaderArgs, context: any, info: any) => {
     if (!isDirector(context)) return { code: 401, message: 'Not Authorized', success: false }
     const menuHeaderRepository = new MenuHeaderRepository()
     const menuHeader = await menuHeaderRepository.updateMenuHeader(args)
     return menuHeader
   },
-  removeMenuHeader: async (parent: any, { headerId }: { headerId: number }, context: any, info: any) => {
+  deleteMenuHeader: async (parent: any, { headerId }: { headerId: number }, context: any, info: any) => {
     if (!isDirector(context)) return { code: 401, message: 'Not Authorized', success: false }
     const menuHeaderRepository = new MenuHeaderRepository()
     const menuHeader = await menuHeaderRepository.deleteMenuHeader(headerId)

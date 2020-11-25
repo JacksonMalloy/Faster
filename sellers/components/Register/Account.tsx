@@ -4,7 +4,7 @@ import { Button } from 'components/common/Button'
 import useForm from 'components/common/hooks/useForm'
 import styled from 'styled-components'
 import { JOIN_ADMIN_TO_TENANT } from 'graphql/mutations/admin/joinAdminToTenant'
-import { SIGNUP_DIRECTOR } from 'graphql/mutations/admin/signupDirector'
+import { SIGNUP_DIRECTOR } from 'graphql/mutations/admin/registerDirector'
 import { useMutation } from '@apollo/client'
 import { useRouter } from 'next/router'
 
@@ -45,7 +45,7 @@ type AccountProps = {
 }
 
 export const Account = ({ authToken, tenantId, setAuthToken }: AccountProps) => {
-  const [signupDirector] = useMutation(SIGNUP_DIRECTOR)
+  const [registerDirector] = useMutation(SIGNUP_DIRECTOR)
   const [joinAdminToTenant] = useMutation(JOIN_ADMIN_TO_TENANT)
 
   const [emailServerError, setEmailServerError] = useState<any>({ message: '', error: false })
@@ -67,7 +67,7 @@ export const Account = ({ authToken, tenantId, setAuthToken }: AccountProps) => 
       const { account_phone, account_email, password, account_name } = values
 
       const signup = async () => {
-        const data = await signupDirector({
+        const data = await registerDirector({
           variables: {
             phone: account_phone,
             email: account_email,
@@ -83,7 +83,7 @@ export const Account = ({ authToken, tenantId, setAuthToken }: AccountProps) => 
 
       const {
         data: {
-          signupDirector: {
+          registerDirector: {
             admin: { adminId, token },
             code,
             type,

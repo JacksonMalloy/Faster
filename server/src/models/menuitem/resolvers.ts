@@ -38,7 +38,7 @@ export const MenuItemQueries = {
 }
 
 export const MenuItemMutations = {
-  addMenuItem: async (parent: any, args: CreateItemArgs, context: any, info: any) => {
+  createMenuItem: async (parent: any, args: CreateItemArgs, context: any, info: any) => {
     if (!isDirector(context)) return { code: 401, message: 'Not Authorized', success: false }
 
     const getTenantId = async ({ menuId }: { menuId: number }) => {
@@ -65,14 +65,14 @@ export const MenuItemMutations = {
 
     return data
   },
-  editMenuItem: async (parent: any, args: UpdateItemArgs, context: any, info: any) => {
+  updateMenuItem: async (parent: any, args: UpdateItemArgs, context: any, info: any) => {
     if (!isDirector(context)) return { code: 401, message: 'Not Authorized', success: false }
 
     const menuItemRepository = new MenuItemRepository()
     const data = await menuItemRepository.updateMenuItem(args)
     return data
   },
-  removeMenuItem: async (parent: any, { itemId }: { itemId: number }, context: any, info: any) => {
+  deleteMenuItem: async (parent: any, { itemId }: { itemId: number }, context: any, info: any) => {
     if (!isDirector(context)) return { code: 401, message: 'Not Authorized', success: false }
 
     const menuItemRepository = new MenuItemRepository()

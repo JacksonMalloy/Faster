@@ -1,5 +1,6 @@
 import db from '../../db/config'
 import { update } from '../../helpers'
+import { keysToCamel } from '../../utils'
 
 type CreateItemArgs = {
   menuId: number
@@ -26,50 +27,49 @@ export default class MenuItemRepository {
   async getAllMenuItemsByTenantId(tenantId: number) {
     const query = `
         SELECT
-            mi.itemId,
-            mi.menuId,
-            mi.basePrice,
+            mi.item_id,
+            mi.menu_id,
+            mi.base_price,
             mi.description,
             mi.name
 
           FROM "fm"."items" mi
-          JOIN "fm"."menus" m ON m.menuId = mi.menuId
-          JOIN "fm"."tenants" o ON o.tenantId = m.tenantId
-          WHERE o.tenantId = $1`
+          JOIN "fm"."menus" m ON m.menu_id = mi.menu_id
+          JOIN "fm"."tenants" o ON o.tenant_id = m.tenant_id
+          WHERE o.tenant_id = $1`
 
     const params = [tenantId]
 
     try {
       const result = await db.query(query, params)
 
-      return result.rows
+      return keysToCamel(result.rows)
     } catch (error) {
-       throw error
+      throw error
     }
   }
 
   async getAllMenuItemsByMenu(menuId: number) {
-    const query = `SELECT * FROM "fm"."items" WHERE menuId = $1`
+    const query = `SELECT * FROM "fm"."items" WHERE menu_id = $1`
     const params = [menuId]
 
     try {
       const result = await db.query(query, params)
-      return result.rows
+      return keysToCamel(result.rows)
     } catch (error) {
-       throw error
+      throw error
     }
   }
 
   async getMenuItemById(itemId: number) {
-    const query = `SELECT * FROM "fm"."items" WHERE itemId = $1`
+    const query = `SELECT * FROM "fm"."items" WHERE item_id = $1`
     const params = [itemId]
 
     try {
       const result = await db.query(query, params)
-      //console.log(result)
-      return result.rows[0]
+      return keysToCamel(result.rows[0])
     } catch (error) {
-       throw error
+      throw error
     }
   }
 
@@ -79,7 +79,7 @@ export default class MenuItemRepository {
 
   async createMenuItem({ menuId, basePrice, headerId, description, name }: CreateItemArgs) {
     try {
-      const query = `INSERT INTO "fm"."items" (menuId, basePrice, description, name, headerId)
+      const query = `INSERT INTO "fm"."items" (menu_id, base_price, description, name, header_id)
                       VALUES ($1, $2, $3, $4, $5) RETURNING *`
       const params = [menuId, basePrice, description, name, headerId]
       const result = await db.query(query, params)
@@ -88,10 +88,10 @@ export default class MenuItemRepository {
         code: 201,
         message: 'Menu item created!',
         success: true,
-        menuItem: result.rows[0],
+        menuItem: keysToCamel(result.rows[0]),
       }
     } catch (error) {
-       return {
+      return {
         code: 503,
         message: error,
         success: false,
@@ -112,10 +112,10 @@ export default class MenuItemRepository {
         code: 200,
         message: 'Menu item updated!',
         success: true,
-        menuItem: result.rows[0],
+        menuItem: keysToCamel(result.rows[0]),
       }
     } catch (error) {
-       return {
+      return {
         code: 503,
         message: error,
         success: false,
@@ -124,11 +124,12 @@ export default class MenuItemRepository {
   }
 
   async deleteMenuItem(itemId: number) {
-    const query = `DELETE FROM "fm"."items" WHERE itemId = $1`
+    const query = `DELETE FROM "fm"."items" WHERE item_id = $1`
     const params = [itemId]
 
     try {
       const result = await db.query(query, params)
+      console.info({ result })
 
       if (!result.rowCount) {
         return {
@@ -137,18 +138,14 @@ export default class MenuItemRepository {
           success: false,
         }
       } else {
-        //console.log(`DELETED ITEM WITH ID = ${itemId}`)
         return {
           code: 204,
           message: 'The menu item was deleted',
           success: true,
-          menuItem: {
-            itemId: itemId,
-          },
         }
       }
     } catch (error) {
-       return {
+      return {
         code: 503,
         message: error,
         success: false,

@@ -1,5 +1,5 @@
 import { hash, compare } from 'bcryptjs'
-import { createToken } from '../../utils'
+import { createToken, keysToCamel } from '../../utils'
 import db from '../../db/config'
 import { sendPasswordResetEmail } from '../../email'
 
@@ -31,27 +31,27 @@ export default class AdminRepository {
   ////////////////////
 
   async getAdminById(adminId: number) {
-    const query = `SELECT * FROM "fm"."admins" WHERE adminId = $1`
+    const query = `SELECT * FROM "fm"."admins" WHERE admin_id = $1`
     const params = [adminId]
 
     try {
       const result = await db.query(query, params)
 
-      return result.rows[0]
+      return keysToCamel(result.rows[0])
     } catch (error) {
-       throw error
+      throw error
     }
   }
 
   async getAdminsByTenant(tenantId: number) {
-    const query = `SELECT * FROM "fm"."admins" WHERE tenantId = $1`
+    const query = `SELECT * FROM "fm"."admins" WHERE tenant_id = $1`
     const params = [tenantId]
 
     try {
       const result = await db.query(query, params)
-      return result.rows
+      return keysToCamel(result.rows)
     } catch (error) {
-       throw error
+      throw error
     }
   }
 
@@ -72,20 +72,19 @@ export default class AdminRepository {
           code: 409,
           message: 'A user with this phone and email already exists.',
           success: false,
-          admin: {},
         }
       }
 
-      const token = createToken(result.rows[0].adminId)
+      const token = createToken(keysToCamel(result.rows[0]).adminId)
 
       return {
         code: 201,
         message: 'User created.',
         success: true,
-        admin: Object.assign(result.rows[0], { token }),
+        admin: Object.assign(keysToCamel(result.rows[0]), { token }),
       }
     } catch (error) {
-       return {
+      return {
         code: 503,
         message: error,
         success: false,
@@ -137,7 +136,6 @@ export default class AdminRepository {
         message: 'A user with this phone already exists.',
         success: false,
         type: 'phone',
-        admin: {},
       }
     }
 
@@ -147,7 +145,6 @@ export default class AdminRepository {
         message: 'A user with this email already exists.',
         success: false,
         type: 'email',
-        admin: {},
       }
     }
 
@@ -164,10 +161,10 @@ export default class AdminRepository {
         message: 'User created.',
         success: true,
         type: null,
-        admin: Object.assign(result.rows[0], { token }, { permissions }),
+        admin: Object.assign(keysToCamel(result.rows[0]), { token }, { permissions }),
       }
     } catch (error) {
-       return {
+      return {
         code: 503,
         message: error,
         success: false,
@@ -189,7 +186,6 @@ export default class AdminRepository {
           code: 404,
           message: `Email ${email} does not exist!`,
           success: false,
-          admin: {},
         }
       }
 
@@ -199,7 +195,6 @@ export default class AdminRepository {
           code: 401,
           message: 'Invalid password!',
           success: false,
-          admin: {},
         }
       }
 
@@ -209,10 +204,10 @@ export default class AdminRepository {
         code: 200,
         message: 'Successfully logged in!',
         success: true,
-        admin: Object.assign(result.rows[0], { token }),
+        admin: Object.assign(keysToCamel(result.rows[0]), { token }),
       }
     } catch (error) {
-       return {
+      return {
         code: 503,
         message: error,
         success: false,
@@ -233,7 +228,7 @@ export default class AdminRepository {
 
         return result.rows[0].authToken
       } catch (error) {
-           throw error
+        throw error
       }
     }
 
@@ -260,7 +255,7 @@ export default class AdminRepository {
         }
       }
     } catch (error) {
-       return {
+      return {
         code: 503,
         message: error,
         success: false,
@@ -293,7 +288,7 @@ export default class AdminRepository {
         }
       }
     } catch (error) {
-       return {
+      return {
         code: 503,
         message: error,
         success: false,
@@ -313,7 +308,7 @@ export default class AdminRepository {
 
         return result.rows
       } catch (error) {
-           throw error
+        throw error
       }
     }
 

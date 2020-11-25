@@ -11,7 +11,7 @@ export const handleDeleteHeader = async (mutation, args) => {
         variables: { menuId: menuId },
       })
 
-      const newData = itemDeleter(menuHeaderData.menuHeadersByMenu, data.removeMenuHeader.menuHeader.headerId)
+      const newData = itemDeleter(menuHeaderData.menuHeadersByMenu, data.deleteMenuHeader.menuHeader.headerId)
 
       store.writeQuery({
         query: MENU_HEADERS_BY_MENU,
@@ -39,10 +39,10 @@ export const handleEditHeader = async (mutation, args) => {
         })
 
         const oldItem = headerData.menuHeadersByMenu.find(
-          (obj: { headerId: any }) => obj.headerId === data.editMenuHeader.menuHeader.headerId
+          (obj: { headerId: any }) => obj.headerId === data.updateMenuHeader.menuHeader.headerId
         )
 
-        const newData = itemReplacer(headerData.menuHeadersByMenu, oldItem, data.editMenuHeader.menuHeader)
+        const newData = itemReplacer(headerData.menuHeadersByMenu, oldItem, data.updateMenuHeader.menuHeader)
 
         store.writeQuery({
           query: MENU_HEADERS_BY_MENU,

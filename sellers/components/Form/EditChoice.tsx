@@ -6,12 +6,12 @@ import { Form } from '../UI'
 import { useUI } from '../Context'
 import { useEffect } from 'react'
 import { handleEditHeader } from 'components/Services/Header'
-import { EDIT_MENU_CHOICE } from 'graphql/mutations/menu-choice/editMenuChoice'
+import { EDIT_MENU_CHOICE } from 'graphql/mutations/menu-choice/updateMenuChoice'
 import { handleEditChoice } from 'components/Services/Choice'
 
 export const EditChoice = () => {
   const { tenantId, reset, openToast, selectedHeader, selectedChoice, setFormView } = useUI()
-  const [editMenuChoice] = useMutation(EDIT_MENU_CHOICE)
+  const [updateMenuChoice] = useMutation(EDIT_MENU_CHOICE)
   const initialValues = {
     header: '',
     description: '',
@@ -26,7 +26,7 @@ export const EditChoice = () => {
         choiceId: selectedChoice.choiceId,
       }
       const args = { variables, tenantId }
-      const { data } = await handleEditChoice(editMenuChoice, args)
+      const { data } = await handleEditChoice(updateMenuChoice, args)
 
       setFormView('CREATE_ITEM_VIEW')
     },

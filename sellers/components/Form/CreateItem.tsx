@@ -1,6 +1,6 @@
 // GraphQL
 import { useMutation, useQuery } from '@apollo/client'
-import { ADD_MENU_ITEM } from 'graphql/mutations/menu-item/addMenuItem'
+import { ADD_MENU_ITEM } from 'graphql/mutations/menu-item/createMenuItem'
 import { CONNECT_IMAGE_TO_MENU_ITEM } from 'graphql/mutations/image/connectImageToMenuItem'
 import { CONNECT_MENU_CHOICES_TO_MENU_ITEM } from 'graphql/mutations/menu-choice/connectingMenuChoicesToMenuItem'
 import { CONNECT_MENU_SELECTIONS_TO_MENU_CHOICES } from 'graphql/mutations/menu-selection/connectingMenuSelectionToMenuChoice'
@@ -23,7 +23,7 @@ import { MENU_SELECTIONS_BY_TENANT } from 'graphql/queries/menu-selection/menuSe
 import DropdownSelect from './DropdownSelect'
 
 export const CreateItem = () => {
-  const [addMenuItem] = useMutation(ADD_MENU_ITEM)
+  const [createMenuItem] = useMutation(ADD_MENU_ITEM)
   const [connectImageToMenuItem] = useMutation(CONNECT_IMAGE_TO_MENU_ITEM)
   const [connectMenuChoicesToMenuItem] = useMutation(CONNECT_MENU_CHOICES_TO_MENU_ITEM)
   const [connectMenuSelectionsToMenuChoice] = useMutation(CONNECT_MENU_SELECTIONS_TO_MENU_CHOICES)
@@ -67,10 +67,10 @@ export const CreateItem = () => {
       }
 
       const args = { variables, menuId }
-      const { data } = await handleCreateItem(addMenuItem, args)
+      const { data } = await handleCreateItem(createMenuItem, args)
 
       const {
-        addMenuItem: {
+        createMenuItem: {
           menuItem: { itemId },
         },
       } = data
@@ -122,10 +122,10 @@ export const CreateItem = () => {
   })
 
   // useEffect(() => {
-  //   if (data && data.addMenuItem && state.image) {
+  //   if (data && data.createMenuItem && state.image) {
   //     const variables = {
   //       imageId: state.image.uploadImage.imageId,
-  //       itemId: data.addMenuItem.itemId,
+  //       itemId: data.createMenuItem.itemId,
   //     }
 
   //     console.log({ variables })

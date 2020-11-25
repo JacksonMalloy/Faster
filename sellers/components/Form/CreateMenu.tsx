@@ -3,7 +3,7 @@ import UploadFile from 'components/UploadFile'
 import Field from 'components/common/Field'
 import useForm from 'components/common/hooks/useForm'
 import { useMutation } from '@apollo/client'
-import { ADD_MENU } from 'graphql/mutations/menu/addMenu'
+import { ADD_MENU } from 'graphql/mutations/menu/createMenu'
 import { CONNECT_IMAGE_TO_MENU } from 'graphql/mutations/image/connectImageToMenu'
 import { handleConnectImage, handleCreateMenu } from '../Services/Menu'
 import Form from '../UI/Form'
@@ -12,7 +12,7 @@ import { useUI } from '../Context'
 export const CreateMenu = () => {
   const { tenantId, formImage, openToast, reset } = useUI()
 
-  const [addMenu, { data }] = useMutation(ADD_MENU)
+  const [createMenu, { data }] = useMutation(ADD_MENU)
   const [connectImageToMenu] = useMutation(CONNECT_IMAGE_TO_MENU)
 
   const { values, errors, handleChange, handleSubmit, handleBlur } = useForm({
@@ -20,12 +20,12 @@ export const CreateMenu = () => {
       const { menu_title } = values
       const variables = { tenantId: tenantId, title: menu_title }
       const args = { variables, tenantId }
-      const { data } = await handleCreateMenu(addMenu, args)
+      const { data } = await handleCreateMenu(createMenu, args)
 
       const handleImageUpload = async () => {
         const variables = {
           imageId: formImage.uploadImage.imageId,
-          menuId: data.addMenu.menu.menuId,
+          menuId: data.createMenu.menu.menuId,
         }
 
         const args = { variables, tenantId }
@@ -33,7 +33,7 @@ export const CreateMenu = () => {
         return imageData
       }
 
-      if (data && data.addMenu && formImage) {
+      if (data && data.createMenu && formImage) {
         const imageData = await handleImageUpload()
         console.log({ imageData })
       }

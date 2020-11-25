@@ -2,7 +2,7 @@ import { gql } from '@apollo/client'
 
 export const REMOVE_ADMIN = gql`
   mutation($adminId: ID!) {
-    removeAdmin(adminId: $adminId) {
+    deleteAdmin(adminId: $adminId) {
       code
       message
       success

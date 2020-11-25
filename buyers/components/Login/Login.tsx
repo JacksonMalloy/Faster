@@ -4,8 +4,8 @@ import Field from '../common/Field'
 import styled from 'styled-components'
 import { useMutation } from '@apollo/client'
 import useForm from './useForm'
-import { SIGNUP_CUSTOMER } from '../../graphql/mutations/customer/signupCustomer'
-import { SIGNIN_CUSTOMER } from '../../graphql/mutations/customer/signinCustomer'
+import { SIGNUP_CUSTOMER } from '../../graphql/mutations/customer/registerCustomer'
+import { SIGNIN_CUSTOMER } from '../../graphql/mutations/customer/loginCustomer'
 import { SEND_SMS } from '../../graphql/mutations/customer/sendMessage'
 
 const StyledForm = styled.form`
@@ -69,8 +69,8 @@ const Login = () => {
     name: '',
   }
 
-  const [signupCustomer] = useMutation(SIGNUP_CUSTOMER)
-  const [signinCustomer] = useMutation(SIGNIN_CUSTOMER)
+  const [registerCustomer] = useMutation(SIGNUP_CUSTOMER)
+  const [loginCustomer] = useMutation(SIGNIN_CUSTOMER)
   const [sendMessage] = useMutation(SEND_SMS)
 
   // SIGN UP / REGISTRATION
@@ -87,13 +87,13 @@ const Login = () => {
 
       console.log({ values })
 
-      signupCustomer({
+      registerCustomer({
         variables: { email: account_email, phone: account_phone, name: name },
       }).then(({ data }) => {
         console.log({ data })
 
         const {
-          signupCustomer: {
+          registerCustomer: {
             customer: { customerId, phone },
           },
         } = data
@@ -118,11 +118,11 @@ const Login = () => {
       const { pin } = values
       const variables = { email: signupValues.account_email, phone: signupValues.account_phone, pin: pin }
 
-      signinCustomer({
+      loginCustomer({
         variables: variables,
       }).then(({ data }) => {
         const {
-          signinCustomer: {
+          loginCustomer: {
             customer: { token },
           },
         } = data

@@ -25,7 +25,7 @@ export const update = (
   let query = `UPDATE ${tableName} SET ${updates} `
 
   if (!isObjEmpty(conditions)) {
-    const keys = Object.keys(conditions)
+    const keys = Object.keys(keysToSnake(conditions))
     const condTuples = keys.map((key, index) => `${key} = $${index + 1 + len} `)
     const condPlaceholders = condTuples.join(' AND ')
 
@@ -41,6 +41,8 @@ export const update = (
   Object.keys(conditions).forEach((key) => {
     params.push(conditions[key])
   })
+
+  console.log({ query })
 
   return { query, params }
 }

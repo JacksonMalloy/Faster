@@ -21,7 +21,7 @@ export const MenuQueries = {
     const menuRepo = new MenuRepository()
     const data = await menuRepo.getAllMenusByTenant(tenantId)
 
-    const searchData = data.filter((data) => data.title.toLowerCase().includes(searchQuery.toLowerCase()))
+    const searchData = data.filter((data: any) => data.title.toLowerCase().includes(searchQuery.toLowerCase()))
 
     return searchData
   },
@@ -39,19 +39,19 @@ type UpdateMenuArgs = {
 }
 
 export const MenuMutations = {
-  addMenu: async (parent: any, args: CreateMenuArgs, context: any, info: any) => {
+  createMenu: async (parent: any, args: CreateMenuArgs, context: any, info: any) => {
     if (!isDirector(context)) return { code: 401, message: 'Not Authorized', success: false }
     const menuRepo = new MenuRepository()
     const data = await menuRepo.createMenu(args)
     return data
   },
-  editMenu: async (parent: any, args: UpdateMenuArgs, context: any, info: any) => {
+  updateMenu: async (parent: any, args: UpdateMenuArgs, context: any, info: any) => {
     if (!isDirector(context)) return { code: 401, message: 'Not Authorized', success: false }
     const menuRepo = new MenuRepository()
     const data = await menuRepo.updateMenu(args)
     return data
   },
-  removeMenu: async (parent: any, args: { menuId: number }, context: any, info: any) => {
+  deleteMenu: async (parent: any, args: { menuId: number }, context: any, info: any) => {
     if (!isDirector(context)) return { code: 401, message: 'Not Authorized', success: false }
     const menuRepo = new MenuRepository()
     const data = await menuRepo.deleteMenu(args)

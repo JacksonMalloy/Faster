@@ -2,7 +2,7 @@ import { gql } from '@apollo/client'
 
 export const EDIT_MENU_ITEM = gql`
   mutation($itemId: ID!, $menuId: ID!, $name: String, $basePrice: String, $description: String, $headerId: ID) {
-    editMenuItem(
+    updateMenuItem(
       itemId: $itemId
       menuId: $menuId
       name: $name

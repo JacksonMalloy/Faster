@@ -1,5 +1,6 @@
 import db from '../../db/config'
 import { update } from '../../helpers'
+import { keysToCamel } from '../../utils'
 
 type CreateSelectionArgs = {
   tenantId: number
@@ -27,26 +28,26 @@ export default class MenuSelectionRepository {
   ////////////////////
 
   async getMenuSelectionById(selectionId: number) {
-    const query = `SELECT * FROM "fm"."selections" WHERE selectionId = $1`
+    const query = `SELECT * FROM "fm"."selections" WHERE selection_id = $1`
     const params = [selectionId]
 
     try {
       const result = await db.query(query, params)
-      return result.rows[0]
+      return keysToCamel(result.rows[0])
     } catch (error) {
-       throw error
+      throw error
     }
   }
 
   async getMenuSelectionsByMenuItem(itemId: number) {
-    const query = `SELECT * FROM "fm"."selections" WHERE itemId = $1`
+    const query = `SELECT * FROM "fm"."selections" WHERE item_id = $1`
     const params = [itemId]
 
     try {
       const result = await db.query(query, params)
-      return result.rows
+      return keysToCamel(result.rows)
     } catch (error) {
-       throw error
+      throw error
     }
   }
 
@@ -57,32 +58,31 @@ export default class MenuSelectionRepository {
                     "fm"."selections" s
                   INNER JOIN
                     "fm"."selections_to_choices" mc
-                  ON mc.selectionId = s.selectionId
+                  ON mc.selection_id = s.selection_id
                   INNER JOIN
                     "fm"."choices" c
-                    ON c.choiceId = mc.choiceId
-                  WHERE c.choiceId = $1`
+                    ON c.choice_id = mc.choice_id
+                  WHERE c.choice_id = $1`
 
     const params = [choiceId]
 
     try {
       const result = await db.query(query, params)
-      //console.log(result.rows[0])
-      return result.rows
+      return keysToCamel(result.rows)
     } catch (error) {
-       throw error
+      throw error
     }
   }
 
   async getMenuSelectionsByTenant(tenantId: number) {
-    const query = `SELECT * FROM "fm"."selections" WHERE tenantId = $1`
+    const query = `SELECT * FROM "fm"."selections" WHERE tenant_id = $1`
     const params = [tenantId]
 
     try {
       const result = await db.query(query, params)
-      return result.rows
+      return keysToCamel(result.rows)
     } catch (error) {
-       throw error
+      throw error
     }
   }
 
@@ -91,7 +91,7 @@ export default class MenuSelectionRepository {
   ////////////////////
 
   async createMenuSelection({ tenantId, itemId, name, valueAdd }: CreateSelectionArgs) {
-    const query = `INSERT INTO "fm"."selections" (tenantId, itemId, name, valueAdd) VALUES ($1, $2, $3, $4) RETURNING *`
+    const query = `INSERT INTO "fm"."selections" (tenant_id, item_id, name, value_add) VALUES ($1, $2, $3, $4) RETURNING *`
     const params = [tenantId, itemId, name, valueAdd]
 
     try {
@@ -101,10 +101,10 @@ export default class MenuSelectionRepository {
         code: 201,
         message: 'Menu selection created!',
         success: true,
-        menuSelection: result.rows[0],
+        menuSelection: keysToCamel(result.rows[0]),
       }
     } catch (error) {
-       return {
+      return {
         code: 503,
         message: error,
         success: false,
@@ -125,10 +125,10 @@ export default class MenuSelectionRepository {
         code: 200,
         message: 'Menu selecction updated!',
         success: true,
-        menuSelection: result.rows[0],
+        menuSelection: keysToCamel(result.rows[0]),
       }
     } catch (error) {
-       return {
+      return {
         code: 503,
         message: error,
         success: false,
@@ -137,7 +137,7 @@ export default class MenuSelectionRepository {
   }
 
   async deleteMenuSelection(selectionId: number) {
-    const query = `DELETE FROM "fm"."selections" WHERE selectionId = $1`
+    const query = `DELETE FROM "fm"."selections" WHERE selection_id = $1`
     const params = [selectionId]
 
     try {
@@ -154,13 +154,10 @@ export default class MenuSelectionRepository {
           code: 204,
           message: 'The menu selection was deleted',
           success: true,
-          menuSelection: {
-            selectionId: selectionId,
-          },
         }
       }
     } catch (error) {
-       return {
+      return {
         code: 503,
         message: error,
         success: false,
@@ -173,7 +170,7 @@ export default class MenuSelectionRepository {
       return `(${choiceId}, ${id})`
     })
 
-    const query = `INSERT INTO "fm"."selections_to_choices" (choiceId, selectionId) VALUES ${values} ON CONFLICT DO NOTHING RETURNING * `
+    const query = `INSERT INTO "fm"."selections_to_choices" (choice_id, selection_id) VALUES ${values} ON CONFLICT DO NOTHING RETURNING * `
 
     try {
       const result = await db.query(query)
@@ -184,7 +181,7 @@ export default class MenuSelectionRepository {
           message: 'Selections to choices are already connected',
           success: true,
           connection: {
-            connect: result.rows,
+            connect: keysToCamel(result.rows),
           },
         }
       }
@@ -194,11 +191,11 @@ export default class MenuSelectionRepository {
         message: 'Connected selections to choices successfully',
         success: true,
         connection: {
-          connect: result.rows,
+          connect: keysToCamel(result.rows),
         },
       }
     } catch (error) {
-       return {
+      return {
         code: 503,
         message: error,
         success: false,
@@ -211,7 +208,7 @@ export default class MenuSelectionRepository {
       return `${id}`
     })
 
-    const query = `DELETE FROM "fm"."selections_to_choices" WHERE choiceId = ${choiceId} AND selectionId IN (${values}) RETURNING *`
+    const query = `DELETE FROM "fm"."selections_to_choices" WHERE choice_id = ${choiceId} AND selection_id IN (${values}) RETURNING *`
 
     try {
       const result = await db.query(query)
@@ -222,7 +219,7 @@ export default class MenuSelectionRepository {
           message: 'Selections to choices are already disconnected',
           success: true,
           connection: {
-            connect: result.rows,
+            connect: keysToCamel(result.rows),
           },
         }
       }
@@ -232,11 +229,11 @@ export default class MenuSelectionRepository {
         message: 'Removed connection of selections to choices',
         success: true,
         connection: {
-          connect: result.rows,
+          connect: keysToCamel(result.rows),
         },
       }
     } catch (error) {
-       return {
+      return {
         code: 503,
         message: error,
         success: false,

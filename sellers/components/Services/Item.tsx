@@ -9,7 +9,7 @@ export const handleCreateItem = async (mutation, args) => {
     variables: variables,
     update: (store, { data }) => {
       const {
-        addMenuItem: {
+        createMenuItem: {
           menuItem: { menuId },
         },
       } = data
@@ -24,7 +24,7 @@ export const handleCreateItem = async (mutation, args) => {
           query: MENU_ITEMS_BY_MENU,
           variables: { menuId: menuId },
           data: {
-            menuItemsByMenu: [...menuItemData.menuItemsByMenu, data.addMenuItem.menuItem],
+            menuItemsByMenu: [...menuItemData.menuItemsByMenu, data.createMenuItem.menuItem],
           },
         })
       } catch (error) {
@@ -59,10 +59,10 @@ export const handleEditItem = async (mutation, args) => {
         })
 
         const oldItem = menuItemData.menuItemsByMenu.find(
-          (obj: { itemId: number }) => obj.itemId === data.editMenuItem.menuItem.itemId
+          (obj: { itemId: number }) => obj.itemId === data.updateMenuItem.menuItem.itemId
         )
 
-        const newData = itemReplacer(menuItemData.menuItemsByMenu, oldItem, data.editMenuItem.menuItem)
+        const newData = itemReplacer(menuItemData.menuItemsByMenu, oldItem, data.updateMenuItem.menuItem)
 
         store.writeQuery({
           query: MENU_ITEMS_BY_MENU,

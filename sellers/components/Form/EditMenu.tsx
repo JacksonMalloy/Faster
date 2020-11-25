@@ -3,7 +3,7 @@ import { Button } from 'components/common/Button'
 import UploadFile from 'components/UploadFile'
 import useForm from 'components/common/hooks/useForm'
 import { useMutation } from '@apollo/client'
-import { EDIT_MENU } from 'graphql/mutations/menu/editMenu'
+import { EDIT_MENU } from 'graphql/mutations/menu/updateMenu'
 import { CONNECT_IMAGE_TO_MENU } from 'graphql/mutations/image/connectImageToMenu'
 import { handleConnectImage, handleEditMenu } from '../Services/Menu'
 import { Form } from '../UI'
@@ -12,7 +12,7 @@ import { useEffect } from 'react'
 
 export const EditMenu = () => {
   const { tenantId, formImage, reset, openToast, selectedMenu, setFormView } = useUI()
-  const [editMenu] = useMutation(EDIT_MENU)
+  const [updateMenu] = useMutation(EDIT_MENU)
   const [connectImageToMenu] = useMutation(CONNECT_IMAGE_TO_MENU)
   const initialValues = {
     menu_title: '',
@@ -24,12 +24,12 @@ export const EditMenu = () => {
       const { menu_title } = values
       const variables = { menuId: selectedMenu.menuId, title: menu_title }
       const args = { variables, tenantId }
-      const { data } = await handleEditMenu(editMenu, args)
+      const { data } = await handleEditMenu(updateMenu, args)
 
       if (formImage) {
         const variables = {
           imageId: formImage.uploadImage.imageId,
-          menuId: data.editMenu.menu.menuId,
+          menuId: data.updateMenu.menu.menuId,
         }
 
         const args = { variables, tenantId }

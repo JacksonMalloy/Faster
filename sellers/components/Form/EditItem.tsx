@@ -1,8 +1,8 @@
 // GraphQL
 import { useMutation, useQuery } from '@apollo/client'
 import { CONNECT_IMAGE_TO_MENU_ITEM } from 'graphql/mutations/image/connectImageToMenuItem'
-import { EDIT_MENU_ITEM } from 'graphql/mutations/menu-item/editMenuItem'
-import { EDIT_MENU_HEADER } from 'graphql/mutations/menu-header/editMenuHeader'
+import { EDIT_MENU_ITEM } from 'graphql/mutations/menu-item/updateMenuItem'
+import { EDIT_MENU_HEADER } from 'graphql/mutations/menu-header/updateMenuHeader'
 import { REMOVE_MENU_CHOICES_MENU_ITEMS_CONNECTION } from 'graphql/mutations/menu-choice/removeMenuChoicesMenuItemsConnection'
 import { REMOVE_MENU_SELECTIONS_MENU_CHOICES_CONNECTION } from 'graphql/mutations/menu-selection/removeMenuSelectionsMenuChoicesConntection'
 import { CONNECT_MENU_CHOICES_TO_MENU_ITEM } from 'graphql/mutations/menu-choice/connectingMenuChoicesToMenuItem'
@@ -45,7 +45,7 @@ export const EditItem = () => {
   } = useUI()
 
   // Mutations
-  const [editMenuItem, { error: editItemError }] = useMutation(EDIT_MENU_ITEM)
+  const [updateMenuItem, { error: editItemError }] = useMutation(EDIT_MENU_ITEM)
   const [connectImageToMenuItem, { error: connectImageToItemError }] = useMutation(CONNECT_IMAGE_TO_MENU_ITEM)
   const [removeMenuChoicesMenuItemsConnection, { error: removeChoicesToItemsError }] = useMutation(
     REMOVE_MENU_CHOICES_MENU_ITEMS_CONNECTION
@@ -97,7 +97,7 @@ export const EditItem = () => {
 
       const args = { variables, menuId }
 
-      const handleData = await handleEditItem(editMenuItem, args)
+      const handleData = await handleEditItem(updateMenuItem, args)
       console.log({ handleData })
       console.log({ selectedItem })
 

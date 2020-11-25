@@ -7,10 +7,10 @@ import { useUI } from 'components/Context'
 import Dropdown from 'components/UI/Dropdown'
 import { handleDeleteHeader } from 'components/Services/Header'
 import { useMutation } from '@apollo/client'
-import { REMOVE_MENU_HEADER } from 'graphql/mutations/menu-header/removeMenuHeader'
+import { REMOVE_MENU_HEADER } from 'graphql/mutations/menu-header/deleteMenuHeader'
 import Field from 'components/common/Field'
-import { REMOVE_MENU_SELECTION } from 'graphql/mutations/menu-selection/removeMenuSelection'
-import { REMOVE_MENU_CHOICE } from 'graphql/mutations/menu-choice/removeMenuChoice'
+import { REMOVE_MENU_SELECTION } from 'graphql/mutations/menu-selection/deleteMenuSelection'
+import { REMOVE_MENU_CHOICE } from 'graphql/mutations/menu-choice/deleteMenuChoice'
 import { handleDeleteChoice } from 'components/Services/Choice'
 import { handleDeleteSelection } from 'components/Services/Selection'
 
@@ -22,9 +22,9 @@ const DropDownSelect = ({
   variant = 'HEADER', // HEADER, SELECTION, CHOICE
   UUID,
 }) => {
-  const [removeMenuHeader] = useMutation(REMOVE_MENU_HEADER)
-  const [removeMenuSelection] = useMutation(REMOVE_MENU_SELECTION)
-  const [removeMenuChoice] = useMutation(REMOVE_MENU_CHOICE)
+  const [deleteMenuHeader] = useMutation(REMOVE_MENU_HEADER)
+  const [deleteMenuSelection] = useMutation(REMOVE_MENU_SELECTION)
+  const [deleteMenuChoice] = useMutation(REMOVE_MENU_CHOICE)
 
   const {
     formHeader,
@@ -227,7 +227,7 @@ const DropDownSelect = ({
       case 'HEADER':
         variables = { headerId: item.headerId }
         args = { variables, menuId }
-        await handleDeleteHeader(removeMenuHeader, args).then(() => {
+        await handleDeleteHeader(deleteMenuHeader, args).then(() => {
           openToast('Header was successfully deleted', 'SUCCESS')
         })
         break
@@ -235,7 +235,7 @@ const DropDownSelect = ({
       case 'SELECTION':
         variables = { selectionId: item.selectionId }
         args = { variables, menuId }
-        await handleDeleteSelection(removeMenuSelection, args).then(() => {
+        await handleDeleteSelection(deleteMenuSelection, args).then(() => {
           openToast('Selection was successfully deleted', 'SUCCESS')
         })
         break
@@ -243,7 +243,7 @@ const DropDownSelect = ({
       case 'CHOICE':
         variables = { choiceId: item.choiceId }
         args = { variables, menuId }
-        await handleDeleteChoice(removeMenuChoice, args).then(() => {
+        await handleDeleteChoice(deleteMenuChoice, args).then(() => {
           openToast('Choice was successfully deleted', 'SUCCESS')
         })
         break

@@ -16,9 +16,9 @@ export const handleEditMenu = async (mutation, args) => {
         })
 
         const oldItem = menuData.menusByTenant.find(
-          (obj: { menuId: any }) => obj.menuId === data.editMenu.menu.menuId
+          (obj: { menuId: any }) => obj.menuId === data.updateMenu.menu.menuId
         )
-        const newData = itemReplacer(menuData.menusByTenant, oldItem, data.editMenu.menu)
+        const newData = itemReplacer(menuData.menusByTenant, oldItem, data.updateMenu.menu)
 
         store.writeQuery({
           query: MENUS_BY_TENANT,
@@ -85,7 +85,7 @@ export const handleCreateMenu = async (mutation, args) => {
         query: MENUS_BY_TENANT,
         variables: { tenantId: tenantId },
         data: {
-          menusByTenant: [...menuData.menusByTenant, data.addMenu],
+          menusByTenant: [...menuData.menusByTenant, data.createMenu],
         },
       })
     },
@@ -104,7 +104,7 @@ export const handleDeleteMenu = async (mutation, args) => {
         variables: { tenantId: tenantId },
       })
 
-      const newData = itemDeleter(menuData.menusByTenant, data.removeMenu.menu.menuId)
+      const newData = itemDeleter(menuData.menusByTenant, data.deleteMenu.menu.menuId)
 
       store.writeQuery({
         query: MENUS_BY_TENANT,
@@ -134,9 +134,9 @@ export const handlePublishMenu = async (mutation, args) => {
         })
 
         const oldItem = menuData.menusByTenant.find(
-          (obj: { menuId: any }) => obj.menuId === data.editMenu.menu.menuId
+          (obj: { menuId: any }) => obj.menuId === data.updateMenu.menu.menuId
         )
-        const newData = itemReplacer(menuData.menusByTenant, oldItem, data.editMenu.menu)
+        const newData = itemReplacer(menuData.menusByTenant, oldItem, data.updateMenu.menu)
 
         store.writeQuery({
           query: MENUS_BY_TENANT,

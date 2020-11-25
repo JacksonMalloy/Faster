@@ -1,4 +1,5 @@
 import db from '../../db/config'
+import { keysToCamel } from '../../utils'
 
 // Download the helper library from https://www.twilio.com/docs/node/install
 // Your Account Sid and Auth Token from twilio.com/console
@@ -60,16 +61,16 @@ export default class TwilioRepository {
 
       const { body, sid, direction } = data
 
-      const query = `INSERT INTO "fm"."sms" (body, sid, phone, direction, customerId) VALUES ($1, $2, $3, $4, $5)
+      const query = `INSERT INTO "fm"."sms" (body, sid, phone, direction, customer_id) VALUES ($1, $2, $3, $4, $5)
                       ON CONFLICT (phone) DO UPDATE SET body = excluded.body RETURNING *`
 
       const params = [body, sid, phone, direction, customerId]
 
       const result = await db.query(query, params)
 
-      return result.rows[0]
+      return keysToCamel(result.rows[0])
     } catch (error) {
-       throw error
+      throw error
     }
   }
 }

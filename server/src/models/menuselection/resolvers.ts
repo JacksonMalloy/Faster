@@ -27,32 +27,17 @@ export const MenuSelectionQueries = {
     const menuSelection = await menuSelectionRepository.getMenuSelectionById(selectionId)
     return menuSelection
   },
-  menuSelectionsByTenant: async (
-    parent: any,
-    { tenantId }: { tenantId: number },
-    context: any,
-    info: any
-  ) => {
+  menuSelectionsByTenant: async (parent: any, { tenantId }: { tenantId: number }, context: any, info: any) => {
     const menuSelectionRepository = new MenuSelectionRepository()
     const menuSelections = await menuSelectionRepository.getMenuSelectionsByTenant(tenantId)
     return menuSelections
   },
-  menuSelectionsByMenuChoice: async (
-    parent: any,
-    { choiceId }: { choiceId: number },
-    context: any,
-    info: any
-  ) => {
+  menuSelectionsByMenuChoice: async (parent: any, { choiceId }: { choiceId: number }, context: any, info: any) => {
     const menuSelectionRepository = new MenuSelectionRepository()
     const menuSelections = await menuSelectionRepository.getMenuSelectionsByMenuChoice(choiceId)
     return menuSelections
   },
-  menuSelectionsByMenuItem: async (
-    parent: any,
-    { itemId }: { itemId: number },
-    context: any,
-    info: any
-  ) => {
+  menuSelectionsByMenuItem: async (parent: any, { itemId }: { itemId: number }, context: any, info: any) => {
     const menuSelectionRepository = new MenuSelectionRepository()
     const menuSelections = await menuSelectionRepository.getMenuSelectionsByMenuItem(itemId)
     return menuSelections
@@ -60,24 +45,19 @@ export const MenuSelectionQueries = {
 }
 
 export const MenuSelectionMutations = {
-  addMenuSelection: async (parent: any, args: CreateSelectionArgs, context: any, info: any) => {
+  createMenuSelection: async (parent: any, args: CreateSelectionArgs, context: any, info: any) => {
     if (!isDirector(context)) return { code: 401, message: 'Not Authorized', success: false }
     const menuSelectionRepository = new MenuSelectionRepository()
     const data = await menuSelectionRepository.createMenuSelection(args)
     return data
   },
-  removeMenuSelection: async (
-    parent: any,
-    { selectionId }: { selectionId: number },
-    context: any,
-    info: any
-  ) => {
+  deleteMenuSelection: async (parent: any, { selectionId }: { selectionId: number }, context: any, info: any) => {
     if (!isDirector(context)) return { code: 401, message: 'Not Authorized', success: false }
     const menuSelectionRepository = new MenuSelectionRepository()
     const data = await menuSelectionRepository.deleteMenuSelection(selectionId)
     return data
   },
-  editMenuSelection: async (parent: any, args: UpdateSelectionArgs, context: any, info: any) => {
+  updateMenuSelection: async (parent: any, args: UpdateSelectionArgs, context: any, info: any) => {
     if (!isDirector(context)) return { code: 401, message: 'Not Authorized', success: false }
     const menuSelectionRepository = new MenuSelectionRepository()
     const data = await menuSelectionRepository.updateMenuSelection(args)

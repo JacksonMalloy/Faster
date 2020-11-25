@@ -5,12 +5,12 @@ import { useMutation } from '@apollo/client'
 import { Form } from '../UI'
 import { useUI } from '../Context'
 import { useEffect } from 'react'
-import { EDIT_MENU_HEADER } from 'graphql/mutations/menu-header/editMenuHeader'
+import { EDIT_MENU_HEADER } from 'graphql/mutations/menu-header/updateMenuHeader'
 import { handleEditHeader } from 'components/Services/Header'
 
 export const EditHeader = () => {
   const { tenantId, menuId, reset, openToast, selectedHeader, setFormView } = useUI()
-  const [editMenuHeader] = useMutation(EDIT_MENU_HEADER)
+  const [updateMenuHeader] = useMutation(EDIT_MENU_HEADER)
   const initialValues = {
     header: '',
     description: '',
@@ -27,7 +27,7 @@ export const EditHeader = () => {
         headerId: selectedHeader.headerId,
       }
       const args = { variables, menuId }
-      const { data } = await handleEditHeader(editMenuHeader, args)
+      const { data } = await handleEditHeader(updateMenuHeader, args)
 
       setFormView('CREATE_ITEM_VIEW')
     },

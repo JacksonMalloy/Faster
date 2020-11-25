@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 // GraphQL
 import { useMutation } from '@apollo/client'
-import { ADD_MENU_HEADER } from 'graphql/mutations/menu-header/addMenuHeader'
+import { ADD_MENU_HEADER } from 'graphql/mutations/menu-header/createMenuHeader'
 import { MENU_HEADERS_BY_MENU } from 'graphql/queries/menu-header/menuHeadersByMenu'
 
 // Common Components
@@ -13,7 +13,7 @@ import { useUI } from 'components/Context'
 import { Form } from 'components/UI'
 
 export const CreateHeader = () => {
-  const [addMenuHeader] = useMutation(ADD_MENU_HEADER)
+  const [createMenuHeader] = useMutation(ADD_MENU_HEADER)
 
   const { tenantId, menuId, setFormView } = useUI()
 
@@ -21,7 +21,7 @@ export const CreateHeader = () => {
     onSubmit: async ({ errors, values }) => {
       const { name, description } = values
 
-      addMenuHeader({
+      createMenuHeader({
         variables: { name: name, description: description, menuId: menuId },
         update: (store, { data }) => {
           try {
@@ -34,7 +34,7 @@ export const CreateHeader = () => {
               query: MENU_HEADERS_BY_MENU,
               variables: { menuId: menuId },
               data: {
-                menuHeadersByMenu: [...menuHeaderData.menuHeadersByMenu, data.addMenuHeader.menuHeader],
+                menuHeadersByMenu: [...menuHeaderData.menuHeadersByMenu, data.createMenuHeader.menuHeader],
               },
             })
           } catch (error) {

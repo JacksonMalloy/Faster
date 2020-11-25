@@ -2,7 +2,7 @@ import { gql } from '@apollo/client'
 
 export const ADD_MENU_SELECTION = gql`
   mutation($tenantId: ID!, $name: String!, $valueAdd: String) {
-    addMenuSelection(tenantId: $tenantId, name: $name, valueAdd: $valueAdd) {
+    createMenuSelection(tenantId: $tenantId, name: $name, valueAdd: $valueAdd) {
       code
       success
       message

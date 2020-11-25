@@ -7,7 +7,7 @@ import Trash from 'assets/trash.svg'
 import Tools from 'assets/tools.svg'
 import FileMedia from 'assets/file-media.svg'
 
-import { REMOVE_MENU_ITEM } from 'graphql/mutations/menu-item/removeMenuItem'
+import { REMOVE_MENU_ITEM } from 'graphql/mutations/menu-item/deleteMenuItem'
 import { MENU_ITEMS_BY_MENU } from 'graphql/queries/menu-item/menuItemsByMenu'
 import { itemDeleter } from 'utils'
 import { useUI } from '../Context'
@@ -47,7 +47,7 @@ export const ItemCard = ({ item }: CardProps) => {
     formAddOns,
   } = useUI()
 
-  const [removeMenuItem] = useMutation(REMOVE_MENU_ITEM)
+  const [deleteMenuItem] = useMutation(REMOVE_MENU_ITEM)
 
   const [loadItem, { called, loading, data }] = useLazyQuery(MENU_ITEM, {
     variables: { itemId: itemId },
@@ -55,7 +55,7 @@ export const ItemCard = ({ item }: CardProps) => {
   })
 
   const deleteMenuItem = () => {
-    removeMenuItem({
+    deleteMenuItem({
       variables: { itemId: itemId },
       update: (store, { data }) => {
         const menuItemData: any = store.readQuery({
@@ -63,7 +63,7 @@ export const ItemCard = ({ item }: CardProps) => {
           variables: { menuId: menuId },
         })
 
-        const newData = itemDeleter(menuItemData.menuItemsByMenu, data.removeMenuItem.menuItem.itemId)
+        const newData = itemDeleter(menuItemData.menuItemsByMenu, data.deleteMenuItem.menuItem.itemId)
 
         store.writeQuery({
           query: MENU_ITEMS_BY_MENU,

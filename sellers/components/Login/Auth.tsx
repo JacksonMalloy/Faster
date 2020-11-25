@@ -4,7 +4,7 @@ import useForm from 'components/common/hooks/useForm'
 import { useRouter } from 'next/router'
 import { Login } from './Login'
 import { Recovery } from './Recovery'
-import { SIGNIN_ADMIN } from 'graphql/mutations/admin/signinAdmin'
+import { SIGNIN_ADMIN } from 'graphql/mutations/admin/loginAdmin'
 
 const Auth = () => {
   const router = useRouter()
@@ -14,7 +14,7 @@ const Auth = () => {
     password: '',
   }
 
-  const [signinAdmin] = useMutation(SIGNIN_ADMIN)
+  const [loginAdmin] = useMutation(SIGNIN_ADMIN)
   const [serverError, setServerError] = useState({ message: '', error: false })
 
   const { values, errors, handleChange, handleSubmit, handleBlur } = useForm({
@@ -22,12 +22,12 @@ const Auth = () => {
     onSubmit: ({ values }: any) => {
       const { account_email, password } = values
 
-      signinAdmin({
+      loginAdmin({
         variables: { email: account_email, password: password },
       })
         .then(({ data }) => {
           // If admin does not exist
-          if (!data.signinAdmin.success) {
+          if (!data.loginAdmin.success) {
             setServerError({ message: 'Invalid credentials', error: true })
 
             setTimeout(() => {
@@ -36,7 +36,7 @@ const Auth = () => {
           }
 
           const {
-            signinAdmin: {
+            loginAdmin: {
               admin: { token },
             },
           } = data

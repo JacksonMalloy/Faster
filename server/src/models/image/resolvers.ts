@@ -30,12 +30,7 @@ export const ImageQueries = {
     const data = await imageRepo.getImageByMenuItem(itemId)
     return data
   },
-  imagesByTenant: async (
-    parent: any,
-    { tenantId }: { tenantId: number },
-    context: any,
-    info: any
-  ) => {
+  imagesByTenant: async (parent: any, { tenantId }: { tenantId: number }, context: any, info: any) => {
     const imageRepo = new ImageRepository()
     const data = await imageRepo.getImagesByTenant(tenantId)
     return data

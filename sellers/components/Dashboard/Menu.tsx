@@ -3,7 +3,7 @@ import Link from 'next/link'
 import styled from 'styled-components'
 import { Button } from 'components/common/Button'
 import { useMutation } from '@apollo/client'
-import { REMOVE_MENU } from 'graphql/mutations/menu/removeMenu'
+import { REMOVE_MENU } from 'graphql/mutations/menu/deleteMenu'
 import { MENUS_BY_TENANT } from 'graphql/queries/menu/menusByTenant'
 import UserContext from 'stores/UserContext'
 import { menuDeleted } from 'stores/alertActions'
@@ -44,7 +44,7 @@ const StyledActions = styled.div`
 
 export const Menu = ({ menu, image }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [removeMenu, { data }] = useMutation(REMOVE_MENU)
+  const [deleteMenu, { data }] = useMutation(REMOVE_MENU)
 
   const [state, dispatch] = useContext(UserContext)
 

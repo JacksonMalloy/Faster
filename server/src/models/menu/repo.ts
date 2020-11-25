@@ -1,5 +1,6 @@
 import db from '../../db/config'
 import { update } from '../../helpers'
+import { keysToCamel } from '../../utils'
 
 type CreateMenuArgs = {
   tenantId: number
@@ -14,33 +15,31 @@ type UpdateMenuArgs = {
 
 export default class MenuRepository {
   async getAllMenusByTenant(tenantId: number) {
-    const query = `SELECT * FROM "fm"."menus" WHERE tenantId = $1`
+    const query = `SELECT * FROM "fm"."menus" WHERE tenant_id = $1`
     const params = [tenantId]
 
     try {
       const result = await db.query(query, params)
-
-      return result.rows
+      return keysToCamel(result.rows)
     } catch (error) {
-       throw error
+      throw error
     }
   }
 
   async getMenuById(menuId: number) {
-    const query = `SELECT * FROM "fm"."menus" WHERE menuId = $1`
+    const query = `SELECT * FROM "fm"."menus" WHERE menu_id = $1`
     const params = [menuId]
 
     try {
       const result = await db.query(query, params)
-
-      return result.rows[0]
+      return keysToCamel(result.rows[0])
     } catch (error) {
-       throw error
+      throw error
     }
   }
 
   async createMenu({ tenantId, title }: CreateMenuArgs) {
-    const query = `INSERT INTO "fm"."menus" (tenantId, title) VALUES ($1, $2) RETURNING *`
+    const query = `INSERT INTO "fm"."menus" (tenant_id, title) VALUES ($1, $2) RETURNING *`
     const params = [tenantId, title]
 
     try {
@@ -50,14 +49,13 @@ export default class MenuRepository {
         code: 201,
         message: 'Menu created!',
         success: true,
-        menu: result.rows[0],
+        menu: keysToCamel(result.rows[0]),
       }
     } catch (error) {
-       return {
+      return {
         code: 503,
         message: error,
         success: false,
-        customer: {},
       }
     }
   }
@@ -74,32 +72,30 @@ export default class MenuRepository {
         code: 200,
         message: 'Menu updated!',
         success: true,
-        menu: result.rows[0],
+        menu: keysToCamel(result.rows[0]),
       }
     } catch (error) {
-       return {
+      return {
         code: 503,
         message: error,
         success: false,
-        customer: {},
       }
     }
   }
 
   async deleteMenu({ menuId }: { menuId: number }) {
-    const query = `DELETE FROM "fm"."menus" WHERE menuId = $1`
+    const query = `DELETE FROM "fm"."menus" WHERE menu_id = $1`
     const params = [menuId]
 
     const resetImageId = async (menuId: number) => {
-      const query = `UPDATE "fm"."images" SET menuId = null WHERE menuId = $1 RETURNING *`
+      const query = `UPDATE "fm"."images" SET menu_id = null WHERE menu_id = $1 RETURNING *`
       const params = [menuId]
 
       try {
         const result = await db.query(query, params)
 
-        return result.rows
+        return keysToCamel(result.rows)
       } catch (error) {
-        console.log(error)
         throw error
       }
     }
@@ -114,28 +110,19 @@ export default class MenuRepository {
           code: 410,
           message: 'The menu no longer exists!',
           success: false,
-          menu: {
-            menuId: menuId,
-            tenantId: '',
-          },
         }
       } else {
         return {
           code: 204,
           message: 'The menu was deleted',
           success: true,
-          menu: {
-            menuId: menuId,
-            tenantId: '',
-          },
         }
       }
     } catch (error) {
-       return {
+      return {
         code: 503,
         message: error,
         success: false,
-        customer: {},
       }
     }
   }

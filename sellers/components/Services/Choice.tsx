@@ -15,7 +15,7 @@ export const handleDeleteChoice = async (mutation, args) => {
     //   console.log({ menuHeaderData })
     //   console.log({ data })
 
-    //   const newData = itemDeleter(menuHeaderData.menuHeadersByMenu, data.removeMenuHeader.menuHeader.headerId)
+    //   const newData = itemDeleter(menuHeaderData.menuHeadersByMenu, data.deleteMenuHeader.menuHeader.headerId)
 
     //   console.log({ newData })
 
@@ -45,10 +45,10 @@ export const handleEditChoice = async (mutation, args) => {
         })
 
         const oldItem = choiceData.menuChoicesByTenant.find(
-          (obj: { choiceId: any }) => obj.choiceId === data.editMenuChoice.menuChoice.choiceId
+          (obj: { choiceId: any }) => obj.choiceId === data.updateMenuChoice.menuChoice.choiceId
         )
 
-        const newData = itemReplacer(choiceData.menuChoicesByTenant, oldItem, data.editMenuChoice.menuChoice)
+        const newData = itemReplacer(choiceData.menuChoicesByTenant, oldItem, data.updateMenuChoice.menuChoice)
 
         store.writeQuery({
           query: MENU_CHOICES_BY_TENANT,
@@ -82,7 +82,7 @@ export const handleCreateChoice = async (mutation, args) => {
           query: MENU_CHOICES_BY_TENANT,
           variables: { tenantId: tenantId },
           data: {
-            menuChoicesByTenant: [...choiceData.menuChoicesByTenant, data.addMenuChoice],
+            menuChoicesByTenant: [...choiceData.menuChoicesByTenant, data.createMenuChoice],
           },
         })
       } catch (error) {

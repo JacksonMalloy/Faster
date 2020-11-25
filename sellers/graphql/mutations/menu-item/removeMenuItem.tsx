@@ -2,7 +2,7 @@ import { gql } from '@apollo/client'
 
 export const REMOVE_MENU_ITEM = gql`
   mutation($itemId: ID!) {
-    removeMenuItem(itemId: $itemId) {
+    deleteMenuItem(itemId: $itemId) {
       code
       success
       message

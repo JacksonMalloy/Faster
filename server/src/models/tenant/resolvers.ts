@@ -50,13 +50,13 @@ export const TenantMutations = {
     const data = await tenantRepo.registerTenant(args)
     return data
   },
-  removeTenant: async (parent: any, { tenantId }: { tenantId: number }, context: any, info: any) => {
+  deleteTenant: async (parent: any, { tenantId }: { tenantId: number }, context: any, info: any) => {
     if (!isDirector(context)) return { code: 401, message: 'Not Authorized', success: false }
     const tenantRepo = new TenantRepository()
     const data = await tenantRepo.deleteTenant(tenantId)
     return data
   },
-  editTenant: async (parent: any, args: UpdateTenantArgs, context: any, info: any) => {
+  updateTenant: async (parent: any, args: UpdateTenantArgs, context: any, info: any) => {
     // if (!isDirector(context)) return { code: 401, message: 'Not Authorized', success: false }
     const tenantRepo = new TenantRepository()
     const data = await tenantRepo.updateTenant(args)

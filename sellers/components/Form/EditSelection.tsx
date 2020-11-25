@@ -7,13 +7,13 @@ import { useUI } from '../Context'
 import { useEffect } from 'react'
 
 import { handleEditChoice } from 'components/Services/Choice'
-import { EDIT_MENU_SELECTION } from 'graphql/mutations/menu-selection/editMenuSelection'
+import { EDIT_MENU_SELECTION } from 'graphql/mutations/menu-selection/updateMenuSelection'
 import { handleEditSelection } from 'components/Services/Selection'
 import { CurrencyField } from '../common/CurrencyField'
 
 export const EditSelection = () => {
   const { tenantId, reset, openToast, selectedHeader, selectedSelection, setFormView } = useUI()
-  const [editMenuSelection] = useMutation(EDIT_MENU_SELECTION)
+  const [updateMenuSelection] = useMutation(EDIT_MENU_SELECTION)
   const initialValues = {
     name: '',
     valueAdd: '',
@@ -30,7 +30,7 @@ export const EditSelection = () => {
       }
       const args = { variables, tenantId }
 
-      const { data } = await handleEditSelection(editMenuSelection, args)
+      const { data } = await handleEditSelection(updateMenuSelection, args)
 
       setFormView('CREATE_ITEM_VIEW')
     },

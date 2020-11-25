@@ -7,11 +7,11 @@ import Field from 'components/common/Field'
 import useForm from 'components/common/hooks/useForm'
 import { useUI } from 'components/Context'
 import { Form } from 'components/UI'
-import { ADD_MENU_CHOICE } from 'graphql/mutations/menu-choice/addMenuChoice'
+import { ADD_MENU_CHOICE } from 'graphql/mutations/menu-choice/createMenuChoice'
 import { handleCreateChoice } from 'components/Services/Choice'
 
 export const CreateChoice = () => {
-  const [addMenuChoice, { data }] = useMutation(ADD_MENU_CHOICE)
+  const [createMenuChoice, { data }] = useMutation(ADD_MENU_CHOICE)
 
   const { tenantId, menuId, setFormView } = useUI()
 
@@ -24,7 +24,7 @@ export const CreateChoice = () => {
         description: values.description,
       }
       const args = { variables, tenantId }
-      const { data } = await handleCreateChoice(addMenuChoice, args)
+      const { data } = await handleCreateChoice(createMenuChoice, args)
 
       setFormView('CREATE_ITEM_VIEW')
     },
