@@ -24,10 +24,9 @@ export default class OrderRepository {
         order: result.rows[0],
       }
     } catch (error) {
-      //console.log(error)
       return {
         code: 503,
-        message: `Sorry we're having issues processing your request. Please try again later!`,
+        message: error,
         success: false,
       }
     }

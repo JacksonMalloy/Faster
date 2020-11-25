@@ -34,8 +34,7 @@ export default class MenuSelectionRepository {
       const result = await db.query(query, params)
       return result.rows[0]
     } catch (error) {
-      //console.log(error)
-      throw error
+       throw error
     }
   }
 
@@ -47,8 +46,7 @@ export default class MenuSelectionRepository {
       const result = await db.query(query, params)
       return result.rows
     } catch (error) {
-      //console.log(error)
-      throw error
+       throw error
     }
   }
 
@@ -72,8 +70,7 @@ export default class MenuSelectionRepository {
       //console.log(result.rows[0])
       return result.rows
     } catch (error) {
-      //console.log(error)
-      throw error
+       throw error
     }
   }
 
@@ -85,8 +82,7 @@ export default class MenuSelectionRepository {
       const result = await db.query(query, params)
       return result.rows
     } catch (error) {
-      //console.log(error)
-      throw error
+       throw error
     }
   }
 
@@ -108,10 +104,9 @@ export default class MenuSelectionRepository {
         menuSelection: result.rows[0],
       }
     } catch (error) {
-      //console.log(error)
-      return {
+       return {
         code: 503,
-        message: `Sorry we're having issues processing your request. Please try again later!`,
+        message: error,
         success: false,
       }
     }
@@ -133,10 +128,9 @@ export default class MenuSelectionRepository {
         menuSelection: result.rows[0],
       }
     } catch (error) {
-      //console.log(error)
-      return {
+       return {
         code: 503,
-        message: `Sorry we're having issues processing your request. Please try again later!`,
+        message: error,
         success: false,
       }
     }
@@ -166,10 +160,9 @@ export default class MenuSelectionRepository {
         }
       }
     } catch (error) {
-      //console.log(error)
-      return {
+       return {
         code: 503,
-        message: `Sorry we're having issues processing your request. Please try again later!`,
+        message: error,
         success: false,
       }
     }
@@ -205,10 +198,9 @@ export default class MenuSelectionRepository {
         },
       }
     } catch (error) {
-      //console.log(error)
-      return {
+       return {
         code: 503,
-        message: `Sorry we're having issues processing your request. Please try again later!`,
+        message: error,
         success: false,
       }
     }
@@ -244,10 +236,9 @@ export default class MenuSelectionRepository {
         },
       }
     } catch (error) {
-      //console.log(error)
-      return {
+       return {
         code: 503,
-        message: `Sorry we're having issues processing your request. Please try again later!`,
+        message: error,
         success: false,
       }
     }

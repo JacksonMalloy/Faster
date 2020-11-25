@@ -68,8 +68,7 @@ export const resolvers = {
 
         return result.rows[0]
       } catch (error) {
-        //console.log(error)
-        throw error
+           throw error
       }
     },
   },
@@ -94,8 +93,7 @@ export const resolvers = {
         //console.log(result.rows)
         return result.rows
       } catch (error) {
-        //console.log(error)
-        throw error
+           throw error
       }
     },
   },
@@ -112,8 +110,7 @@ export const resolvers = {
         //console.log(result.rows)
         return result.rows
       } catch (error) {
-        //console.log(error)
-        throw error
+           throw error
       }
     },
   },
@@ -129,8 +126,7 @@ export const resolvers = {
         //console.log(result.rows)
         return result.rows[0]
       } catch (error) {
-        //console.log(error)
-        throw error
+           throw error
       }
     },
     menuItems: async (parent: { menuId: number }, args: any, context: any, info: any) => {
@@ -142,8 +138,7 @@ export const resolvers = {
 
         return result.rows
       } catch (error) {
-        //console.log(error)
-        throw error
+           throw error
       }
     },
   },
@@ -168,8 +163,7 @@ export const resolvers = {
         const result = await db.query(query, params)
         return result.rows
       } catch (error) {
-        //console.log(error)
-        throw error
+           throw error
       }
     },
     menuHeader: async (parent: { headerId: number }, args: any, context: any, info: any) => {
@@ -186,8 +180,7 @@ export const resolvers = {
         //console.log(result.rows)
         return result.rows[0]
       } catch (error) {
-        //console.log(error)
-        throw error
+           throw error
       }
     },
   },
@@ -205,8 +198,7 @@ export const resolvers = {
         const result = await db.query(query, params)
         return result.rows
       } catch (error) {
-        //console.log(error)
-        throw error
+           throw error
       }
     },
   },
@@ -224,8 +216,7 @@ export const resolvers = {
 
         return result.rows
       } catch (error) {
-        //console.log(error)
-        throw error
+           throw error
       }
     },
   },

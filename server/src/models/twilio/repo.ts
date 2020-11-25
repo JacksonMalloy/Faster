@@ -69,8 +69,7 @@ export default class TwilioRepository {
 
       return result.rows[0]
     } catch (error) {
-      //console.log(error)
-      throw error
+       throw error
     }
   }
 }

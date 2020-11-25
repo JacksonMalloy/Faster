@@ -39,8 +39,7 @@ export default class AdminRepository {
 
       return result.rows[0]
     } catch (error) {
-      //console.log(error)
-      throw error
+       throw error
     }
   }
 
@@ -52,8 +51,7 @@ export default class AdminRepository {
       const result = await db.query(query, params)
       return result.rows
     } catch (error) {
-      //console.log(error)
-      throw error
+       throw error
     }
   }
 
@@ -87,10 +85,9 @@ export default class AdminRepository {
         admin: Object.assign(result.rows[0], { token }),
       }
     } catch (error) {
-      //console.log(error)
-      return {
+       return {
         code: 503,
-        message: `Sorry we're having issues processing your request. Please try again later!`,
+        message: error,
         success: false,
       }
     }
@@ -170,10 +167,9 @@ export default class AdminRepository {
         admin: Object.assign(result.rows[0], { token }, { permissions }),
       }
     } catch (error) {
-      //console.log(error)
-      return {
+       return {
         code: 503,
-        message: `Sorry we're having issues processing your request. Please try again later!`,
+        message: error,
         success: false,
         type: null,
       }
@@ -216,10 +212,9 @@ export default class AdminRepository {
         admin: Object.assign(result.rows[0], { token }),
       }
     } catch (error) {
-      //console.log(error)
-      return {
+       return {
         code: 503,
-        message: `Sorry we're having issues processing your request. Please try again later!`,
+        message: error,
         success: false,
       }
     }
@@ -238,8 +233,7 @@ export default class AdminRepository {
 
         return result.rows[0].authToken
       } catch (error) {
-        //console.log(error)
-        throw error
+           throw error
       }
     }
 
@@ -266,10 +260,9 @@ export default class AdminRepository {
         }
       }
     } catch (error) {
-      //console.log(error)
-      return {
+       return {
         code: 503,
-        message: `Sorry we're having issues processing your request. Please try again later!`,
+        message: error,
         success: false,
       }
     }
@@ -300,10 +293,9 @@ export default class AdminRepository {
         }
       }
     } catch (error) {
-      //console.log(error)
-      return {
+       return {
         code: 503,
-        message: `Sorry we're having issues processing your request. Please try again later!`,
+        message: error,
         success: false,
       }
     }
@@ -321,8 +313,7 @@ export default class AdminRepository {
 
         return result.rows
       } catch (error) {
-        //console.log(error)
-        throw error
+           throw error
       }
     }
 

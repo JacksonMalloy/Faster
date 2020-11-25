@@ -31,8 +31,7 @@ export default class MenuChoiceRepository {
       //console.log(result.rows[0])
       return result.rows[0]
     } catch (error) {
-      //console.log(error)
-      throw error
+       throw error
     }
   }
 
@@ -45,8 +44,7 @@ export default class MenuChoiceRepository {
       //console.log(result.rows)
       return result.rows
     } catch (error) {
-      //console.log(error)
-      throw error
+       throw error
     }
   }
 
@@ -67,10 +65,9 @@ export default class MenuChoiceRepository {
         menuChoice: result.rows[0],
       }
     } catch (error) {
-      //console.log(error)
-      return {
+       return {
         code: 503,
-        message: `Sorry we're having issues processing your request. Please try again later!`,
+        message: error,
         success: false,
       }
     }
@@ -91,10 +88,9 @@ export default class MenuChoiceRepository {
         menuChoice: result.rows[0],
       }
     } catch (error) {
-      //console.log(error)
-      return {
+       return {
         code: 503,
-        message: `Sorry we're having issues processing your request. Please try again later!`,
+        message: error,
         success: false,
       }
     }
@@ -129,10 +125,9 @@ export default class MenuChoiceRepository {
         }
       }
     } catch (error) {
-      //console.log(error)
-      return {
+       return {
         code: 503,
-        message: `Sorry we're having issues processing your request. Please try again later!`,
+        message: error,
         success: false,
       }
     }
@@ -168,10 +163,9 @@ export default class MenuChoiceRepository {
         },
       }
     } catch (error) {
-      //console.log(error)
-      return {
+       return {
         code: 503,
-        message: `Sorry we're having issues processing your request. Please try again later!`,
+        message: error,
         success: false,
       }
     }
@@ -207,10 +201,9 @@ export default class MenuChoiceRepository {
         },
       }
     } catch (error) {
-      //console.log(error)
-      return {
+       return {
         code: 503,
-        message: `Sorry we're having issues processing your request. Please try again later!`,
+        message: error,
         success: false,
       }
     }

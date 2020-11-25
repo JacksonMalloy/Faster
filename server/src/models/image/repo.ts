@@ -44,16 +44,11 @@ export default class ImageRepository {
         const result = await db.query(query, params)
         return result.rows[0]
       } catch (error) {
-        //console.log(error)
-        throw error
+           throw error
       }
     }
 
-    const cloudinaryUpload = async (
-      stream: { pipe: (arg0: any) => void },
-      tenantId: number,
-      tenantName: string
-    ) => {
+    const cloudinaryUpload = async (stream: { pipe: (arg0: any) => void }, tenantId: number, tenantName: string) => {
       console.log('Cloudinary Upload')
 
       return new Promise((resolve, reject) => {
@@ -108,8 +103,7 @@ export default class ImageRepository {
         deleteFromCloudinary(cloudinary_id)
       }
     } catch (error) {
-      //console.log(error)
-      throw error
+       throw error
     }
   }
 
@@ -124,8 +118,7 @@ export default class ImageRepository {
         //console.log(result.rows)
         return result.rows
       } catch (error) {
-        //console.log(error)
-        throw error
+           throw error
       }
     }
 
@@ -146,10 +139,9 @@ export default class ImageRepository {
         },
       }
     } catch (error) {
-      //console.log(error)
-      return {
+       return {
         code: 503,
-        message: `Sorry we're having issues processing your request. Please try again later!`,
+        message: error,
         success: false,
         connection: {
           connect: {},
@@ -169,8 +161,7 @@ export default class ImageRepository {
         //console.log(result.rows)
         return result.rows
       } catch (error) {
-        //console.log(error)
-        throw error
+           throw error
       }
     }
     const query = `UPDATE "fm"."images" SET itemId = $1 WHERE imageId = $2 RETURNING *`
@@ -183,8 +174,7 @@ export default class ImageRepository {
 
       return result.rows[0]
     } catch (error) {
-      //console.log(error)
-      throw error
+       throw error
     }
   }
 
@@ -200,8 +190,7 @@ export default class ImageRepository {
       const result = await db.query(query, params)
       return result.rows
     } catch (error) {
-      //console.log(error)
-      throw error
+       throw error
     }
   }
 
@@ -213,8 +202,7 @@ export default class ImageRepository {
       const result = await db.query(query, params)
       return result.rows
     } catch (error) {
-      //console.log(error)
-      throw error
+       throw error
     }
   }
 
@@ -226,8 +214,7 @@ export default class ImageRepository {
       const result = await db.query(query, params)
       return result.rows[0]
     } catch (error) {
-      //console.log(error)
-      throw error
+       throw error
     }
   }
 
@@ -239,8 +226,7 @@ export default class ImageRepository {
       const result = await db.query(query, params)
       return result.rows[0]
     } catch (error) {
-      //console.log(error)
-      throw error
+       throw error
     }
   }
 }

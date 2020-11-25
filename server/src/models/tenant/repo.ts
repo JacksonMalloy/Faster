@@ -1,5 +1,5 @@
 import db from '../../db/config'
-import { createTenantAuthToken } from '../../utils'
+import { createTenantAuthToken, keysToCamel } from '../../utils'
 import { update } from '../../helpers'
 
 type RegisterTenantArgs = {
@@ -37,9 +37,10 @@ export default class TenantRepository {
 
     try {
       const result = await db.query(query)
+
+      console.log(result.rows)
       return result.rows
     } catch (error) {
-      //console.log(error)
       throw error
     }
   }
@@ -55,7 +56,6 @@ export default class TenantRepository {
 
       return result.rows
     } catch (error) {
-      //console.log(error)
       throw error
     }
   }
@@ -73,7 +73,6 @@ export default class TenantRepository {
 
         return result.rows
       } catch (error) {
-        //console.log(error)
         throw error
       }
     }
@@ -87,7 +86,6 @@ export default class TenantRepository {
 
         return result.rows
       } catch (error) {
-        //console.log(error)
         throw error
       }
     }
@@ -100,7 +98,6 @@ export default class TenantRepository {
 
       return Object.assign(result.rows[0], { admins }, { directors })
     } catch (error) {
-      //console.log(error)
       throw error
     }
   }
@@ -112,7 +109,7 @@ export default class TenantRepository {
   async registerTenant(args: RegisterTenantArgs) {
     const { name, address, city, countryRegion, phone, websiteUrl, postalCode, subAddress, province } = args
 
-    const query = `INSERT INTO "fm"."tenants" (name, address, city, countryRegion, phone, websiteUrl, postalCode, subAddress, province, authToken, accessCode) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) ON CONFLICT DO NOTHING RETURNING *`
+    const query = `INSERT INTO "fm"."tenants" (name, address, city, country_region, phone, website_url, postal_code, sub_address, province, auth_token, access_code) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) ON CONFLICT DO NOTHING RETURNING *`
 
     const createTenantWithAccessCode = async () => {
       const authToken = createTenantAuthToken(name)
@@ -130,6 +127,7 @@ export default class TenantRepository {
         );
         return values
       }
+
       const accessCode = generateAccessCode()
 
       const params = [
@@ -157,13 +155,12 @@ export default class TenantRepository {
           code: 201,
           message: 'Tenant created.',
           success: true,
-          tenant: result.rows[0],
+          tenant: keysToCamel(result.rows[0]),
         }
       } catch (error) {
-        //console.log(error)
         return {
           code: 503,
-          message: `Sorry we're having issues processing your request. Please try again later!`,
+          message: error,
           success: false,
         }
       }
@@ -190,16 +187,12 @@ export default class TenantRepository {
           code: 204,
           message: 'The tenant was deleted',
           success: true,
-          tenant: {
-            tenantId: tenantId,
-          },
         }
       }
     } catch (error) {
-      //console.log(error)
       return {
         code: 503,
-        message: `Sorry we're having issues processing your request. Please try again later!`,
+        message: error,
         success: false,
       }
     }
@@ -226,10 +219,9 @@ export default class TenantRepository {
         tenant: result.rows[0],
       }
     } catch (error) {
-      //console.log(error)
       return {
         code: 503,
-        message: `Sorry we're having issues processing your request. Please try again later!`,
+        message: error,
         success: false,
       }
     }

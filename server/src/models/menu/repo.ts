@@ -22,8 +22,7 @@ export default class MenuRepository {
 
       return result.rows
     } catch (error) {
-      //console.log(error)
-      throw error
+       throw error
     }
   }
 
@@ -36,8 +35,7 @@ export default class MenuRepository {
 
       return result.rows[0]
     } catch (error) {
-      //console.log(error)
-      throw error
+       throw error
     }
   }
 
@@ -55,10 +53,9 @@ export default class MenuRepository {
         menu: result.rows[0],
       }
     } catch (error) {
-      //console.log(error)
-      return {
+       return {
         code: 503,
-        message: `Sorry we're having issues processing your request. Please try again later!`,
+        message: error,
         success: false,
         customer: {},
       }
@@ -80,10 +77,9 @@ export default class MenuRepository {
         menu: result.rows[0],
       }
     } catch (error) {
-      //console.log(error)
-      return {
+       return {
         code: 503,
-        message: `Sorry we're having issues processing your request. Please try again later!`,
+        message: error,
         success: false,
         customer: {},
       }
@@ -135,10 +131,9 @@ export default class MenuRepository {
         }
       }
     } catch (error) {
-      //console.log(error)
-      return {
+       return {
         code: 503,
-        message: `Sorry we're having issues processing your request. Please try again later!`,
+        message: error,
         success: false,
         customer: {},
       }

@@ -47,8 +47,7 @@ export default class CustomerRepository {
       //console.log(result)
       return result.rows
     } catch (error) {
-      //console.log(error)
-      throw error
+       throw error
     }
   }
 
@@ -77,8 +76,7 @@ export default class CustomerRepository {
         const result = await db.query(query, params)
         return result.rows
       } catch (error) {
-        //console.log(error)
-        throw error
+           throw error
       }
     }
 
@@ -89,8 +87,7 @@ export default class CustomerRepository {
 
       return Object.assign(result.rows[0], { tenants })
     } catch (error) {
-      //console.log(error)
-      throw error
+       throw error
     }
   }
 
@@ -119,8 +116,7 @@ export default class CustomerRepository {
 
               return result.rows[0]
             } catch (error) {
-              //console.log(error)
-              throw error
+                       throw error
             }
           }
 
@@ -134,8 +130,7 @@ export default class CustomerRepository {
 
         return { code: 201, message: 'User created.', success: true, customer: result.rows[0] }
       } catch (error) {
-        //console.log(error)
-        throw error
+           throw error
       }
     }
 
@@ -147,8 +142,7 @@ export default class CustomerRepository {
 
         return result.rows
       } catch (error) {
-        //console.log(error)
-        throw error
+           throw error
       }
     }
 
@@ -168,8 +162,7 @@ export default class CustomerRepository {
 
           return { code: 201, message: 'User created.', success: true, customer: result.rows[0] }
         } catch (error) {
-          //console.log(error)
-          throw error
+               throw error
         }
       }
 
@@ -200,8 +193,7 @@ export default class CustomerRepository {
         const result = await db.query(query, params)
         return result.rows
       } catch (error) {
-        //console.log(error)
-        throw error
+           throw error
       }
     }
 
@@ -290,7 +282,7 @@ export default class CustomerRepository {
     } catch (error) {
       return {
         code: 503,
-        message: `Sorry we're having issues processing your request. Please try again later!`,
+        message: error,
         success: false,
         customer: {},
       }
@@ -324,7 +316,7 @@ export default class CustomerRepository {
     } catch (error) {
       return {
         code: 503,
-        message: `Sorry we're having issues processing your request. Please try again later!`,
+        message: error,
         success: false,
         customer: {},
       }

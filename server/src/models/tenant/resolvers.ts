@@ -57,7 +57,7 @@ export const TenantMutations = {
     return data
   },
   editTenant: async (parent: any, args: UpdateTenantArgs, context: any, info: any) => {
-    if (!isDirector(context)) return { code: 401, message: 'Not Authorized', success: false }
+    // if (!isDirector(context)) return { code: 401, message: 'Not Authorized', success: false }
     const tenantRepo = new TenantRepository()
     const data = await tenantRepo.updateTenant(args)
     return data

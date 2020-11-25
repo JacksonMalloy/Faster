@@ -1,3 +1,5 @@
+import { keysToSnake } from './utils'
+
 const isObject = (data: {}) => data !== null && typeof data === 'object'
 const isObjEmpty = (obj: {}) => isObject(obj) && Object.keys(obj).length === 0
 /**
@@ -14,7 +16,8 @@ export const update = (
 ): { query: string; params: string[] } => {
   // Strips all undefined key/value pairs
   Object.keys(data).forEach((key) => data[key] === undefined && delete data[key])
-  const dKeys = Object.keys(data)
+
+  const dKeys = Object.keys(keysToSnake(data))
   const dataTuples = dKeys.map((key, index) => `${key} = $${index + 1}`)
   const updates = dataTuples.join(', ')
   const len = Object.keys(data).length

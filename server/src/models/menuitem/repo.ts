@@ -44,8 +44,7 @@ export default class MenuItemRepository {
 
       return result.rows
     } catch (error) {
-      //console.log(error)
-      throw error
+       throw error
     }
   }
 
@@ -57,8 +56,7 @@ export default class MenuItemRepository {
       const result = await db.query(query, params)
       return result.rows
     } catch (error) {
-      //console.log(error)
-      throw error
+       throw error
     }
   }
 
@@ -71,8 +69,7 @@ export default class MenuItemRepository {
       //console.log(result)
       return result.rows[0]
     } catch (error) {
-      //console.log(error)
-      throw error
+       throw error
     }
   }
 
@@ -94,10 +91,9 @@ export default class MenuItemRepository {
         menuItem: result.rows[0],
       }
     } catch (error) {
-      //console.log(error)
-      return {
+       return {
         code: 503,
-        message: `Sorry we're having issues processing your request. Please try again later!`,
+        message: error,
         success: false,
       }
     }
@@ -119,10 +115,9 @@ export default class MenuItemRepository {
         menuItem: result.rows[0],
       }
     } catch (error) {
-      //console.log(error)
-      return {
+       return {
         code: 503,
-        message: `Sorry we're having issues processing your request. Please try again later!`,
+        message: error,
         success: false,
       }
     }
@@ -153,10 +148,9 @@ export default class MenuItemRepository {
         }
       }
     } catch (error) {
-      //console.log(error)
-      return {
+       return {
         code: 503,
-        message: `Sorry we're having issues processing your request. Please try again later!`,
+        message: error,
         success: false,
       }
     }
