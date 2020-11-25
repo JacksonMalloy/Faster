@@ -18,17 +18,17 @@ export const Info = ({ data }) => {
 
   useEffect(() => {
     initialize({
-      access_code: data.access_code,
+      accessCode: data.accessCode,
       address: data.address,
-      auth_token: data.auth_token,
+      authToken: data.authToken,
       city: data.city,
-      country_region: data.country_region,
+      countryRegion: data.countryRegion,
       name: data.name,
       phone: data.phone,
-      postal_code: data.postal_code,
+      postalCode: data.postalCode,
       province: data.province,
-      sub_address: data.name,
-      website_url: data.website_url,
+      subAddress: data.name,
+      websiteUrl: data.websiteUrl,
     })
   }, [data, initialize])
 
@@ -46,11 +46,11 @@ export const Info = ({ data }) => {
         // error={errors.name}
       />
       <Field
-        id="access_code"
-        name="access_code"
+        id="accessCode"
+        name="accessCode"
         required
         label="Access Code"
-        value={values.access_code}
+        value={values.accessCode}
         onChange={handleChange}
         type="text"
         // error={errors.name}
@@ -67,11 +67,11 @@ export const Info = ({ data }) => {
         // error={errors.name}
       />
       <Field
-        id="website_url"
-        name="website_url"
+        id="websiteUrl"
+        name="websiteUrl"
         required
         label="Website URL"
-        value={values.website_url}
+        value={values.websiteUrl}
         onChange={handleChange}
         type="text"
         // error={errors.name}
@@ -108,33 +108,33 @@ export const Info = ({ data }) => {
       />
 
       <Field
-        id="country_region"
-        name="country_region"
+        id="countryRegion"
+        name="countryRegion"
         required
         label="Country Region"
-        value={values.country_region}
+        value={values.countryRegion}
         onChange={handleChange}
         type="text"
         // error={errors.name}
       />
 
       <Field
-        id="postal_code"
-        name="postal_code"
+        id="postalCode"
+        name="postalCode"
         required
         label="Postal Code"
-        value={values.postal_code}
+        value={values.postalCode}
         onChange={handleChange}
         type="text"
         // error={errors.name}
       />
 
       <Field
-        id="sub_address"
-        name="sub_address"
+        id="subAddress"
+        name="subAddress"
         required
         label="Sub Address"
-        value={values.sub_address}
+        value={values.subAddress}
         onChange={handleChange}
         type="text"
         // error={errors.name}
@@ -195,11 +195,11 @@ export const Info = ({ data }) => {
       <hr />
       <h1>Security</h1>
       <Field
-        id="auth_token"
-        name="auth_token"
+        id="authToken"
+        name="authToken"
         required
         label="Admin Access Token"
-        value={values.auth_token}
+        value={values.authToken}
         onChange={handleChange}
         type="text"
         // error={errors.name}

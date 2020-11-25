@@ -2,20 +2,20 @@ import db from '../../db/config'
 import { update } from '../../helpers'
 
 type CreateMenuArgs = {
-  tenant_id: number
+  tenantId: number
   title: string
 }
 
 type UpdateMenuArgs = {
-  menu_id: number
+  menuId: number
   title: number
   published: boolean
 }
 
 export default class MenuRepository {
-  async getAllMenusByTenant(tenant_id: number) {
-    const query = `SELECT * FROM "fm"."menus" WHERE tenant_id = $1`
-    const params = [tenant_id]
+  async getAllMenusByTenant(tenantId: number) {
+    const query = `SELECT * FROM "fm"."menus" WHERE tenantId = $1`
+    const params = [tenantId]
 
     try {
       const result = await db.query(query, params)
@@ -27,9 +27,9 @@ export default class MenuRepository {
     }
   }
 
-  async getMenuById(menu_id: number) {
-    const query = `SELECT * FROM "fm"."menus" WHERE menu_id = $1`
-    const params = [menu_id]
+  async getMenuById(menuId: number) {
+    const query = `SELECT * FROM "fm"."menus" WHERE menuId = $1`
+    const params = [menuId]
 
     try {
       const result = await db.query(query, params)
@@ -41,9 +41,9 @@ export default class MenuRepository {
     }
   }
 
-  async createMenu({ tenant_id, title }: CreateMenuArgs) {
-    const query = `INSERT INTO "fm"."menus" (tenant_id, title) VALUES ($1, $2) RETURNING *`
-    const params = [tenant_id, title]
+  async createMenu({ tenantId, title }: CreateMenuArgs) {
+    const query = `INSERT INTO "fm"."menus" (tenantId, title) VALUES ($1, $2) RETURNING *`
+    const params = [tenantId, title]
 
     try {
       const result = await db.query(query, params)
@@ -65,9 +65,9 @@ export default class MenuRepository {
     }
   }
 
-  async updateMenu({ menu_id, title, published }: UpdateMenuArgs) {
+  async updateMenu({ menuId, title, published }: UpdateMenuArgs) {
     const fields = { title, published }
-    const conditions = { menu_id }
+    const conditions = { menuId }
 
     const { query, params } = update(`"fm"."menus"`, conditions, fields)
 
@@ -90,13 +90,13 @@ export default class MenuRepository {
     }
   }
 
-  async deleteMenu({ menu_id }: { menu_id: number }) {
-    const query = `DELETE FROM "fm"."menus" WHERE menu_id = $1`
-    const params = [menu_id]
+  async deleteMenu({ menuId }: { menuId: number }) {
+    const query = `DELETE FROM "fm"."menus" WHERE menuId = $1`
+    const params = [menuId]
 
-    const resetImageId = async (menu_id: number) => {
-      const query = `UPDATE "fm"."images" SET menu_id = null WHERE menu_id = $1 RETURNING *`
-      const params = [menu_id]
+    const resetImageId = async (menuId: number) => {
+      const query = `UPDATE "fm"."images" SET menuId = null WHERE menuId = $1 RETURNING *`
+      const params = [menuId]
 
       try {
         const result = await db.query(query, params)
@@ -109,7 +109,7 @@ export default class MenuRepository {
     }
 
     try {
-      await resetImageId(menu_id)
+      await resetImageId(menuId)
 
       const result = await db.query(query, params)
 
@@ -119,8 +119,8 @@ export default class MenuRepository {
           message: 'The menu no longer exists!',
           success: false,
           menu: {
-            menu_id: menu_id,
-            tenant_id: '',
+            menuId: menuId,
+            tenantId: '',
           },
         }
       } else {
@@ -129,8 +129,8 @@ export default class MenuRepository {
           message: 'The menu was deleted',
           success: true,
           menu: {
-            menu_id: menu_id,
-            tenant_id: '',
+            menuId: menuId,
+            tenantId: '',
           },
         }
       }

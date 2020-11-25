@@ -13,11 +13,11 @@ export function createLoaders(user: any) {
                   "fm"."choices" c
                 INNER JOIN
                   "fm"."choices_to_items" mci
-                ON c.choice_id = mci.choice_id
+                ON c.choiceId = mci.choiceId
                 INNER JOIN
                   "fm"."items" i
-                  ON mci.item_id = i.item_id
-                WHERE i.item_id = ANY ($1)`
+                  ON mci.itemId = i.itemId
+                WHERE i.itemId = ANY ($1)`
 
     const params = [ids]
 

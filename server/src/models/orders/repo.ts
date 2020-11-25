@@ -1,18 +1,18 @@
 import db from '../../db/config'
 
 type CreateOrderArgs = {
-  admin_id: number
-  customer_id: number
+  adminId: number
+  customerId: number
   total: string
   charge: string
-  tenant_id: number
+  tenantId: number
 }
 
 export default class OrderRepository {
   async createMenuOrder(args: CreateOrderArgs) {
-    const { admin_id, customer_id, total, charge, tenant_id } = args
-    const query = `INSERT INTO "fm"."orders" (admin_id, customer_id, total, charge, tenant_id) VALUES ($1, $2, $3, $4, $5) RETURNING *`
-    const params = [admin_id, customer_id, total, charge, tenant_id]
+    const { adminId, customerId, total, charge, tenantId } = args
+    const query = `INSERT INTO "fm"."orders" (adminId, customerId, total, charge, tenantId) VALUES ($1, $2, $3, $4, $5) RETURNING *`
+    const params = [adminId, customerId, total, charge, tenantId]
 
     try {
       const result = await db.query(query, params)

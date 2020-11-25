@@ -25,7 +25,7 @@ const Dashboard = () => {
         {/* {data && data.menusByTenant && data.menusByTenant.length
           ? data.menusByTenant
               .filter((menu) => menu.published)
-              .map((menu) => <Menu menu={menu} key={menu.menu_id} image={menu.image} />)
+              .map((menu) => <Menu menu={menu} key={menu.menuId} image={menu.image} />)
           : null} */}
         {/* <Tenant /> */}
         <Entry />

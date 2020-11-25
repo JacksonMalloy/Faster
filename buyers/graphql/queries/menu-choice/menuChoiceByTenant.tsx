@@ -1,20 +1,20 @@
 import { gql } from '@apollo/client'
 
 export const MENU_CHOICES_BY_TENANT = gql`
-  query($tenant_id: ID!) {
-    menuChoicesByTenant(tenant_id: $tenant_id) {
-      choice_id
-      tenant_id
-      item_id
+  query($tenantId: ID!) {
+    menuChoicesByTenant(tenantId: $tenantId) {
+      choiceId
+      tenantId
+      itemId
       header
-      sub_header
+      description
       selections {
-        tenant_id
-        selection_id
-        choice_id
-        item_id
+        tenantId
+        selectionId
+        choiceId
+        itemId
         name
-        value_add
+        valueAdd
         selected
       }
     }

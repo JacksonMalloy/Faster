@@ -40,16 +40,16 @@ export const MenuItemCard = ({ item }) => {
     <>
       <StyledMenu onClick={handleClick}>
         <h1>{item.name}</h1>
-        <p>${item.base_price}</p>
+        <p>${item.basePrice}</p>
       </StyledMenu>
       {isExpanded ? (
         <>
           {item &&
-            item.menu_choices &&
-            item.menu_choices.map((choice) => (
-              <div key={choice.choice_id}>
+            item.menuChoices &&
+            item.menuChoices.map((choice) => (
+              <div key={choice.choiceId}>
                 <h3>{choice.header}</h3>
-                <h2>{choice.sub_header}</h2>
+                <h2>{choice.description}</h2>
                 <Selection choice={choice} />
               </div>
             ))}

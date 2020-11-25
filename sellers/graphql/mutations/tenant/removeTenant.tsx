@@ -1,13 +1,13 @@
 import { gql } from '@apollo/client'
 
 export const REMOVE_TENANT = gql`
-  mutation($tenant_id: ID!) {
-    removeMenuSelection(tenant_id: $tenant_id) {
+  mutation($tenantId: ID!) {
+    removeMenuSelection(tenantId: $tenantId) {
       code
       message
       success
       tenant {
-        tenant_id
+        tenantId
       }
     }
   }

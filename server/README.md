@@ -5,13 +5,13 @@ mutation {
     success
     message
     admin {
-      tenant_id
+      tenantId
       email
       token
-      created_at
+      createdAt
       permissions
       name
-      admin_id
+      adminId
       phone
     }
   }

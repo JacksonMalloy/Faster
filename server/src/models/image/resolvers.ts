@@ -3,46 +3,46 @@ import { isAuthenticated, isAdmin, isDirector } from '../../utils'
 
 type UploadFileArgs = {
   file: any
-  item_id: number
-  menu_id: number
-  tenant_id: number
-  tenant_name: string
+  itemId: number
+  menuId: number
+  tenantId: number
+  tenantName: string
 }
 
 type ConnectImageWithMenu = {
-  image_id: number
-  menu_id: number
+  imageId: number
+  menuId: number
 }
 
 type ConnectImageWithItem = {
-  image_id: number
-  item_id: number
+  imageId: number
+  itemId: number
 }
 
 export const ImageQueries = {
-  imageById: async (parent: any, { image_id }: { image_id: number }, context: any, info: any) => {
+  imageById: async (parent: any, { imageId }: { imageId: number }, context: any, info: any) => {
     const imageRepo = new ImageRepository()
-    const data = await imageRepo.getImageById(image_id)
+    const data = await imageRepo.getImageById(imageId)
     return data
   },
-  imageByMenuItem: async (parent: any, { item_id }: { item_id: number }, context: any, info: any) => {
+  imageByMenuItem: async (parent: any, { itemId }: { itemId: number }, context: any, info: any) => {
     const imageRepo = new ImageRepository()
-    const data = await imageRepo.getImageByMenuItem(item_id)
+    const data = await imageRepo.getImageByMenuItem(itemId)
     return data
   },
   imagesByTenant: async (
     parent: any,
-    { tenant_id }: { tenant_id: number },
+    { tenantId }: { tenantId: number },
     context: any,
     info: any
   ) => {
     const imageRepo = new ImageRepository()
-    const data = await imageRepo.getImagesByTenant(tenant_id)
+    const data = await imageRepo.getImagesByTenant(tenantId)
     return data
   },
-  imageByMenu: async (parent: any, { menu_id }: { menu_id: number }, context: any, info: any) => {
+  imageByMenu: async (parent: any, { menuId }: { menuId: number }, context: any, info: any) => {
     const imageRepo = new ImageRepository()
-    const data = await imageRepo.getImagesByMenu(menu_id)
+    const data = await imageRepo.getImagesByMenu(menuId)
     return data
   },
 }
@@ -54,10 +54,10 @@ export const ImageMutations = {
     const data = await imageRepo.uploadFile(args)
     return data
   },
-  deleteImage: async (parent: any, { image_id }: { image_id: number }, context: any, info: any) => {
+  deleteImage: async (parent: any, { imageId }: { imageId: number }, context: any, info: any) => {
     if (!isDirector(context)) return { code: 401, message: 'Not Authorized', success: false }
     const imageRepo = new ImageRepository()
-    const data = await imageRepo.deleteFile(image_id)
+    const data = await imageRepo.deleteFile(imageId)
     return data
   },
   connectImageToMenu: async (parent: any, args: ConnectImageWithMenu, context: any, info: any) => {

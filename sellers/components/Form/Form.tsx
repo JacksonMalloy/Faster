@@ -14,11 +14,11 @@ import { EditSelection } from './EditSelection'
 
 type FormProps = {
   menu?: {
-    menu_id: any
+    menuId: any
     image?: any
     published?: boolean
     title?: string
-    tenant_id?: number
+    tenantId?: number
   }
 }
 

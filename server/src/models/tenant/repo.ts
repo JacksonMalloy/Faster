@@ -6,24 +6,24 @@ type RegisterTenantArgs = {
   name: string
   address: string
   city: string
-  country_region: string
+  countryRegion: string
   phone: string
-  website_url: string
-  postal_code: string
-  sub_address: string
+  websiteUrl: string
+  postalCode: string
+  subAddress: string
   province: string
 }
 
 type UpdateTenantArgs = {
   name: string
   address: string
-  tenant_id: number
+  tenantId: number
   city: string
-  country_region: string
+  countryRegion: string
   phone: string
-  website_url: string
-  postal_code: string
-  sub_address: string
+  websiteUrl: string
+  postalCode: string
+  subAddress: string
   province: string
 }
 
@@ -44,9 +44,9 @@ export default class TenantRepository {
     }
   }
 
-  async getTenantByAccessCode(access_code: string) {
-    const query = `SELECT * FROM "fm"."tenants" WHERE access_code = $1`
-    const params = [access_code]
+  async getTenantByAccessCode(accessCode: string) {
+    const query = `SELECT * FROM "fm"."tenants" WHERE accessCode = $1`
+    const params = [accessCode]
 
     try {
       const result = await db.query(query, params)
@@ -60,13 +60,13 @@ export default class TenantRepository {
     }
   }
 
-  async getTenantById(tenant_id: number) {
-    const query = `SELECT * FROM "fm"."tenants" WHERE tenant_id = $1`
-    const params = [tenant_id]
+  async getTenantById(tenantId: number) {
+    const query = `SELECT * FROM "fm"."tenants" WHERE tenantId = $1`
+    const params = [tenantId]
 
-    const getAdminsByTenant = async (tenant_id: number) => {
-      const query = `SELECT * FROM "fm"."admins" WHERE tenant_id = $1 AND (permissions = 'ADMIN')`
-      const params = [tenant_id]
+    const getAdminsByTenant = async (tenantId: number) => {
+      const query = `SELECT * FROM "fm"."admins" WHERE tenantId = $1 AND (permissions = 'ADMIN')`
+      const params = [tenantId]
 
       try {
         const result = await db.query(query, params)
@@ -78,9 +78,9 @@ export default class TenantRepository {
       }
     }
 
-    const getDirectorsByTenant = async (tenant_id: number) => {
-      const query = `SELECT * FROM "fm"."admins" WHERE tenant_id = $1 AND (permissions = 'DIRECTOR')`
-      const params = [tenant_id]
+    const getDirectorsByTenant = async (tenantId: number) => {
+      const query = `SELECT * FROM "fm"."admins" WHERE tenantId = $1 AND (permissions = 'DIRECTOR')`
+      const params = [tenantId]
 
       try {
         const result = await db.query(query, params)
@@ -94,9 +94,9 @@ export default class TenantRepository {
 
     try {
       const result = await db.query(query, params)
-      const tenant_id = result.rows[0].tenant_id
-      const admins = await getAdminsByTenant(tenant_id)
-      const directors = await getDirectorsByTenant(tenant_id)
+      const tenantId = result.rows[0].tenantId
+      const admins = await getAdminsByTenant(tenantId)
+      const directors = await getDirectorsByTenant(tenantId)
 
       return Object.assign(result.rows[0], { admins }, { directors })
     } catch (error) {
@@ -110,13 +110,13 @@ export default class TenantRepository {
   ////////////////////
 
   async registerTenant(args: RegisterTenantArgs) {
-    const { name, address, city, country_region, phone, website_url, postal_code, sub_address, province } = args
+    const { name, address, city, countryRegion, phone, websiteUrl, postalCode, subAddress, province } = args
 
-    const query = `INSERT INTO "fm"."tenants" (name, address, city, country_region, phone, website_url, postal_code, sub_address, province, auth_token, access_code) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) ON CONFLICT DO NOTHING RETURNING *`
+    const query = `INSERT INTO "fm"."tenants" (name, address, city, countryRegion, phone, websiteUrl, postalCode, subAddress, province, authToken, accessCode) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) ON CONFLICT DO NOTHING RETURNING *`
 
     const createTenantWithAccessCode = async () => {
-      const auth_token = createTenantAuthToken(name)
-      //console.log(`TOKEN GENERATED: `, auth_token)
+      const authToken = createTenantAuthToken(name)
+      //console.log(`TOKEN GENERATED: `, authToken)
 
       function generateAccessCode() {
         return shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')).join('').substring(0, 4)
@@ -130,20 +130,20 @@ export default class TenantRepository {
         );
         return values
       }
-      const access_code = generateAccessCode()
+      const accessCode = generateAccessCode()
 
       const params = [
         name,
         address,
         city,
-        country_region,
+        countryRegion,
         phone,
-        website_url,
-        postal_code,
-        sub_address,
+        websiteUrl,
+        postalCode,
+        subAddress,
         province,
-        auth_token,
-        access_code,
+        authToken,
+        accessCode,
       ]
 
       try {
@@ -172,9 +172,9 @@ export default class TenantRepository {
     return createTenantWithAccessCode()
   }
 
-  async deleteTenant(tenant_id: number) {
-    const query = `DELETE FROM "fm"."tenants" WHERE tenant_id = $1`
-    const params = [tenant_id]
+  async deleteTenant(tenantId: number) {
+    const query = `DELETE FROM "fm"."tenants" WHERE tenantId = $1`
+    const params = [tenantId]
 
     try {
       const result = await db.query(query, params)
@@ -191,7 +191,7 @@ export default class TenantRepository {
           message: 'The tenant was deleted',
           success: true,
           tenant: {
-            tenant_id: tenant_id,
+            tenantId: tenantId,
           },
         }
       }
@@ -207,23 +207,12 @@ export default class TenantRepository {
 
   // Careful because this will allow users to rename tenant to the same as another!
   // Make sure to handle error more gracefully!
-  // name, address, city, country_region, phone, website_url, postal_code, sub_address, province
+  // name, address, city, countryRegion, phone, websiteUrl, postalCode, subAddress, province
   async updateTenant(args: UpdateTenantArgs) {
-    const {
-      tenant_id,
-      name,
-      address,
-      city,
-      country_region,
-      phone,
-      website_url,
-      postal_code,
-      sub_address,
-      province,
-    } = args
+    const { tenantId, name, address, city, countryRegion, phone, websiteUrl, postalCode, subAddress, province } = args
 
-    const fields = { name, address, city, country_region, phone, website_url, postal_code, sub_address, province }
-    const conditions = { tenant_id }
+    const fields = { name, address, city, countryRegion, phone, websiteUrl, postalCode, subAddress, province }
+    const conditions = { tenantId }
 
     const { query, params } = update(`"fm"."items"`, conditions, fields)
 

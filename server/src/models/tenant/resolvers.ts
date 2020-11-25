@@ -5,36 +5,36 @@ type RegisterTenantArgs = {
   name: string
   address: string
   city: string
-  country_region: string
+  countryRegion: string
   phone: string
-  website_url: string
-  postal_code: string
-  sub_address: string
+  websiteUrl: string
+  postalCode: string
+  subAddress: string
   province: string
 }
 
 type UpdateTenantArgs = {
   name: string
   address: string
-  tenant_id: number
+  tenantId: number
   city: string
-  country_region: string
+  countryRegion: string
   phone: string
-  website_url: string
-  postal_code: string
-  sub_address: string
+  websiteUrl: string
+  postalCode: string
+  subAddress: string
   province: string
 }
 
 export const TenantQueries = {
-  tenant: async (parent: any, { tenant_id }: { tenant_id: number }, context: any, info: any) => {
+  tenant: async (parent: any, { tenantId }: { tenantId: number }, context: any, info: any) => {
     const tenantRepo = new TenantRepository()
-    const data = await tenantRepo.getTenantById(tenant_id)
+    const data = await tenantRepo.getTenantById(tenantId)
     return data
   },
-  tenantByAccessCode: async (parent: any, { access_code }: { access_code: string }, context: any, info: any) => {
+  tenantByAccessCode: async (parent: any, { accessCode }: { accessCode: string }, context: any, info: any) => {
     const tenantRepo = new TenantRepository()
-    const [data] = await tenantRepo.getTenantByAccessCode(access_code)
+    const [data] = await tenantRepo.getTenantByAccessCode(accessCode)
     return data
   },
   tenants: async (parent: any, args: any, context: any, info: any) => {
@@ -50,10 +50,10 @@ export const TenantMutations = {
     const data = await tenantRepo.registerTenant(args)
     return data
   },
-  removeTenant: async (parent: any, { tenant_id }: { tenant_id: number }, context: any, info: any) => {
+  removeTenant: async (parent: any, { tenantId }: { tenantId: number }, context: any, info: any) => {
     if (!isDirector(context)) return { code: 401, message: 'Not Authorized', success: false }
     const tenantRepo = new TenantRepository()
-    const data = await tenantRepo.deleteTenant(tenant_id)
+    const data = await tenantRepo.deleteTenant(tenantId)
     return data
   },
   editTenant: async (parent: any, args: UpdateTenantArgs, context: any, info: any) => {

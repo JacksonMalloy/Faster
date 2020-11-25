@@ -2,15 +2,15 @@ import db from '../../db/config'
 import { update } from '../../helpers'
 
 type CreateMenuHeaderArgs = {
-  menu_id: number
+  menuId: number
   name: string
-  sub_header: string
+  description: string
 }
 
 type UpdateMenuHeaderArgs = {
-  header_id: number
+  headerId: number
   name: string
-  sub_header: string
+  description: string
 }
 
 export default class MenuHeaderRepository {
@@ -18,9 +18,9 @@ export default class MenuHeaderRepository {
   ///////READS////////
   ////////////////////
 
-  async getAllMenuHeadersByMenu(menu_id: number) {
-    const query = `SELECT * FROM "fm"."headers" WHERE menu_id = $1`
-    const params = [menu_id]
+  async getAllMenuHeadersByMenu(menuId: number) {
+    const query = `SELECT * FROM "fm"."headers" WHERE menuId = $1`
+    const params = [menuId]
 
     try {
       const result = await db.query(query, params)
@@ -32,9 +32,9 @@ export default class MenuHeaderRepository {
     }
   }
 
-  async getMenuHeaderById(header_id: number) {
-    const query = `SELECT * FROM "fm"."headers" WHERE header_id = $1`
-    const params = [header_id]
+  async getMenuHeaderById(headerId: number) {
+    const query = `SELECT * FROM "fm"."headers" WHERE headerId = $1`
+    const params = [headerId]
 
     try {
       const result = await db.query(query, params)
@@ -50,9 +50,9 @@ export default class MenuHeaderRepository {
   ///////WRITES///////
   ////////////////////
 
-  async createMenuHeader({ menu_id, name, sub_header }: CreateMenuHeaderArgs) {
-    const query = `INSERT INTO "fm"."headers" (menu_id, name, sub_header) VALUES ($1, $2, $3) RETURNING *`
-    const params = [menu_id, name, sub_header]
+  async createMenuHeader({ menuId, name, description }: CreateMenuHeaderArgs) {
+    const query = `INSERT INTO "fm"."headers" (menuId, name, description) VALUES ($1, $2, $3) RETURNING *`
+    const params = [menuId, name, description]
 
     try {
       const result = await db.query(query, params)
@@ -60,7 +60,7 @@ export default class MenuHeaderRepository {
         code: 201,
         message: 'Menu header created!',
         success: true,
-        menu_header: result.rows[0],
+        menuHeader: result.rows[0],
       }
     } catch (error) {
       //console.log(error)
@@ -68,14 +68,14 @@ export default class MenuHeaderRepository {
         code: 503,
         message: `Sorry we're having issues processing your request. Please try again later!`,
         success: false,
-        menu_header: {},
+        menuHeader: {},
       }
     }
   }
 
-  async updateMenuHeader({ header_id, name, sub_header }: UpdateMenuHeaderArgs) {
-    const fields = { name, sub_header }
-    const conditions = { header_id }
+  async updateMenuHeader({ headerId, name, description }: UpdateMenuHeaderArgs) {
+    const fields = { name, description }
+    const conditions = { headerId }
 
     const { query, params } = update(`"fm"."headers"`, conditions, fields)
 
@@ -86,7 +86,7 @@ export default class MenuHeaderRepository {
         code: 200,
         message: 'Menu header updated!',
         success: true,
-        menu_header: result.rows[0],
+        menuHeader: result.rows[0],
       }
     } catch (error) {
       //console.log(error)
@@ -94,14 +94,14 @@ export default class MenuHeaderRepository {
         code: 503,
         message: `Sorry we're having issues processing your request. Please try again later!`,
         success: false,
-        menu_header: {},
+        menuHeader: {},
       }
     }
   }
 
-  async deleteMenuHeader(header_id: number) {
-    const query = `DELETE FROM "fm"."headers" WHERE header_id = $1`
-    const params = [header_id]
+  async deleteMenuHeader(headerId: number) {
+    const query = `DELETE FROM "fm"."headers" WHERE headerId = $1`
+    const params = [headerId]
 
     try {
       const result = await db.query(query, params)
@@ -111,9 +111,9 @@ export default class MenuHeaderRepository {
           code: 410,
           message: 'The menu header no longer exists!',
           success: false,
-          menu_header: {
-            header_id: header_id,
-            menu_id: '',
+          menuHeader: {
+            headerId: headerId,
+            menuId: '',
           },
         }
       } else {
@@ -121,9 +121,9 @@ export default class MenuHeaderRepository {
           code: 204,
           message: 'The menu header was deleted',
           success: true,
-          menu_header: {
-            header_id: header_id,
-            menu_id: '',
+          menuHeader: {
+            headerId: headerId,
+            menuId: '',
           },
         }
       }
@@ -133,7 +133,7 @@ export default class MenuHeaderRepository {
         code: 503,
         message: `Sorry we're having issues processing your request. Please try again later!`,
         success: false,
-        menu_header: {},
+        menuHeader: {},
       }
     }
   }

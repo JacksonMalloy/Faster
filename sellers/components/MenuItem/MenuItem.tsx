@@ -79,7 +79,7 @@ const MenuItem = () => {
   const router = useRouter()
   const { id } = router.query
   const { data, loading, error } = useQuery(MENU_ITEM, {
-    variables: { item_id: id },
+    variables: { itemId: id },
     skip: Number.isNaN(id),
   })
 
@@ -91,27 +91,27 @@ const MenuItem = () => {
       <StyledContainer>
         {data && data.menuItem ? (
           <>
-            {data.menuItem.menu_header && (
+            {data.menuItem.menuHeader && (
               <div className="header">
-                <h1>Menu Header: {data.menuItem.menu_header.name}</h1>
-                <h2>Menu SubHeader: {data.menuItem.menu_header.sub_header}</h2>
+                <h1>Menu Header: {data.menuItem.menuHeader.name}</h1>
+                <h2>Menu SubHeader: {data.menuItem.menuHeader.description}</h2>
               </div>
             )}
             {/* <StyledMenuItemCard>
-              <img src={data.menuItem.image.image_url} />
+              <img src={data.menuItem.image.imageUrl} />
 
               <h1>{data.menuItem.name}</h1>
               <h3>{data.menuItem.description}</h3>
-              <p>{data.menuItem.base_price}</p>
-              {data.menuItem.menu_choices &&
-                data.menuItem.menu_choices.map((choice) => {
+              <p>{data.menuItem.basePrice}</p>
+              {data.menuItem.menuChoices &&
+                data.menuItem.menuChoices.map((choice) => {
                   return (
-                    <div key={choice.choice_id}>
+                    <div key={choice.choiceId}>
                       <div>{choice.header}</div>
                       {choice.selections &&
                         choice.selections.map((selection) => {
                           return (
-                            <div key={selection.selection_id}>
+                            <div key={selection.selectionId}>
                               <div style={{ paddingLeft: '1rem' }}>
                                 - {selection.name}
                               </div>
@@ -129,9 +129,9 @@ const MenuItem = () => {
       {isOpen ? (
         <ModalLayout>
           {/* <MenuSelectionForm
-            menu_id={id}
+            menuId={id}
             toggle={toggle}
-            menu_header={data.menuItem.menu_header}
+            menuHeader={data.menuItem.menuHeader}
           /> */}
         </ModalLayout>
       ) : null}

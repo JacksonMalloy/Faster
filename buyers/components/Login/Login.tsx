@@ -94,11 +94,11 @@ const Login = () => {
 
         const {
           signupCustomer: {
-            customer: { customer_id, phone },
+            customer: { customerId, phone },
           },
         } = data
 
-        sendMessage({ variables: { phone: phone, customer_id: customer_id } })
+        sendMessage({ variables: { phone: phone, customerId: customerId } })
 
         handleTwoStepPIN()
       })
@@ -128,7 +128,7 @@ const Login = () => {
         } = data
 
         if (token) {
-          localStorage.setItem('auth_token', token)
+          localStorage.setItem('authToken', token)
           window.location.reload()
         }
       })

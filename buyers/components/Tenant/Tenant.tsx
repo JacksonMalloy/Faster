@@ -7,7 +7,7 @@ import { useRouter } from 'next/router'
 const Tenant = ({ accessCode }) => {
   console.log({ accessCode })
 
-  const { loading, error, data } = useQuery(TENANT_BY_ACCESS_CODE, { variables: { access_code: accessCode } })
+  const { loading, error, data } = useQuery(TENANT_BY_ACCESS_CODE, { variables: { accessCode: accessCode } })
 
   if (loading) return <p>Loading...</p>
   if (error) return <p>Error :(</p>

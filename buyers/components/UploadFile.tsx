@@ -19,8 +19,8 @@ export default function UploadFile({ image }: UploadFileProps) {
       uploadImage({
         variables: {
           file,
-          tenant_id: tenantId,
-          tenant_name: 'Testing',
+          tenantId: tenantId,
+          tenantName: 'Testing',
         },
         update: (store, { data }) => {
           console.log({ data })
@@ -47,12 +47,12 @@ export default function UploadFile({ image }: UploadFileProps) {
           {formImage && formImage.uploadImage ? (
             <>
               <input {...getInputProps()} />
-              <img src={formImage.uploadImage.image_url} alt="hello" />
+              <img src={formImage.uploadImage.imageUrl} alt="hello" />
             </>
           ) : (
             <>
               <input {...getInputProps()} />
-              <img src={image.image_url} alt="hello" />
+              <img src={image.imageUrl} alt="hello" />
             </>
           )}
         </span>
@@ -60,7 +60,7 @@ export default function UploadFile({ image }: UploadFileProps) {
         <span {...getRootProps()}>
           <input {...getInputProps()} />
           {formImage && formImage.uploadImage ? (
-            <img src={formImage.uploadImage.image_url} alt="hello" />
+            <img src={formImage.uploadImage.imageUrl} alt="hello" />
           ) : (
             <p>Drag + Drop Image Here</p>
           )}

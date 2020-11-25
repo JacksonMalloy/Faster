@@ -61,14 +61,14 @@ export const EditItem = () => {
   )
 
   const { data: headerData, loading: headerDataLoading, error: headerDataError } = useQuery(MENU_HEADERS_BY_MENU, {
-    variables: { menu_id: selectedItem.menu_id },
+    variables: { menuId: selectedItem.menuId },
   })
 
   const { data: selectionData, loading: selectionDataLoading, error: selectionDataError } = useQuery(
     MENU_SELECTIONS_BY_TENANT,
     {
       variables: {
-        tenant_id: tenantId,
+        tenantId: tenantId,
       },
     }
   )
@@ -83,19 +83,19 @@ export const EditItem = () => {
     initialValues,
     onSubmit: async ({ errors, values }) => {
       const { title, description, price } = values
-      const { item_id, menu_id } = selectedItem
-      const headerId = formHeader ? formHeader.header_id : null
+      const { itemId, menuId } = selectedItem
+      const headerId = formHeader ? formHeader.headerId : null
 
       const variables = {
-        item_id: item_id,
-        header_id: headerId,
-        menu_id: menu_id,
+        itemId: itemId,
+        headerId: headerId,
+        menuId: menuId,
         name: title,
-        base_price: price,
+        basePrice: price,
         description: description,
       }
 
-      const args = { variables, menu_id }
+      const args = { variables, menuId }
 
       const handleData = await handleEditItem(editMenuItem, args)
       console.log({ handleData })
@@ -137,7 +137,7 @@ export const EditItem = () => {
   }
 
   useEffect(() => {
-    initialize({ title: selectedItem?.name, description: selectedItem?.description, price: selectedItem?.base_price })
+    initialize({ title: selectedItem?.name, description: selectedItem?.description, price: selectedItem?.basePrice })
   }, [initialize, selectedItem])
 
   const hasErrors = () => {

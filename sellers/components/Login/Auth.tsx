@@ -42,7 +42,7 @@ const Auth = () => {
           } = data
 
           if (token) {
-            localStorage.setItem('auth_token', token)
+            localStorage.setItem('authToken', token)
 
             if (router.pathname === '/login') {
               router.push('/menus')

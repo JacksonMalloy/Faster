@@ -23,7 +23,7 @@ const AccountPage = () => {
   if (userData.activeUserAdmin) {
     return (
       <MainNavigation permissions={userData.activeUserAdmin.permissions}>
-        <Account tenantId={userData.activeUserAdmin.tenant_id} />
+        <Account tenantId={userData.activeUserAdmin.tenantId} />
       </MainNavigation>
     )
   }

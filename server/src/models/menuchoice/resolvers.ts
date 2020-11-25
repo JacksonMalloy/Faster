@@ -3,35 +3,35 @@ import { isAuthenticated, isAdmin, isDirector } from '../../utils'
 
 type CreateMenuChoiceArgs = {
   header: string
-  sub_header: string
-  tenant_id: number
+  description: string
+  tenantId: number
 }
 
 type UpdateMenuChoiceArgs = {
   header: string
-  sub_header: string
-  choice_id: number
+  description: string
+  choiceId: number
 }
 
 type ChoiceWithItemArgs = {
-  item_id: number
-  choice_ids: number[]
+  itemId: number
+  choiceIds: number[]
 }
 
 export const MenuChoiceQueries = {
-  menuChoice: async (parent: any, { choice_id }: { choice_id: number }, context: any, info: any) => {
+  menuChoice: async (parent: any, { choiceId }: { choiceId: number }, context: any, info: any) => {
     const menuChoiceRepository = new MenuChoiceRepository()
-    const data = await menuChoiceRepository.getMenuChoiceById(choice_id)
+    const data = await menuChoiceRepository.getMenuChoiceById(choiceId)
     return data
   },
   menuChoicesByTenant: async (
     parent: any,
-    { tenant_id }: { tenant_id: number },
+    { tenantId }: { tenantId: number },
     context: any,
     info: any
   ) => {
     const menuChoiceRepository = new MenuChoiceRepository()
-    const data = await menuChoiceRepository.getAllMenuChoicesByTenant(tenant_id)
+    const data = await menuChoiceRepository.getAllMenuChoicesByTenant(tenantId)
     return data
   },
 }
@@ -49,7 +49,7 @@ export const MenuChoiceMutations = {
     const data = await menuChoiceRepository.updateMenuChoice(args)
     return data
   },
-  removeMenuChoice: async (parent: any, args: { choice_id: number }, context: any, info: any) => {
+  removeMenuChoice: async (parent: any, args: { choiceId: number }, context: any, info: any) => {
     if (!isDirector(context)) return { code: 401, message: 'Not Authorized', success: false }
     const menuChoiceRepository = new MenuChoiceRepository()
     const data = await menuChoiceRepository.deleteMenuChoice(args)
@@ -57,7 +57,7 @@ export const MenuChoiceMutations = {
   },
   connectMenuChoicesToMenuItem: async (
     parent: any,
-    args: { item_id: number; choice_ids: number[] },
+    args: { itemId: number; choiceIds: number[] },
     context: any,
     info: any
   ) => {
@@ -68,7 +68,7 @@ export const MenuChoiceMutations = {
   },
   removeMenuChoicesMenuItemsConnection: async (
     parent: any,
-    args: { item_id: number; choice_ids: number[] },
+    args: { itemId: number; choiceIds: number[] },
     context: any,
     info: any
   ) => {

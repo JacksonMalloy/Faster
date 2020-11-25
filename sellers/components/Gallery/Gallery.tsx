@@ -35,9 +35,9 @@ const StyledBorder = styled.div`
   border: 10px black solid;
 `
 
-const Gallery = ({ tenant_id }) => {
+const Gallery = ({ tenantId }) => {
   const { data, loading, error } = useQuery(IMAGES_BY_TENANT, {
-    variables: { tenant_id: tenant_id },
+    variables: { tenantId: tenantId },
   })
 
   // if (loading) return <p>loading</p>
@@ -48,17 +48,17 @@ const Gallery = ({ tenant_id }) => {
 
   const handleClick = (image) => () => {
     // Check if item is wihtin selected array
-    const isSelected = selected.filter((item) => item !== image.image_id)
+    const isSelected = selected.filter((item) => item !== image.imageId)
 
     // iSet state according to if lengths of arrays match
     if (isSelected.length === selected.length) {
-      setSelected([...selected, image.image_id])
+      setSelected([...selected, image.imageId])
     } else {
       setSelected(isSelected)
     }
   }
 
-  const isActivelySelected = (image) => selected.includes(image.image_id)
+  const isActivelySelected = (image) => selected.includes(image.imageId)
 
   // useEffect(() => {
   //   //console.log(selected)
@@ -69,8 +69,8 @@ const Gallery = ({ tenant_id }) => {
       {data &&
         data.imagesByTenant &&
         data.imagesByTenant.map((image) => (
-          <StyledImage key={image.image_id} onClick={handleClick(image)}>
-            <img src={image.image_url} className="gallery_image" />
+          <StyledImage key={image.imageId} onClick={handleClick(image)}>
+            <img src={image.imageUrl} className="gallery_image" />
             {isActivelySelected(image) ? <StyledBorder /> : null}
           </StyledImage>
         ))}

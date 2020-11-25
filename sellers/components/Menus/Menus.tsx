@@ -11,18 +11,18 @@ import { useUI } from '../Context'
 import Skeleton from 'components/UI/Skeleton'
 
 type MenusProps = {
-  tenant_id: number
+  tenantId: number
 }
 
 interface MenuTypes {
-  menu_id: any
+  menuId: any
   image?: any
   published?: boolean
   title?: string
-  tenant_id?: number
+  tenantId?: number
 }
 
-const Menus = ({ tenant_id }: MenusProps) => {
+const Menus = ({ tenantId }: MenusProps) => {
   const [search, setSearch] = useState('')
   const [isRouting, setIsRouting] = useState(false)
   const { setTenantId, setSelectedMenuName, setFormView } = useUI()
@@ -38,12 +38,12 @@ const Menus = ({ tenant_id }: MenusProps) => {
   }, [])
 
   useEffect(() => {
-    setTenantId(tenant_id)
+    setTenantId(tenantId)
     //eslint-disable-next-line
-  }, [tenant_id])
+  }, [tenantId])
 
   const { data, loading, error } = useQuery(MENUS_BY_TENANT, {
-    variables: { tenant_id: tenant_id },
+    variables: { tenantId: tenantId },
     fetchPolicy: 'cache-and-network',
   })
 
@@ -100,7 +100,7 @@ const Menus = ({ tenant_id }: MenusProps) => {
             <>
               {data.menusByTenant ? (
                 data.menusByTenant.map((menu: MenuTypes) => (
-                  <MenuCard menu={menu} key={menu.menu_id} image={menu.image} setIsRouting={setIsRouting} />
+                  <MenuCard menu={menu} key={menu.menuId} image={menu.image} setIsRouting={setIsRouting} />
                 ))
               ) : (
                 <>

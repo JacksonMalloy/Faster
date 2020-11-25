@@ -13,18 +13,18 @@ export const EditHeader = () => {
   const [editMenuHeader] = useMutation(EDIT_MENU_HEADER)
   const initialValues = {
     header: '',
-    sub_header: '',
+    description: '',
   }
 
   const { values, errors, handleChange, handleSubmit, initialize, handleBlur } = useForm({
     initialValues,
     onSubmit: async ({ values }) => {
-      const { name, sub_header } = values
+      const { name, description } = values
       const variables = {
         name: name,
-        sub_header: sub_header,
-        menu_id: menuId,
-        header_id: selectedHeader.header_id,
+        description: description,
+        menuId: menuId,
+        headerId: selectedHeader.headerId,
       }
       const args = { variables, menuId }
       const { data } = await handleEditHeader(editMenuHeader, args)
@@ -34,7 +34,7 @@ export const EditHeader = () => {
   })
 
   useEffect(() => {
-    initialize({ name: selectedHeader?.name, sub_header: selectedHeader?.sub_header })
+    initialize({ name: selectedHeader?.name, description: selectedHeader?.description })
   }, [initialize, selectedHeader])
 
   const handleCancel = () => {
@@ -43,7 +43,7 @@ export const EditHeader = () => {
 
   const hasErrors = () => {
     if (!values.name) return true
-    if (!values.sub_header) return true
+    if (!values.description) return true
   }
 
   return (
@@ -62,14 +62,14 @@ export const EditHeader = () => {
         type="text"
       />
       <Field
-        id="sub_header"
-        name="sub_header"
+        id="description"
+        name="description"
         required
         label="Description"
         placeholder="Ex. Flavours of IceCream for everyone to enjoy!"
-        value={values.sub_header}
+        value={values.description}
         onChange={handleChange}
-        error={errors.sub_header}
+        error={errors.description}
         type="text"
       />
       <div className="form-btns">

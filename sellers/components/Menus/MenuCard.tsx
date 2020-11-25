@@ -21,19 +21,19 @@ import Image from 'next/image'
 
 type CardProps = {
   menu: {
-    menu_id: any
+    menuId: any
     image?: any
     published?: boolean
     title?: string
-    tenant_id?: number
+    tenantId?: number
   }
   image: {
-    image_id: number
-    image_url: string
-    menu_id?: number
-    item_id?: number
-    tenant_id: number
-    uploaded_at: number
+    imageId: number
+    imageUrl: string
+    menuId?: number
+    itemId?: number
+    tenantId: number
+    uploadedAt: number
   }
   setIsRouting: (b: boolean) => void
 }
@@ -46,19 +46,19 @@ export const MenuCard = ({ menu, image, setIsRouting }: CardProps) => {
 
   const router = useRouter()
 
-  const { published, title, menu_id, tenant_id } = menu
+  const { published, title, menuId, tenantId } = menu
 
   const deleteMenu = async () => {
-    const variables = { menu_id: menu_id }
-    const args = { variables, tenant_id }
+    const variables = { menuId: menuId }
+    const args = { variables, tenantId }
     const data = await handleDeleteMenu(removeMenu, args).then(() => {
       openToast('Menu was successfully deleted', 'SUCCESS')
     })
   }
 
   const publishMenu = async () => {
-    const variables = { menu_id: menu_id, published: !published }
-    const args = { variables, tenant_id }
+    const variables = { menuId: menuId, published: !published }
+    const args = { variables, tenantId }
     const data = await handlePublishMenu(editMenu, args).then(() => {
       openToast('Menu was successfully published', 'SUCCESS')
     })
@@ -68,7 +68,7 @@ export const MenuCard = ({ menu, image, setIsRouting }: CardProps) => {
     setIsRouting(true)
     setSelectedMenu(menu)
     setSelectedMenuName(title)
-    router.push(`/menu/${menu_id}`)
+    router.push(`/menu/${menuId}`)
   }
 
   const handleEditMenu = () => {
@@ -100,8 +100,8 @@ export const MenuCard = ({ menu, image, setIsRouting }: CardProps) => {
         </section>
       </div>
       <aside>
-        {image && image.image_url ? (
-          <Image src={image.image_url} alt="" width="150" height="150" />
+        {image && image.imageUrl ? (
+          <Image src={image.imageUrl} alt="" width="150" height="150" />
         ) : (
           <div className="placeholder" />
         )}

@@ -21,9 +21,9 @@ export const CreateSelection = () => {
   const { values, errors, handleChange, handleBlur, handleSubmit } = useForm({
     onSubmit: async ({ errors, values }) => {
       const variables = {
-        tenant_id: tenantId,
+        tenantId: tenantId,
         name: values.name,
-        value_add: values.value_add,
+        valueAdd: values.valueAdd,
       }
       const args = { variables, tenantId }
       const { data } = await handleCreateSelection(addMenuSelection, args)
@@ -31,9 +31,9 @@ export const CreateSelection = () => {
       setFormView('CREATE_ITEM_VIEW')
     },
 
-    // $tenant_id: ID!
+    // $tenantId: ID!
     // $name: String!
-    // $value_add: String
+    // $valueAdd: String
   })
 
   const handleCancel = (event) => {
@@ -62,14 +62,14 @@ export const CreateSelection = () => {
         error={errors.selection_name}
       />
       <CurrencyField
-        id="value_add"
+        id="valueAdd"
         type="text"
-        name="value_add"
+        name="valueAdd"
         label="Additional Cost"
         placeholder=""
         onBlur={handleBlur}
         onChange={handleChange}
-        value={values.value_add}
+        value={values.valueAdd}
       />
       <div className="form-btns">
         <Button onClick={handleCancel} type="button" value="Cancel">

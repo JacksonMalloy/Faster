@@ -2,9 +2,9 @@ import TwilioRepository from './repo'
 import { isAuthenticated, isAdmin, isDirector } from '../../utils'
 
 // const TenantQueries = {
-//   tenant: async (parent, { tenant_id }, context, info) => {
+//   tenant: async (parent, { tenantId }, context, info) => {
 //     const twilioRepo = new TwilioRepository()
-//     const tenant = await tenantRepo.getTenantById(tenant_id)
+//     const tenant = await tenantRepo.getTenantById(tenantId)
 //     return tenant
 //   },
 //   tenants: async (parent, args, context, info) => {
@@ -16,7 +16,7 @@ import { isAuthenticated, isAdmin, isDirector } from '../../utils'
 
 type CreateMessageArgs = {
   phone: string
-  customer_id: number
+  customerId: number
 }
 
 export const TwilioMutations = {

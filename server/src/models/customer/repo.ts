@@ -16,8 +16,8 @@ type LoginArgs = {
 }
 
 type ConnectCustomerWithOrgArgs = {
-  customer_id: number
-  tenant_id: number
+  customerId: number
+  tenantId: number
 }
 
 export default class CustomerRepository {
@@ -25,7 +25,7 @@ export default class CustomerRepository {
   ///////READS////////
   ////////////////////
 
-  async getCustomersByTenant(tenant_id: number) {
+  async getCustomersByTenant(tenantId: number) {
     const query = `
             SELECT
                     *
@@ -33,13 +33,13 @@ export default class CustomerRepository {
                     "fm"."customers_to_tenants" c2o
             INNER JOIN
                     "fm"."customers" c
-                  ON c2o.customer_id = c.customer_id
+                  ON c2o.customerId = c.customerId
             INNER JOIN
                   "fm"."tenants" o
-                  ON c2o.tenant_id = o.tenant_id
-            WHERE o.tenant_id = $1`
+                  ON c2o.tenantId = o.tenantId
+            WHERE o.tenantId = $1`
 
-    const params = [tenant_id]
+    const params = [tenantId]
 
     try {
       const result = await db.query(query, params)
@@ -52,26 +52,26 @@ export default class CustomerRepository {
     }
   }
 
-  async getCustomerById(customer_id: number) {
-    const query = `SELECT * FROM "fm"."customers" WHERE customer_id = $1`
-    const params = [customer_id]
+  async getCustomerById(customerId: number) {
+    const query = `SELECT * FROM "fm"."customers" WHERE customerId = $1`
+    const params = [customerId]
 
-    const getTenantsByCustomerId = async (customer_id: number) => {
+    const getTenantsByCustomerId = async (customerId: number) => {
       const query = `
         SELECT
               o.name,
-              o.tenant_id
+              o.tenantId
         FROM
               "fm"."customers_to_tenants" c2o
         INNER JOIN
               "fm"."customers" c
-            ON c2o.customer_id = c.customer_id
+            ON c2o.customerId = c.customerId
         INNER JOIN
             "fm"."tenants" o
-            ON c2o.tenant_id = o.tenant_id
-        WHERE c.customer_id = $1`
+            ON c2o.tenantId = o.tenantId
+        WHERE c.customerId = $1`
 
-      const params = [customer_id]
+      const params = [customerId]
 
       try {
         const result = await db.query(query, params)
@@ -84,8 +84,8 @@ export default class CustomerRepository {
 
     try {
       const result = await db.query(query, params)
-      const customer_id = result.rows[0].customer_id
-      const tenants = await getTenantsByCustomerId(customer_id)
+      const customerId = result.rows[0].customerId
+      const tenants = await getTenantsByCustomerId(customerId)
 
       return Object.assign(result.rows[0], { tenants })
     } catch (error) {
@@ -192,9 +192,9 @@ export default class CustomerRepository {
   async loginCustomer(args: LoginArgs) {
     const { email, pin, phone } = args
 
-    const getPin = async (customer_id: string) => {
-      const query = `SELECT * FROM "fm"."sms" WHERE customer_id = $1`
-      const params = [customer_id]
+    const getPin = async (customerId: string) => {
+      const query = `SELECT * FROM "fm"."sms" WHERE customerId = $1`
+      const params = [customerId]
 
       try {
         const result = await db.query(query, params)
@@ -217,13 +217,13 @@ export default class CustomerRepository {
     }
 
     try {
-      const [{ customer_id, phone, email }]: any = await getCustomer()
-      const [{ body }] = await getPin(customer_id)
+      const [{ customerId, phone, email }]: any = await getCustomer()
+      const [{ body }] = await getPin(customerId)
 
       // Change in production - strip body test copy
       const currentPin = body.replace('Sent from your Twilio trial account - ', '')
       const fields = { phone, email, pin: currentPin }
-      const conditions = { customer_id }
+      const conditions = { customerId }
 
       const { query, params } = update(`"fm"."customers"`, conditions, fields)
       const result = await db.query(query, params)
@@ -252,7 +252,7 @@ export default class CustomerRepository {
         }
       }
 
-      const token = createToken(result.rows[0].customer_id)
+      const token = createToken(result.rows[0].customerId)
 
       return {
         code: 200,
@@ -271,10 +271,10 @@ export default class CustomerRepository {
   }
 
   async connectCustomerToTenant(args: ConnectCustomerWithOrgArgs) {
-    const { customer_id, tenant_id } = args
+    const { customerId, tenantId } = args
 
-    const query = `INSERT INTO "fm"."customers_to_tenants" (customer_id, tenant_id) VALUES ($1, $2) RETURNING *`
-    const params = [customer_id, tenant_id]
+    const query = `INSERT INTO "fm"."customers_to_tenants" (customerId, tenantId) VALUES ($1, $2) RETURNING *`
+    const params = [customerId, tenantId]
 
     try {
       const result = await db.query(query, params)
@@ -297,9 +297,9 @@ export default class CustomerRepository {
     }
   }
 
-  async deleteCustomer(customer_id: number) {
-    const query = `DELETE FROM "fm"."customers" WHERE customer_id = $1`
-    const params = [customer_id]
+  async deleteCustomer(customerId: number) {
+    const query = `DELETE FROM "fm"."customers" WHERE customerId = $1`
+    const params = [customerId]
 
     try {
       const result = await db.query(query, params)
@@ -317,7 +317,7 @@ export default class CustomerRepository {
           message: 'The account was deleted',
           success: true,
           customer: {
-            customer_id: customer_id,
+            customerId: customerId,
           },
         }
       }

@@ -1,28 +1,28 @@
 import { gql } from '@apollo/client'
 
 export const TENANT = gql`
-  query($tenant_id: ID!) {
-    tenant(tenant_id: $tenant_id) {
-      tenant_id
+  query($tenantId: ID!) {
+    tenant(tenantId: $tenantId) {
+      tenantId
       name
       address
       city
-      access_code
-      country_region
+      accessCode
+      countryRegion
       phone
-      website_url
-      postal_code
-      sub_address
+      websiteUrl
+      postalCode
+      subAddress
       province
-      auth_token
+      authToken
       admins {
-        admin_id
+        adminId
         name
         email
         phone
       }
       directors {
-        admin_id
+        adminId
         name
         email
         phone

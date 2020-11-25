@@ -1,16 +1,16 @@
 import { gql } from '@apollo/client'
 
 export const MENUS_BY_TENANT = gql`
-  query($tenant_id: ID!) {
-    menusByTenant(tenant_id: $tenant_id) {
-      menu_id
-      tenant_id
-      created_at
-      updated_at
+  query($tenantId: ID!) {
+    menusByTenant(tenantId: $tenantId) {
+      menuId
+      tenantId
+      createdAt
+      updatedAt
       published
       title
       image {
-        image_url
+        imageUrl
       }
     }
   }

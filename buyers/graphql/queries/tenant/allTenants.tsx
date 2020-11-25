@@ -4,9 +4,9 @@ export const TENANTS = gql`
   query {
     tenants {
       name
-      tenant_id
+      tenantId
       address
-      access_code
+      accessCode
     }
   }
 `

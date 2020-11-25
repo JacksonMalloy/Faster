@@ -19,22 +19,22 @@ export const CreateHeader = () => {
 
   const { values, errors, handleChange, handleBlur, handleSubmit } = useForm({
     onSubmit: async ({ errors, values }) => {
-      const { name, sub_header } = values
+      const { name, description } = values
 
       addMenuHeader({
-        variables: { name: name, sub_header: sub_header, menu_id: menuId },
+        variables: { name: name, description: description, menuId: menuId },
         update: (store, { data }) => {
           try {
             const menuHeaderData = store.readQuery({
               query: MENU_HEADERS_BY_MENU,
-              variables: { menu_id: menuId },
+              variables: { menuId: menuId },
             })
 
             store.writeQuery({
               query: MENU_HEADERS_BY_MENU,
-              variables: { menu_id: menuId },
+              variables: { menuId: menuId },
               data: {
-                menuHeadersByMenu: [...menuHeaderData.menuHeadersByMenu, data.addMenuHeader.menu_header],
+                menuHeadersByMenu: [...menuHeaderData.menuHeadersByMenu, data.addMenuHeader.menuHeader],
               },
             })
           } catch (error) {
@@ -54,7 +54,7 @@ export const CreateHeader = () => {
 
   const hasErrors = () => {
     if (!values.name) return true
-    if (!values.sub_header) return true
+    if (!values.description) return true
   }
 
   return (
@@ -74,15 +74,15 @@ export const CreateHeader = () => {
         error={errors.name}
       />
       <Field
-        id="sub_header"
+        id="description"
         type="text"
-        name="sub_header"
+        name="description"
         label="Description"
         placeholder=""
         onBlur={handleBlur}
         onChange={handleChange}
-        value={values.sub_header}
-        error={errors.sub_header}
+        value={values.description}
+        error={errors.description}
       />
       <div className="form-btns">
         <Button onClick={handleCancel} type="button" value="Cancel">

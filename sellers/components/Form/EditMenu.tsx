@@ -22,14 +22,14 @@ export const EditMenu = () => {
     initialValues,
     onSubmit: async ({ values }) => {
       const { menu_title } = values
-      const variables = { menu_id: selectedMenu.menu_id, title: menu_title }
+      const variables = { menuId: selectedMenu.menuId, title: menu_title }
       const args = { variables, tenantId }
       const { data } = await handleEditMenu(editMenu, args)
 
       if (formImage) {
         const variables = {
-          image_id: formImage.uploadImage.image_id,
-          menu_id: data.editMenu.menu.menu_id,
+          imageId: formImage.uploadImage.imageId,
+          menuId: data.editMenu.menu.menuId,
         }
 
         const args = { variables, tenantId }

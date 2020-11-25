@@ -30,7 +30,7 @@ export const AddOn = ({ selectionData }) => {
   const { tenantId, formAddOns, removeFormAddOn, bulkRemoveFormChoices, bulkRemoveFormSelections } = useUI()
 
   const { data: choicesData, loading, error } = useQuery(MENU_CHOICES_BY_TENANT, {
-    variables: { tenant_id: tenantId },
+    variables: { tenantId: tenantId },
     fetchPolicy: 'cache-first',
   })
 

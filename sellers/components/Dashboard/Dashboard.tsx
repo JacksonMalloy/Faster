@@ -44,11 +44,11 @@ const StyledGrid = styled.div`
 
 export const Dashboard = ({ userData }) => {
   const {
-    activeUserAdmin: { tenant_id },
+    activeUserAdmin: { tenantId },
   } = userData
 
   const { data, loading, error } = useQuery(MENUS_BY_TENANT, {
-    variables: { tenant_id: tenant_id },
+    variables: { tenantId: tenantId },
   })
 
   return (
@@ -59,7 +59,7 @@ export const Dashboard = ({ userData }) => {
         {data && data.menusByTenant && data.menusByTenant.length
           ? data.menusByTenant
               .filter((menu) => menu.published)
-              .map((menu) => <Menu menu={menu} key={menu.menu_id} image={menu.image} />)
+              .map((menu) => <Menu menu={menu} key={menu.menuId} image={menu.image} />)
           : null}
       </StyledGrid>
     </StyledContainer>

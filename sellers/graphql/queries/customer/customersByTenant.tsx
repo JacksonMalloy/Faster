@@ -1,14 +1,14 @@
 import { gql } from '@apollo/client'
 
 export const CUSTOMERS_BY_TENANT = gql`
-  query($tenant_id: ID!) {
-    customersByTenant(tenant_id: $tenant_id) {
-      customer_id
+  query($tenantId: ID!) {
+    customersByTenant(tenantId: $tenantId) {
+      customerId
       phone
       email
       name
       permissions
-      created_at
+      createdAt
       table_id
     }
   }

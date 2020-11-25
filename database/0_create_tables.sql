@@ -28,7 +28,7 @@ CREATE TABLE "fm"."customers" (
     "pin" varchar,
     "table_id" varchar,
     "permissions" varchar NOT NULL DEFAULT 'CUSTOMER',
-    "created_at" timestamptz NOT NULL DEFAULT now(),
+    "createdAt" timestamptz NOT NULL DEFAULT now(),
     UNIQUE (phone),
     UNIQUE (email),
     PRIMARY KEY ("customer_id")
@@ -37,7 +37,7 @@ CREATE TABLE "fm"."customers" (
 CREATE TABLE "fm"."tenants" (
     "tenant_id" int4 NOT NULL DEFAULT nextval('fm.tenant_id_seq'::regclass),
     "name" varchar,
-    "created_at" timestamptz NOT NULL DEFAULT now(),
+    "createdAt" timestamptz NOT NULL DEFAULT now(),
     "address" varchar,
     "sub_address" varchar,
     "city" varchar,
@@ -63,7 +63,7 @@ CREATE TABLE "fm"."admins" (
     "name" varchar,
     "password" varchar,
     "permissions" varchar NOT NULL DEFAULT 'ADMIN',
-    "created_at" timestamptz NOT NULL DEFAULT now(),
+    "createdAt" timestamptz NOT NULL DEFAULT now(),
     "tenant_id" int4 REFERENCES fm.tenants("tenant_id"),
     UNIQUE (phone),
     UNIQUE (email),
@@ -77,7 +77,7 @@ CREATE TABLE "fm"."sms" (
     "phone" varchar,
     "sid" varchar,
     "direction" varchar,
-    "created_at" timestamptz NOT NULL DEFAULT now(),
+    "createdAt" timestamptz NOT NULL DEFAULT now(),
     UNIQUE (phone),
     UNIQUE (customer_id),
     PRIMARY KEY ("sms_id")
@@ -86,7 +86,7 @@ CREATE TABLE "fm"."sms" (
 CREATE TABLE "fm"."menus" (
     "menu_id" int4 NOT NULL DEFAULT nextval('fm.menu_id_seq'::regclass),
     "tenant_id" int4 REFERENCES fm.tenants("tenant_id"),
-    "created_at" timestamptz NOT NULL DEFAULT now(),
+    "createdAt" timestamptz NOT NULL DEFAULT now(),
     "published" BOOLEAN NOT NULL DEFAULT false,
     "title" varchar,
     PRIMARY KEY ("menu_id"),
@@ -98,7 +98,7 @@ CREATE TABLE "fm"."headers" (
     "tenant_id" int4 REFERENCES fm.tenants("tenant_id") ON DELETE CASCADE,
     "menu_id" int4 REFERENCES fm.menus("menu_id") ON DELETE SET NULL,
     "name" varchar,
-    "sub_header" varchar,
+    "description" varchar,
     FOREIGN KEY ("tenant_id") REFERENCES fm.tenants("tenant_id") ON DELETE CASCADE,
     PRIMARY KEY ("header_id")
 );
@@ -110,7 +110,7 @@ CREATE TABLE "fm"."items" (
     "header_id" int4 REFERENCES fm.headers("header_id") ON DELETE SET NULL,
     "base_price" varchar,
     "description" varchar,
-    "created_at" timestamptz NOT NULL DEFAULT now(),
+    "createdAt" timestamptz NOT NULL DEFAULT now(),
     "name" varchar,
     PRIMARY KEY ("item_id"),
     FOREIGN KEY ("tenant_id") REFERENCES fm.tenants("tenant_id") ON DELETE CASCADE,
@@ -121,7 +121,7 @@ CREATE TABLE "fm"."choices" (
     "choice_id" int4 NOT NULL DEFAULT nextval('fm.choice_id_seq'::regclass),
     "tenant_id" int4 REFERENCES fm.tenants("tenant_id") ON DELETE CASCADE,
     "header" varchar,
-    "sub_header" varchar,
+    "description" varchar,
     FOREIGN KEY ("tenant_id") REFERENCES fm.tenants("tenant_id") ON DELETE CASCADE,
     PRIMARY KEY ("choice_id")
 );
@@ -159,7 +159,7 @@ CREATE TABLE "fm"."orders" (
     "customer_id" int4 REFERENCES fm.customers("customer_id"),
     "tenant_id" int4 REFERENCES fm.tenants("tenant_id") ON DELETE CASCADE,
     "charge" varchar,
-    "created_at" timestamptz NOT NULL DEFAULT now(),
+    "createdAt" timestamptz NOT NULL DEFAULT now(),
     FOREIGN KEY ("tenant_id") REFERENCES fm.tenants("tenant_id") ON DELETE CASCADE,
     FOREIGN KEY ("customer_id") REFERENCES fm.customers("customer_id"),
     FOREIGN KEY ("admin_id") REFERENCES fm.admins("admin_id"),
@@ -171,7 +171,7 @@ CREATE TABLE "fm"."orders" (
 CREATE TABLE "fm"."customers_to_tenants" (
     "tenant_id" INT NOT NULL,
     "customer_id" INT NOT NULL,
-    "created_at" timestamptz NOT NULL DEFAULT now(),
+    "createdAt" timestamptz NOT NULL DEFAULT now(),
     PRIMARY KEY ("customer_id", "tenant_id"),
     FOREIGN KEY ("tenant_id") REFERENCES fm.tenants("tenant_id") ON UPDATE CASCADE,
     FOREIGN KEY ("customer_id") REFERENCES fm.customers("customer_id") ON UPDATE CASCADE ON DELETE CASCADE

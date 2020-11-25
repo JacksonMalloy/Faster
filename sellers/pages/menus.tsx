@@ -42,7 +42,7 @@ const MenusPage = () => {
   if (userData.activeUserAdmin) {
     return (
       <MainNavigation permissions={userData.activeUserAdmin.permissions}>
-        <Menus tenant_id={userData.activeUserAdmin.tenant_id} />
+        <Menus tenantId={userData.activeUserAdmin.tenantId} />
       </MainNavigation>
     )
   }

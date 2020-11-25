@@ -14,7 +14,7 @@ export const EditChoice = () => {
   const [editMenuChoice] = useMutation(EDIT_MENU_CHOICE)
   const initialValues = {
     header: '',
-    sub_header: '',
+    description: '',
   }
 
   const { values, errors, handleChange, handleSubmit, initialize, handleBlur } = useForm({
@@ -22,8 +22,8 @@ export const EditChoice = () => {
     onSubmit: async ({ values }) => {
       const variables = {
         header: values.header,
-        sub_header: values.sub_header,
-        choice_id: selectedChoice.choice_id,
+        description: values.description,
+        choiceId: selectedChoice.choiceId,
       }
       const args = { variables, tenantId }
       const { data } = await handleEditChoice(editMenuChoice, args)
@@ -33,7 +33,7 @@ export const EditChoice = () => {
   })
 
   useEffect(() => {
-    initialize({ header: selectedChoice?.header, sub_header: selectedChoice?.sub_header })
+    initialize({ header: selectedChoice?.header, description: selectedChoice?.description })
     // eslint-disable-next-line
   }, [initialize, selectedHeader])
 
@@ -43,7 +43,7 @@ export const EditChoice = () => {
 
   const hasErrors = () => {
     if (!values.header) return true
-    if (!values.sub_header) return true
+    if (!values.description) return true
   }
 
   return (
@@ -63,15 +63,15 @@ export const EditChoice = () => {
         type="text"
       />
       <Field
-        id="sub_header"
-        name="sub_header"
+        id="description"
+        name="description"
         required
         label="Description"
         placeholder="Ex. Flavours of IceCream for everyone to enjoy!"
-        value={values.sub_header}
+        value={values.description}
         onChange={handleChange}
         onBlur={handleBlur}
-        error={errors.choice_sub_header}
+        error={errors.choice_description}
         type="text"
       />
       <div className="form-btns">

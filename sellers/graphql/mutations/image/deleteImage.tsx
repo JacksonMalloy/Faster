@@ -2,9 +2,9 @@
 import { gql } from '@apollo/client'
 
 export const DELETE_IMAGE = gql`
-  mutation($image_id: ID!) {
-    deleteImage(image_id: $image_id) {
-      image_id
+  mutation($imageId: ID!) {
+    deleteImage(imageId: $imageId) {
+      imageId
     }
   }
 `

@@ -18,10 +18,10 @@ export const CreateChoice = () => {
   const { values, errors, handleChange, handleBlur, handleSubmit } = useForm({
     onSubmit: async ({ errors, values }) => {
       const variables = {
-        tenant_id: tenantId,
-        item_id: values.item_id,
+        tenantId: tenantId,
+        itemId: values.itemId,
         header: values.header,
-        sub_header: values.sub_header,
+        description: values.description,
       }
       const args = { variables, tenantId }
       const { data } = await handleCreateChoice(addMenuChoice, args)
@@ -29,10 +29,10 @@ export const CreateChoice = () => {
       setFormView('CREATE_ITEM_VIEW')
     },
 
-    // $tenant_id: ID!
-    // $item_id: ID!
+    // $tenantId: ID!
+    // $itemId: ID!
     // $header: String!
-    // $sub_header: String
+    // $description: String
   })
 
   const handleCancel = (event) => {
@@ -42,7 +42,7 @@ export const CreateChoice = () => {
 
   const hasErrors = () => {
     if (!values.header) return true
-    if (!values.sub_header) return true
+    if (!values.description) return true
   }
 
   return (
@@ -61,15 +61,15 @@ export const CreateChoice = () => {
         error={errors.choice_header}
       />
       <Field
-        id="sub_header"
+        id="description"
         type="text"
-        name="sub_header"
+        name="description"
         label="Description"
         placeholder=""
         onBlur={handleBlur}
         onChange={handleChange}
-        value={values.sub_header}
-        error={errors.choice_sub_header}
+        value={values.description}
+        error={errors.choice_description}
       />
       <div className="form-btns">
         <Button onClick={handleCancel} type="button" value="Cancel">

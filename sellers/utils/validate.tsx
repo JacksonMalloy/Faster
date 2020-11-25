@@ -1,10 +1,10 @@
 export const validate = (name: string, value: string, values: any, errors: any) => {
   switch (name) {
-    case 'tenant_name':
+    case 'tenantName':
       if (value.split('').length === 0) {
-        errors.tenant_name = 'Your company must have a name'
+        errors.tenantName = 'Your company must have a name'
       } else {
-        errors.tenant_name = ''
+        errors.tenantName = ''
       }
       break
     case 'address':
@@ -14,18 +14,18 @@ export const validate = (name: string, value: string, values: any, errors: any) 
         errors.address = ''
       }
       break
-    case 'country_region':
+    case 'countryRegion':
       if (value.split('').length === 0) {
-        errors.country_region = 'This field is required'
+        errors.countryRegion = 'This field is required'
       } else {
-        errors.country_region = ''
+        errors.countryRegion = ''
       }
       break
-    case 'postal_code':
+    case 'postalCode':
       if (value.split('').length < 6) {
-        errors.postal_code = 'Please enter a valid postal code'
+        errors.postalCode = 'Please enter a valid postal code'
       } else {
-        errors.postal_code = ''
+        errors.postalCode = ''
       }
       break
     case 'city':
@@ -102,11 +102,11 @@ export const validate = (name: string, value: string, values: any, errors: any) 
         errors.name = ''
       }
       break
-    case 'sub_header':
+    case 'description':
       if (value.split('').length === 0) {
-        errors.sub_header = 'Header must have a description'
+        errors.description = 'Header must have a description'
       } else {
-        errors.sub_header = ''
+        errors.description = ''
       }
       break
     case 'choice_header':
@@ -116,11 +116,11 @@ export const validate = (name: string, value: string, values: any, errors: any) 
         errors.choice_header = ''
       }
       break
-    case 'choice_sub_header':
+    case 'choice_description':
       if (value.split('').length === 0) {
-        errors.choice_sub_header = 'Header must have a description'
+        errors.choice_description = 'Header must have a description'
       } else {
-        errors.choice_sub_header = ''
+        errors.choice_description = ''
       }
       break
     case 'price':

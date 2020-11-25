@@ -10,11 +10,11 @@ type CreateStripeAccountArgs = {
   name: string
   address: string
   city: string
-  country_region: string
+  countryRegion: string
   phone: string
-  website_url: string
-  postal_code: string
-  sub_address: string
+  websiteUrl: string
+  postalCode: string
+  subAddress: string
   province: string
 }
 
@@ -40,7 +40,7 @@ export default class StripeRepository {
   ////////////////////
 
   async createStripeAccount(args: CreateStripeAccountArgs) {
-    const { name, address, city, country_region, phone, website_url, postal_code, sub_address, province } = args
+    const { name, address, city, countryRegion, phone, websiteUrl, postalCode, subAddress, province } = args
 
     const account = await stripe.accounts.create({
       type: 'standard',
@@ -51,11 +51,11 @@ export default class StripeRepository {
     return account.id
   }
 
-  async connectStripeAccount(args: { account_id: number }) {
-    const { account_id } = args
+  async connectStripeAccount(args: { accountId: number }) {
+    const { accountId } = args
 
     const accountLinks = await stripe.accountLinks.create({
-      account: account_id,
+      account: accountId,
       refresh_url: 'https://example.com/reauth',
       return_url: 'https://example.com/return',
       type: 'account_onboarding',

@@ -2,18 +2,18 @@ import db from '../../db/config'
 import { update } from '../../helpers'
 
 type CreateItemArgs = {
-  menu_id: number
-  header_id: number | null
-  base_price: string
+  menuId: number
+  headerId: number | null
+  basePrice: string
   description: string
   name: string
 }
 
 type UpdateItemArgs = {
-  menu_id: number
-  item_id: number
-  header_id: number
-  base_price: string
+  menuId: number
+  itemId: number
+  headerId: number
+  basePrice: string
   description: string
   name: string
 }
@@ -23,21 +23,21 @@ export default class MenuItemRepository {
   ///////READS////////
   ////////////////////
 
-  async getAllMenuItemsByTenantId(tenant_id: number) {
+  async getAllMenuItemsByTenantId(tenantId: number) {
     const query = `
         SELECT
-            mi.item_id,
-            mi.menu_id,
-            mi.base_price,
+            mi.itemId,
+            mi.menuId,
+            mi.basePrice,
             mi.description,
             mi.name
 
           FROM "fm"."items" mi
-          JOIN "fm"."menus" m ON m.menu_id = mi.menu_id
-          JOIN "fm"."tenants" o ON o.tenant_id = m.tenant_id
-          WHERE o.tenant_id = $1`
+          JOIN "fm"."menus" m ON m.menuId = mi.menuId
+          JOIN "fm"."tenants" o ON o.tenantId = m.tenantId
+          WHERE o.tenantId = $1`
 
-    const params = [tenant_id]
+    const params = [tenantId]
 
     try {
       const result = await db.query(query, params)
@@ -49,9 +49,9 @@ export default class MenuItemRepository {
     }
   }
 
-  async getAllMenuItemsByMenu(menu_id: number) {
-    const query = `SELECT * FROM "fm"."items" WHERE menu_id = $1`
-    const params = [menu_id]
+  async getAllMenuItemsByMenu(menuId: number) {
+    const query = `SELECT * FROM "fm"."items" WHERE menuId = $1`
+    const params = [menuId]
 
     try {
       const result = await db.query(query, params)
@@ -62,9 +62,9 @@ export default class MenuItemRepository {
     }
   }
 
-  async getMenuItemById(item_id: number) {
-    const query = `SELECT * FROM "fm"."items" WHERE item_id = $1`
-    const params = [item_id]
+  async getMenuItemById(itemId: number) {
+    const query = `SELECT * FROM "fm"."items" WHERE itemId = $1`
+    const params = [itemId]
 
     try {
       const result = await db.query(query, params)
@@ -80,18 +80,18 @@ export default class MenuItemRepository {
   ///////WRITES///////
   ////////////////////
 
-  async createMenuItem({ menu_id, base_price, header_id, description, name }: CreateItemArgs) {
+  async createMenuItem({ menuId, basePrice, headerId, description, name }: CreateItemArgs) {
     try {
-      const query = `INSERT INTO "fm"."items" (menu_id, base_price, description, name, header_id)
+      const query = `INSERT INTO "fm"."items" (menuId, basePrice, description, name, headerId)
                       VALUES ($1, $2, $3, $4, $5) RETURNING *`
-      const params = [menu_id, base_price, description, name, header_id]
+      const params = [menuId, basePrice, description, name, headerId]
       const result = await db.query(query, params)
 
       return {
         code: 201,
         message: 'Menu item created!',
         success: true,
-        menu_item: result.rows[0],
+        menuItem: result.rows[0],
       }
     } catch (error) {
       //console.log(error)
@@ -103,9 +103,9 @@ export default class MenuItemRepository {
     }
   }
 
-  async updateMenuItem({ menu_id, item_id, header_id, base_price, description, name }: UpdateItemArgs) {
-    const fields = { menu_id, header_id, base_price, description, name }
-    const conditions = { item_id }
+  async updateMenuItem({ menuId, itemId, headerId, basePrice, description, name }: UpdateItemArgs) {
+    const fields = { menuId, headerId, basePrice, description, name }
+    const conditions = { itemId }
 
     const { query, params } = update(`"fm"."items"`, conditions, fields)
 
@@ -116,7 +116,7 @@ export default class MenuItemRepository {
         code: 200,
         message: 'Menu item updated!',
         success: true,
-        menu_item: result.rows[0],
+        menuItem: result.rows[0],
       }
     } catch (error) {
       //console.log(error)
@@ -128,9 +128,9 @@ export default class MenuItemRepository {
     }
   }
 
-  async deleteMenuItem(item_id: number) {
-    const query = `DELETE FROM "fm"."items" WHERE item_id = $1`
-    const params = [item_id]
+  async deleteMenuItem(itemId: number) {
+    const query = `DELETE FROM "fm"."items" WHERE itemId = $1`
+    const params = [itemId]
 
     try {
       const result = await db.query(query, params)
@@ -142,13 +142,13 @@ export default class MenuItemRepository {
           success: false,
         }
       } else {
-        //console.log(`DELETED ITEM WITH ID = ${item_id}`)
+        //console.log(`DELETED ITEM WITH ID = ${itemId}`)
         return {
           code: 204,
           message: 'The menu item was deleted',
           success: true,
-          menu_item: {
-            item_id: item_id,
+          menuItem: {
+            itemId: itemId,
           },
         }
       }

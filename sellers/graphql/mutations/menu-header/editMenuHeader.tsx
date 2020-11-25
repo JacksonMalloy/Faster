@@ -1,16 +1,16 @@
 import { gql } from '@apollo/client'
 
 export const EDIT_MENU_HEADER = gql`
-  mutation($header_id: ID!, $menu_id: ID, $name: String, $sub_header: String) {
-    editMenuHeader(header_id: $header_id, menu_id: $menu_id, name: $name, sub_header: $sub_header) {
+  mutation($headerId: ID!, $menuId: ID, $name: String, $description: String) {
+    editMenuHeader(headerId: $headerId, menuId: $menuId, name: $name, description: $description) {
       code
       success
       message
-      menu_header {
-        header_id
-        menu_id
+      menuHeader {
+        headerId
+        menuId
         name
-        sub_header
+        description
       }
     }
   }

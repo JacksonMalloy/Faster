@@ -1,38 +1,38 @@
 import { gql } from '@apollo/client'
 
 export const MENU_ITEM = gql`
-  query($item_id: ID!) {
-    menuItem(item_id: $item_id) {
-      item_id
-      menu_id
-      base_price
+  query($itemId: ID!) {
+    menuItem(itemId: $itemId) {
+      itemId
+      menuId
+      basePrice
       description
       name
       image {
-        uploaded_at
-        image_id
-        image_url
-        item_id
-        menu_id
-        tenant_id
+        uploadedAt
+        imageId
+        imageUrl
+        itemId
+        menuId
+        tenantId
       }
-      menu_header {
-        header_id
-        menu_id
+      menuHeader {
+        headerId
+        menuId
         name
-        sub_header
+        description
       }
-      menu_choices {
-        choice_id
-        item_id
+      menuChoices {
+        choiceId
+        itemId
         header
-        sub_header
+        description
         selections {
-          selection_id
-          choice_id
-          item_id
+          selectionId
+          choiceId
+          itemId
           name
-          value_add
+          valueAdd
           selected
         }
       }

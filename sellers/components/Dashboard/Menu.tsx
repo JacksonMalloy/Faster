@@ -56,7 +56,7 @@ export const Menu = ({ menu, image }) => {
 
   return (
     <>
-      <Link href="/dashboard/[slug]" as={`/dashboard/${menu.menu_id}`} key={menu.menu_id}>
+      <Link href="/dashboard/[slug]" as={`/dashboard/${menu.menuId}`} key={menu.menuId}>
         <StyledMenu>
           <h1>{menu.title}</h1>
         </StyledMenu>

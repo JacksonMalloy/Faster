@@ -9,13 +9,13 @@ export const createMenus = () =>
     it(`Create Menus`, async () => {
       for (let i = 0; i < 50; i++) {
         const variables = {
-          tenant_id: faker.random.number({ max: 10, min: 1 }),
+          tenantId: faker.random.number({ max: 10, min: 1 }),
           title: faker.random.word(),
         }
 
         const result = await menuRepo.createMenu(variables)
 
-        expect(result.menu.tenant_id).not.toBeNull()
+        expect(result.menu.tenantId).not.toBeNull()
         expect(result.menu.title).not.toBeNull()
       }
     })
@@ -26,13 +26,13 @@ export const setUpTestMenusForTestAccount = () =>
     it(`Create Menus`, async () => {
       for (let i = 0; i < 10; i++) {
         const variables = {
-          tenant_id: 12,
+          tenantId: 12,
           title: faker.random.word(),
         }
 
         const result = await menuRepo.createMenu(variables)
 
-        expect(result.menu.tenant_id).not.toBeNull()
+        expect(result.menu.tenantId).not.toBeNull()
         expect(result.menu.title).not.toBeNull()
       }
     })

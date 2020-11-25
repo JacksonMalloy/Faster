@@ -20,26 +20,26 @@ import Skeleton from 'components/UI/Skeleton'
 
 type MenuProps = {
   id: number
-  tenant_id: number
+  tenantId: number
 }
 
 type ItemTypes = {
-  base_price: string
+  basePrice: string
   description: string
-  menu_id: number
-  item_id: number
+  menuId: number
+  itemId: number
   name: string
   image?: {
-    image_id: number
-    image_url: string
-    menu_id?: number
-    item_id?: number
-    tenant_id: number
-    uploaded_at: number
+    imageId: number
+    imageUrl: string
+    menuId?: number
+    itemId?: number
+    tenantId: number
+    uploadedAt: number
   }
 }
 
-const Menu = ({ id, tenant_id }: MenuProps) => {
+const Menu = ({ id, tenantId }: MenuProps) => {
   const [search, setSearch] = useState('')
   const router = useRouter()
 
@@ -55,13 +55,13 @@ const Menu = ({ id, tenant_id }: MenuProps) => {
       router.push(`/menus`)
     }
 
-    setTenantId(tenant_id)
+    setTenantId(tenantId)
     setMenuId(id)
     // eslint-disable-next-line
-  }, [tenant_id, router, selectedMenuName])
+  }, [tenantId, router, selectedMenuName])
 
   const { data, loading, error } = useQuery(MENU_ITEMS_BY_MENU, {
-    variables: { menu_id: id },
+    variables: { menuId: id },
     fetchPolicy: 'cache-first',
   })
 
@@ -77,7 +77,7 @@ const Menu = ({ id, tenant_id }: MenuProps) => {
             <Skeleton width="100%" height="10rem" />
             <Skeleton width="100%" height="10rem" />
           </Grid>
-          <Form menu_id={id} />
+          <Form menuId={id} />
         </Container>
       </>
     )
@@ -93,10 +93,10 @@ const Menu = ({ id, tenant_id }: MenuProps) => {
       <Container>
         <Grid>
           {data && data.menuItemsByMenu
-            ? data.menuItemsByMenu.map((item: ItemTypes) => <ItemCard item={item} key={item.item_id} />)
+            ? data.menuItemsByMenu.map((item: ItemTypes) => <ItemCard item={item} key={item.itemId} />)
             : null}
         </Grid>
-        <Form menu_id={id} />
+        <Form menuId={id} />
       </Container>
     </>
   )

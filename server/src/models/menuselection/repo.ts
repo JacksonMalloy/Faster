@@ -2,23 +2,23 @@ import db from '../../db/config'
 import { update } from '../../helpers'
 
 type CreateSelectionArgs = {
-  tenant_id: number
-  item_id: number
+  tenantId: number
+  itemId: number
   name: string
-  value_add: string
+  valueAdd: string
 }
 
 type UpdateSelectionArgs = {
-  tenant_id: number
-  selection_id: number
-  item_id: number
+  tenantId: number
+  selectionId: number
+  itemId: number
   name: string
-  value_add: string
+  valueAdd: string
 }
 
 type SelectionsWithChoice = {
-  selection_ids: number[]
-  choice_id: number
+  selectionIds: number[]
+  choiceId: number
 }
 
 export default class MenuSelectionRepository {
@@ -26,9 +26,9 @@ export default class MenuSelectionRepository {
   ///////READS////////
   ////////////////////
 
-  async getMenuSelectionById(selection_id: number) {
-    const query = `SELECT * FROM "fm"."selections" WHERE selection_id = $1`
-    const params = [selection_id]
+  async getMenuSelectionById(selectionId: number) {
+    const query = `SELECT * FROM "fm"."selections" WHERE selectionId = $1`
+    const params = [selectionId]
 
     try {
       const result = await db.query(query, params)
@@ -39,9 +39,9 @@ export default class MenuSelectionRepository {
     }
   }
 
-  async getMenuSelectionsByMenuItem(item_id: number) {
-    const query = `SELECT * FROM "fm"."selections" WHERE item_id = $1`
-    const params = [item_id]
+  async getMenuSelectionsByMenuItem(itemId: number) {
+    const query = `SELECT * FROM "fm"."selections" WHERE itemId = $1`
+    const params = [itemId]
 
     try {
       const result = await db.query(query, params)
@@ -52,20 +52,20 @@ export default class MenuSelectionRepository {
     }
   }
 
-  async getMenuSelectionsByMenuChoice(choice_id: number) {
+  async getMenuSelectionsByMenuChoice(choiceId: number) {
     const query = `SELECT
                     *
                   FROM
                     "fm"."selections" s
                   INNER JOIN
                     "fm"."selections_to_choices" mc
-                  ON mc.selection_id = s.selection_id
+                  ON mc.selectionId = s.selectionId
                   INNER JOIN
                     "fm"."choices" c
-                    ON c.choice_id = mc.choice_id
-                  WHERE c.choice_id = $1`
+                    ON c.choiceId = mc.choiceId
+                  WHERE c.choiceId = $1`
 
-    const params = [choice_id]
+    const params = [choiceId]
 
     try {
       const result = await db.query(query, params)
@@ -77,9 +77,9 @@ export default class MenuSelectionRepository {
     }
   }
 
-  async getMenuSelectionsByTenant(tenant_id: number) {
-    const query = `SELECT * FROM "fm"."selections" WHERE tenant_id = $1`
-    const params = [tenant_id]
+  async getMenuSelectionsByTenant(tenantId: number) {
+    const query = `SELECT * FROM "fm"."selections" WHERE tenantId = $1`
+    const params = [tenantId]
 
     try {
       const result = await db.query(query, params)
@@ -94,9 +94,9 @@ export default class MenuSelectionRepository {
   ///////WRITES///////
   ////////////////////
 
-  async createMenuSelection({ tenant_id, item_id, name, value_add }: CreateSelectionArgs) {
-    const query = `INSERT INTO "fm"."selections" (tenant_id, item_id, name, value_add) VALUES ($1, $2, $3, $4) RETURNING *`
-    const params = [tenant_id, item_id, name, value_add]
+  async createMenuSelection({ tenantId, itemId, name, valueAdd }: CreateSelectionArgs) {
+    const query = `INSERT INTO "fm"."selections" (tenantId, itemId, name, valueAdd) VALUES ($1, $2, $3, $4) RETURNING *`
+    const params = [tenantId, itemId, name, valueAdd]
 
     try {
       const result = await db.query(query, params)
@@ -105,7 +105,7 @@ export default class MenuSelectionRepository {
         code: 201,
         message: 'Menu selection created!',
         success: true,
-        menu_selection: result.rows[0],
+        menuSelection: result.rows[0],
       }
     } catch (error) {
       //console.log(error)
@@ -117,9 +117,9 @@ export default class MenuSelectionRepository {
     }
   }
 
-  async updateMenuSelection({ selection_id, name, value_add }: UpdateSelectionArgs) {
-    const fields = { value_add, name }
-    const conditions = { selection_id }
+  async updateMenuSelection({ selectionId, name, valueAdd }: UpdateSelectionArgs) {
+    const fields = { valueAdd, name }
+    const conditions = { selectionId }
 
     const { query, params } = update(`"fm"."selections"`, conditions, fields)
 
@@ -130,7 +130,7 @@ export default class MenuSelectionRepository {
         code: 200,
         message: 'Menu selecction updated!',
         success: true,
-        menu_selection: result.rows[0],
+        menuSelection: result.rows[0],
       }
     } catch (error) {
       //console.log(error)
@@ -142,9 +142,9 @@ export default class MenuSelectionRepository {
     }
   }
 
-  async deleteMenuSelection(selection_id: number) {
-    const query = `DELETE FROM "fm"."selections" WHERE selection_id = $1`
-    const params = [selection_id]
+  async deleteMenuSelection(selectionId: number) {
+    const query = `DELETE FROM "fm"."selections" WHERE selectionId = $1`
+    const params = [selectionId]
 
     try {
       const result = await db.query(query, params)
@@ -160,8 +160,8 @@ export default class MenuSelectionRepository {
           code: 204,
           message: 'The menu selection was deleted',
           success: true,
-          menu_selection: {
-            selection_id: selection_id,
+          menuSelection: {
+            selectionId: selectionId,
           },
         }
       }
@@ -175,12 +175,12 @@ export default class MenuSelectionRepository {
     }
   }
 
-  async connectingMenuSelectionToMenuChoice({ choice_id, selection_ids }: SelectionsWithChoice) {
-    const values = selection_ids.map((id) => {
-      return `(${choice_id}, ${id})`
+  async connectingMenuSelectionToMenuChoice({ choiceId, selectionIds }: SelectionsWithChoice) {
+    const values = selectionIds.map((id) => {
+      return `(${choiceId}, ${id})`
     })
 
-    const query = `INSERT INTO "fm"."selections_to_choices" (choice_id, selection_id) VALUES ${values} ON CONFLICT DO NOTHING RETURNING * `
+    const query = `INSERT INTO "fm"."selections_to_choices" (choiceId, selectionId) VALUES ${values} ON CONFLICT DO NOTHING RETURNING * `
 
     try {
       const result = await db.query(query)
@@ -214,12 +214,12 @@ export default class MenuSelectionRepository {
     }
   }
 
-  async removingMenuSelectionsMenuChoicesConnection({ choice_id, selection_ids }: SelectionsWithChoice) {
-    const values = selection_ids.map((id) => {
+  async removingMenuSelectionsMenuChoicesConnection({ choiceId, selectionIds }: SelectionsWithChoice) {
+    const values = selectionIds.map((id) => {
       return `${id}`
     })
 
-    const query = `DELETE FROM "fm"."selections_to_choices" WHERE choice_id = ${choice_id} AND selection_id IN (${values}) RETURNING *`
+    const query = `DELETE FROM "fm"."selections_to_choices" WHERE choiceId = ${choiceId} AND selectionId IN (${values}) RETURNING *`
 
     try {
       const result = await db.query(query)

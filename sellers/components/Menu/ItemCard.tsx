@@ -17,24 +17,24 @@ import { useEffect } from 'react'
 
 type CardProps = {
   item: {
-    base_price: string
+    basePrice: string
     description: string
-    menu_id: number
-    item_id: number
+    menuId: number
+    itemId: number
     name: string
     image?: {
-      image_id: number
-      image_url: string
-      menu_id?: number
-      item_id?: number
-      tenant_id: number
-      uploaded_at: number
+      imageId: number
+      imageUrl: string
+      menuId?: number
+      itemId?: number
+      tenantId: number
+      uploadedAt: number
     }
   }
 }
 
 export const ItemCard = ({ item }: CardProps) => {
-  const { menu_id, item_id, image } = item
+  const { menuId, itemId, image } = item
 
   const {
     reset,
@@ -50,24 +50,24 @@ export const ItemCard = ({ item }: CardProps) => {
   const [removeMenuItem] = useMutation(REMOVE_MENU_ITEM)
 
   const [loadItem, { called, loading, data }] = useLazyQuery(MENU_ITEM, {
-    variables: { item_id: item_id },
+    variables: { itemId: itemId },
     fetchPolicy: 'network-only',
   })
 
   const deleteMenuItem = () => {
     removeMenuItem({
-      variables: { item_id: item_id },
+      variables: { itemId: itemId },
       update: (store, { data }) => {
         const menuItemData: any = store.readQuery({
           query: MENU_ITEMS_BY_MENU,
-          variables: { menu_id: menu_id },
+          variables: { menuId: menuId },
         })
 
-        const newData = itemDeleter(menuItemData.menuItemsByMenu, data.removeMenuItem.menu_item.item_id)
+        const newData = itemDeleter(menuItemData.menuItemsByMenu, data.removeMenuItem.menuItem.itemId)
 
         store.writeQuery({
           query: MENU_ITEMS_BY_MENU,
-          variables: { menu_id: menu_id },
+          variables: { menuId: menuId },
           data: {
             menuItemsByMenu: [...newData],
           },
@@ -92,13 +92,13 @@ export const ItemCard = ({ item }: CardProps) => {
 
       if (data && data.menuItem) {
         const {
-          menuItem: { menu_header, menu_choices },
+          menuItem: { menuHeader, menuChoices },
         } = data
 
-        setFormHeader(menu_header)
+        setFormHeader(menuHeader)
 
-        if (menu_choices) {
-          for (let key of menu_choices) {
+        if (menuChoices) {
+          for (let key of menuChoices) {
             setFormAddOns()
           }
         }
@@ -110,10 +110,10 @@ export const ItemCard = ({ item }: CardProps) => {
   useEffect(() => {
     if (data && data.menuItem) {
       const {
-        menuItem: { menu_choices },
+        menuItem: { menuChoices },
       } = data
 
-      const isArrayEqualLength = menu_choices.length === formAddOns.length
+      const isArrayEqualLength = menuChoices.length === formAddOns.length
 
       let mergedArray = []
 
@@ -122,7 +122,7 @@ export const ItemCard = ({ item }: CardProps) => {
         for (let index = 0; index < formAddOns.length; index++) {
           mergedArray.push({
             ...formAddOns[index],
-            ...menu_choices[index],
+            ...menuChoices[index],
           })
         }
 
@@ -153,7 +153,7 @@ export const ItemCard = ({ item }: CardProps) => {
         <header>
           <h2>{item.name}</h2>
           <span>{item.description}</span>
-          <p>{item.base_price}</p>
+          <p>{item.basePrice}</p>
         </header>
         <section>
           <Button value="edit" onClick={handleEditItem}>
@@ -165,7 +165,7 @@ export const ItemCard = ({ item }: CardProps) => {
           </Button>
         </section>
       </div>
-      <aside>{image && image.image_url ? <img src={image.image_url} alt="" /> : <div className="placeholder" />}</aside>
+      <aside>{image && image.imageUrl ? <img src={image.imageUrl} alt="" /> : <div className="placeholder" />}</aside>
     </Card>
   )
 }

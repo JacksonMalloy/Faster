@@ -103,7 +103,7 @@ export const Selection = ({ choice }) => {
     const updateItem = { ...item, id }
 
     const isSelected = state.orderSelections.some((current) => {
-      return current.selection_id === updateItem.selection_id && current.choice_id === id
+      return current.selectionId === updateItem.selectionId && current.choiceId === id
     })
 
     if (!isSelected) {
@@ -118,7 +118,7 @@ export const Selection = ({ choice }) => {
   function isItemInSelection(item) {
     if (
       state.orderSelections.some((current) => {
-        return current.selection_id === item.selection_id && current.choice_id === item.choice_id
+        return current.selectionId === item.selectionId && current.choiceId === item.choiceId
       })
     ) {
       return true
@@ -133,9 +133,9 @@ export const Selection = ({ choice }) => {
       {choice &&
         choice.selections &&
         choice.selections.map((selection) => (
-          <li key={selection.selection_id}>
+          <li key={selection.selectionId}>
             <label>
-              <StyledInputButton type="button" onClick={() => handleOnClick(selection, selection.choice_id)}>
+              <StyledInputButton type="button" onClick={() => handleOnClick(selection, selection.choiceId)}>
                 {selection.name}
               </StyledInputButton>
               <>
@@ -145,8 +145,8 @@ export const Selection = ({ choice }) => {
                   <span className="checkmark"></span>
                 )}
               </>
-              {selection && selection.value_add ? (
-                <span className="value-added">+ ${selection.value_add}</span>
+              {selection && selection.valueAdd ? (
+                <span className="value-added">+ ${selection.valueAdd}</span>
               ) : (
                 <span className="value-added"></span>
               )}

@@ -9,19 +9,19 @@ export const handleDeleteChoice = async (mutation, args) => {
     // update: (store, { data }) => {
     //   const menuHeaderData: any = store.readQuery({
     //     query: MENU_HEADERS_BY_MENU,
-    //     variables: { menu_id: menuId },
+    //     variables: { menuId: menuId },
     //   })
 
     //   console.log({ menuHeaderData })
     //   console.log({ data })
 
-    //   const newData = itemDeleter(menuHeaderData.menuHeadersByMenu, data.removeMenuHeader.menu_header.header_id)
+    //   const newData = itemDeleter(menuHeaderData.menuHeadersByMenu, data.removeMenuHeader.menuHeader.headerId)
 
     //   console.log({ newData })
 
     //   store.writeQuery({
     //     query: MENU_HEADERS_BY_MENU,
-    //     variables: { menu_id: menuId },
+    //     variables: { menuId: menuId },
     //     data: {
     //       menuHeadersByMenu: [...newData],
     //     },
@@ -41,18 +41,18 @@ export const handleEditChoice = async (mutation, args) => {
       try {
         const choiceData: any = store.readQuery({
           query: MENU_CHOICES_BY_TENANT,
-          variables: { tenant_id: tenantId },
+          variables: { tenantId: tenantId },
         })
 
         const oldItem = choiceData.menuChoicesByTenant.find(
-          (obj: { choice_id: any }) => obj.choice_id === data.editMenuChoice.menu_choice.choice_id
+          (obj: { choiceId: any }) => obj.choiceId === data.editMenuChoice.menuChoice.choiceId
         )
 
-        const newData = itemReplacer(choiceData.menuChoicesByTenant, oldItem, data.editMenuChoice.menu_choice)
+        const newData = itemReplacer(choiceData.menuChoicesByTenant, oldItem, data.editMenuChoice.menuChoice)
 
         store.writeQuery({
           query: MENU_CHOICES_BY_TENANT,
-          variables: { tenant_id: tenantId },
+          variables: { tenantId: tenantId },
           data: {
             menuChoicesByTenant: [...newData],
           },
@@ -75,12 +75,12 @@ export const handleCreateChoice = async (mutation, args) => {
       try {
         const choiceData: any = store.readQuery({
           query: MENU_CHOICES_BY_TENANT,
-          variables: { tenant_id: tenantId },
+          variables: { tenantId: tenantId },
         })
 
         store.writeQuery({
           query: MENU_CHOICES_BY_TENANT,
-          variables: { tenant_id: tenantId },
+          variables: { tenantId: tenantId },
           data: {
             menuChoicesByTenant: [...choiceData.menuChoicesByTenant, data.addMenuChoice],
           },

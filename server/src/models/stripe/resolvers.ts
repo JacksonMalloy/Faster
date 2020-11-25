@@ -2,9 +2,9 @@ import StripeRepository from './repo'
 import { isAuthenticated, isAdmin, isDirector } from '../../utils'
 
 // const TenantQueries = {
-//   tenant: async (parent, { tenant_id }, context, info) => {
+//   tenant: async (parent, { tenantId }, context, info) => {
 //     const stripeRepo = new StripeRepository()
-//     const tenant = await tenantRepo.getTenantById(tenant_id)
+//     const tenant = await tenantRepo.getTenantById(tenantId)
 //     return tenant
 //   },
 //   tenants: async (parent, args, context, info) => {
@@ -18,11 +18,11 @@ type CreateStripeAccountArgs = {
   name: string
   address: string
   city: string
-  country_region: string
+  countryRegion: string
   phone: string
-  website_url: string
-  postal_code: string
-  sub_address: string
+  websiteUrl: string
+  postalCode: string
+  subAddress: string
   province: string
 }
 
@@ -32,7 +32,7 @@ export const StripeMutations = {
     const data = await stripeRepo.createStripeAccount(args)
     return data
   },
-  connectStripeAccount: async (parent: any, args: { account_id: number }, context: any, info: any) => {
+  connectStripeAccount: async (parent: any, args: { accountId: number }, context: any, info: any) => {
     // if (!isDirector(context)) return { code: 401, message: 'Not Authorized', success: false }
     const stripeRepo = new StripeRepository()
     const data = await stripeRepo.connectStripeAccount(args)

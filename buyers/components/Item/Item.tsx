@@ -5,7 +5,7 @@ import React from 'react'
 const Item = ({ accessCode, menuId, itemId }) => {
   console.log(accessCode, menuId, itemId)
 
-  const { loading, error, data } = useQuery(MENU_ITEM, { variables: { item_id: itemId } })
+  const { loading, error, data } = useQuery(MENU_ITEM, { variables: { itemId: itemId } })
   if (loading) return <p>Loading...</p>
   if (error) return <p>Error :(</p>
 

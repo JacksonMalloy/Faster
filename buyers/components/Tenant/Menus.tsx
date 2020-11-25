@@ -50,15 +50,15 @@ export const Menus = ({ menus, accessCode }) => {
   const listPublishedMenus = () => {
     return (
       <section>
-        {menus.map(({ title, menu_id, image }) => {
+        {menus.map(({ title, menuId, image }) => {
           console.log({ image })
           return (
-            <StyledMenuLink key={menu_id} href={`/${accessCode}/menu/${menu_id}`}>
+            <StyledMenuLink key={menuId} href={`/${accessCode}/menu/${menuId}`}>
               <article>
-                {image && image.image_url && (
+                {image && image.imageUrl && (
                   <header>
                     <div>
-                      <img src={image.image_url} />
+                      <img src={image.imageUrl} />
                     </div>
                   </header>
                 )}

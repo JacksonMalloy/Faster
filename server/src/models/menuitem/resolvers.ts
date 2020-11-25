@@ -3,36 +3,36 @@ import { isAuthenticated, isAdmin, isDirector, isOwner } from '../../utils'
 import db from '../../db/config'
 
 type CreateItemArgs = {
-  menu_id: number
-  header_id: number | null
-  base_price: string
+  menuId: number
+  headerId: number | null
+  basePrice: string
   description: string
   name: string
 }
 
 type UpdateItemArgs = {
-  menu_id: number
-  item_id: number
-  header_id: number
-  base_price: string
+  menuId: number
+  itemId: number
+  headerId: number
+  basePrice: string
   description: string
   name: string
 }
 
 export const MenuItemQueries = {
-  menuItem: async (parent: any, { item_id }: { item_id: number }, context: any, info: any) => {
+  menuItem: async (parent: any, { itemId }: { itemId: number }, context: any, info: any) => {
     const menuItemRepository = new MenuItemRepository()
-    const data = await menuItemRepository.getMenuItemById(item_id)
+    const data = await menuItemRepository.getMenuItemById(itemId)
     return data
   },
-  menuItemsByTenant: async (parent: any, { tenant_id }: { tenant_id: number }, context: any, info: any) => {
+  menuItemsByTenant: async (parent: any, { tenantId }: { tenantId: number }, context: any, info: any) => {
     const menuItemRepository = new MenuItemRepository()
-    const data = await menuItemRepository.getAllMenuItemsByTenantId(tenant_id)
+    const data = await menuItemRepository.getAllMenuItemsByTenantId(tenantId)
     return data
   },
-  menuItemsByMenu: async (parent: any, { menu_id }: { menu_id: number }, context: any, info: any) => {
+  menuItemsByMenu: async (parent: any, { menuId }: { menuId: number }, context: any, info: any) => {
     const menuItemRepository = new MenuItemRepository()
-    const data = await menuItemRepository.getAllMenuItemsByMenu(menu_id)
+    const data = await menuItemRepository.getAllMenuItemsByMenu(menuId)
     return data
   },
 }
@@ -41,13 +41,13 @@ export const MenuItemMutations = {
   addMenuItem: async (parent: any, args: CreateItemArgs, context: any, info: any) => {
     if (!isDirector(context)) return { code: 401, message: 'Not Authorized', success: false }
 
-    const getTenantId = async ({ menu_id }: { menu_id: number }) => {
+    const getTenantId = async ({ menuId }: { menuId: number }) => {
       try {
-        const query = `SELECT tenant_id
+        const query = `SELECT tenantId
                       FROM "fm"."menus"
-                      WHERE menu_id = $1`
+                      WHERE menuId = $1`
 
-        const params = [menu_id]
+        const params = [menuId]
         const result = await db.query(query, params)
 
         return result.rows
@@ -72,11 +72,11 @@ export const MenuItemMutations = {
     const data = await menuItemRepository.updateMenuItem(args)
     return data
   },
-  removeMenuItem: async (parent: any, { item_id }: { item_id: number }, context: any, info: any) => {
+  removeMenuItem: async (parent: any, { itemId }: { itemId: number }, context: any, info: any) => {
     if (!isDirector(context)) return { code: 401, message: 'Not Authorized', success: false }
 
     const menuItemRepository = new MenuItemRepository()
-    const data = await menuItemRepository.deleteMenuItem(item_id)
+    const data = await menuItemRepository.deleteMenuItem(itemId)
     return data
   },
 }

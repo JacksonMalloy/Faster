@@ -41,14 +41,14 @@ export const CreateItem = () => {
   } = useUI()
 
   const { data: headerData, loading: headerDataLoading, error: headerDataError } = useQuery(MENU_HEADERS_BY_MENU, {
-    variables: { menu_id: menuId },
+    variables: { menuId: menuId },
   })
 
   const { data: selectionData, loading: selectionDataLoading, error: selectionDataError } = useQuery(
     MENU_SELECTIONS_BY_TENANT,
     {
       variables: {
-        tenant_id: tenantId,
+        tenantId: tenantId,
       },
     }
   )
@@ -56,14 +56,14 @@ export const CreateItem = () => {
   const { values, errors, handleChange, handleBlur, handleSubmit } = useForm({
     onSubmit: async ({ errors, values }) => {
       const { description, price, title } = values
-      const { header_id } = formHeader
+      const { headerId } = formHeader
 
       const variables = {
-        menu_id: menuId,
+        menuId: menuId,
         name: title,
         description: description,
-        base_price: price,
-        header_id: header_id,
+        basePrice: price,
+        headerId: headerId,
       }
 
       const args = { variables, menuId }
@@ -71,17 +71,17 @@ export const CreateItem = () => {
 
       const {
         addMenuItem: {
-          menu_item: { item_id },
+          menuItem: { itemId },
         },
       } = data
 
       // If any choices have been made connect them and their selections
       if (formChoices.length !== 0) {
-        const arrayOfMenuChoiceIds = formChoices.map((choice: { choice_id: any }) => choice.choice_id)
+        const arrayOfMenuChoiceIds = formChoices.map((choice: { choiceId: any }) => choice.choiceId)
 
         const variables = {
-          item_id: item_id,
-          choice_ids: arrayOfMenuChoiceIds,
+          itemId: itemId,
+          choiceIds: arrayOfMenuChoiceIds,
         }
 
         const args = { variables }
@@ -92,12 +92,12 @@ export const CreateItem = () => {
             for (let choice of formChoices) {
               const arrayOfMenuSelectionIds = formSelections
                 .filter((selection: { id: any }) => selection.id === choice.id)
-                .map((selection: { selection_id: any }) => selection.selection_id)
+                .map((selection: { selectionId: any }) => selection.selectionId)
 
               connectMenuSelectionsToMenuChoice({
                 variables: {
-                  choice_id: choice.choice_id,
-                  selection_ids: arrayOfMenuSelectionIds,
+                  choiceId: choice.choiceId,
+                  selectionIds: arrayOfMenuSelectionIds,
                 },
               })
             }
@@ -124,8 +124,8 @@ export const CreateItem = () => {
   // useEffect(() => {
   //   if (data && data.addMenuItem && state.image) {
   //     const variables = {
-  //       image_id: state.image.uploadImage.image_id,
-  //       item_id: data.addMenuItem.item_id,
+  //       imageId: state.image.uploadImage.imageId,
+  //       itemId: data.addMenuItem.itemId,
   //     }
 
   //     console.log({ variables })
@@ -136,7 +136,7 @@ export const CreateItem = () => {
   //         try {
   //           const menuItemData = store.readQuery({
   //             query: MENU,
-  //             variables: { menu_id: menu_id },
+  //             variables: { menuId: menuId },
   //           })
 
   //           console.log({ menuItemData })
@@ -144,13 +144,13 @@ export const CreateItem = () => {
   //           const itemReplacer = (array, oldItem, newItem) =>
   //             array.map((item) => (item === oldItem ? newItem : item))
 
-  //           const oldItem = menuItemData.menu.menu_items.find(
+  //           const oldItem = menuItemData.menu.menuItems.find(
   //             (obj) =>
-  //               obj.item_id === data.connectImageToMenuItem.item_id
+  //               obj.itemId === data.connectImageToMenuItem.itemId
   //           )
 
   //           const newData = itemReplacer(
-  //             menuItemData.menu.menu_items,
+  //             menuItemData.menu.menuItems,
   //             oldItem,
   //             data.connectImageToMenuItem
   //           )
@@ -159,10 +159,10 @@ export const CreateItem = () => {
 
   //           store.writeQuery({
   //             query: MENU,
-  //             variables: { menu_id: menu_id },
+  //             variables: { menuId: menuId },
   //             data: {
   //               menu: {
-  //                 menu_items: [...newData],
+  //                 menuItems: [...newData],
   //               },
   //             },
   //           })

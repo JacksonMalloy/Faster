@@ -1,27 +1,27 @@
 import { gql } from '@apollo/client'
 
 export const TENANT_BY_ACCESS_CODE = gql`
-  query($access_code: String!) {
-    tenantByAccessCode(access_code: $access_code) {
+  query($accessCode: String!) {
+    tenantByAccessCode(accessCode: $accessCode) {
       name
-      tenant_id
+      tenantId
       address
       city
-      access_code
-      country_region
+      accessCode
+      countryRegion
       phone
-      website_url
-      postal_code
-      sub_address
+      websiteUrl
+      postalCode
+      subAddress
       province
       menus {
-        menu_id
+        menuId
         title
-        created_at
-        tenant_id
+        createdAt
+        tenantId
         published
         image {
-          image_url
+          imageUrl
         }
       }
     }

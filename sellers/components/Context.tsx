@@ -247,7 +247,7 @@ function uiReducer(state: State, action: Action) {
         formSelections: [
           ...state.formSelections.filter((selection: any) => {
             return (
-              selection.selection_id !== action.formSelections.selection_id ||
+              selection.selectionId !== action.formSelections.selectionId ||
               selection.UUID !== action.formSelections.UUID
             )
           }),
@@ -259,7 +259,7 @@ function uiReducer(state: State, action: Action) {
       return {
         ...state,
         formSelections: state.formSelections.filter((selection: any) => {
-          return selection.selection_id !== action.id || selection.UUID !== action.UUID
+          return selection.selectionId !== action.id || selection.UUID !== action.UUID
         }),
       }
     }

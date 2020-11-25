@@ -11,9 +11,9 @@ type AdminRegistrationArgs = {
 }
 
 type AdminToOrgArgs = {
-  admin_id: number
-  tenant_id: number
-  auth_token: string
+  adminId: number
+  tenantId: number
+  authToken: string
 }
 
 type LoginArgs = {
@@ -30,9 +30,9 @@ export default class AdminRepository {
   ///////READS////////
   ////////////////////
 
-  async getAdminById(admin_id: number) {
-    const query = `SELECT * FROM "fm"."admins" WHERE admin_id = $1`
-    const params = [admin_id]
+  async getAdminById(adminId: number) {
+    const query = `SELECT * FROM "fm"."admins" WHERE adminId = $1`
+    const params = [adminId]
 
     try {
       const result = await db.query(query, params)
@@ -44,9 +44,9 @@ export default class AdminRepository {
     }
   }
 
-  async getAdminsByTenant(tenant_id: number) {
-    const query = `SELECT * FROM "fm"."admins" WHERE tenant_id = $1`
-    const params = [tenant_id]
+  async getAdminsByTenant(tenantId: number) {
+    const query = `SELECT * FROM "fm"."admins" WHERE tenantId = $1`
+    const params = [tenantId]
 
     try {
       const result = await db.query(query, params)
@@ -78,7 +78,7 @@ export default class AdminRepository {
         }
       }
 
-      const token = createToken(result.rows[0].admin_id)
+      const token = createToken(result.rows[0].adminId)
 
       return {
         code: 201,
@@ -160,7 +160,7 @@ export default class AdminRepository {
 
     try {
       const result = await db.query(query, params)
-      const token = createToken(result.rows[0].admin_id)
+      const token = createToken(result.rows[0].adminId)
 
       return {
         code: 201,
@@ -207,7 +207,7 @@ export default class AdminRepository {
         }
       }
 
-      const token = createToken(result.rows[0].admin_id)
+      const token = createToken(result.rows[0].adminId)
 
       return {
         code: 200,
@@ -225,18 +225,18 @@ export default class AdminRepository {
     }
   }
 
-  async registerAdminToTenant({ admin_id, tenant_id, auth_token }: AdminToOrgArgs) {
-    const query = `UPDATE "fm"."admins" SET tenant_id = $1 WHERE admin_id = $2 RETURNING *`
-    const params = [tenant_id, admin_id]
+  async registerAdminToTenant({ adminId, tenantId, authToken }: AdminToOrgArgs) {
+    const query = `UPDATE "fm"."admins" SET tenantId = $1 WHERE adminId = $2 RETURNING *`
+    const params = [tenantId, adminId]
 
-    const getTenantAuthToken = async (tenant_id: number) => {
-      const query = `SELECT auth_token FROM "fm"."tenants" WHERE tenant_id = $1`
-      const params = [tenant_id]
+    const getTenantAuthToken = async (tenantId: number) => {
+      const query = `SELECT authToken FROM "fm"."tenants" WHERE tenantId = $1`
+      const params = [tenantId]
 
       try {
         const result = await db.query(query, params)
 
-        return result.rows[0].auth_token
+        return result.rows[0].authToken
       } catch (error) {
         //console.log(error)
         throw error
@@ -244,10 +244,10 @@ export default class AdminRepository {
     }
 
     try {
-      const authToken = await getTenantAuthToken(tenant_id)
+      const authToken = await getTenantAuthToken(tenantId)
 
       // If the passed in token does not match in DB, DON'T connect the accounts
-      if (auth_token !== authToken) {
+      if (authToken !== authToken) {
         return {
           code: 401,
           message: 'Invalid request, please contact support',
@@ -275,9 +275,9 @@ export default class AdminRepository {
     }
   }
 
-  async deleteAdmin(admin_id: number) {
-    const query = `DELETE FROM "fm"."admins" WHERE admin_id = $1`
-    const params = [admin_id]
+  async deleteAdmin(adminId: number) {
+    const query = `DELETE FROM "fm"."admins" WHERE adminId = $1`
+    const params = [adminId]
 
     try {
       const result = await db.query(query, params)
@@ -295,7 +295,7 @@ export default class AdminRepository {
           message: 'The account was deleted',
           success: true,
           admin: {
-            admin_id: admin_id,
+            adminId: adminId,
           },
         }
       }

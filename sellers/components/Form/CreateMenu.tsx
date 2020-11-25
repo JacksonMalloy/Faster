@@ -18,14 +18,14 @@ export const CreateMenu = () => {
   const { values, errors, handleChange, handleSubmit, handleBlur } = useForm({
     onSubmit: async ({ values }) => {
       const { menu_title } = values
-      const variables = { tenant_id: tenantId, title: menu_title }
+      const variables = { tenantId: tenantId, title: menu_title }
       const args = { variables, tenantId }
       const { data } = await handleCreateMenu(addMenu, args)
 
       const handleImageUpload = async () => {
         const variables = {
-          image_id: formImage.uploadImage.image_id,
-          menu_id: data.addMenu.menu.menu_id,
+          imageId: formImage.uploadImage.imageId,
+          menuId: data.addMenu.menu.menuId,
         }
 
         const args = { variables, tenantId }

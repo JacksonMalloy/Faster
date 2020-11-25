@@ -1,20 +1,20 @@
 import { gql } from '@apollo/client'
 
 export const ADD_MENU = gql`
-  mutation($tenant_id: ID!, $title: String!) {
-    addMenu(tenant_id: $tenant_id, title: $title) {
+  mutation($tenantId: ID!, $title: String!) {
+    addMenu(tenantId: $tenantId, title: $title) {
       code
       message
       success
       menu {
-        menu_id
-        tenant_id
-        created_at
-        updated_at
+        menuId
+        tenantId
+        createdAt
+        updatedAt
         published
         title
         image {
-          image_url
+          imageUrl
         }
       }
     }

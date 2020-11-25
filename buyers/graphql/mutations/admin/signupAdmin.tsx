@@ -7,13 +7,13 @@ export const SIGNUP_ADMIN = gql`
       message
       success
       admin {
-        admin_id
-        tenant_id
+        adminId
+        tenantId
         phone
         email
         name
         permissions
-        created_at
+        createdAt
         token
       }
     }

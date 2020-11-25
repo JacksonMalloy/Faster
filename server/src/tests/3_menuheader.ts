@@ -8,15 +8,15 @@ export const createMenuHeaders = () =>
     it(`Create Menu Headers`, async () => {
       for (let i = 0; i < 200; i++) {
         const variables = {
-          menu_id: faker.random.number({ max: 50, min: 1 }),
+          menuId: faker.random.number({ max: 50, min: 1 }),
           name: faker.random.word(),
-          sub_header: faker.random.words(7),
+          description: faker.random.words(7),
         }
 
         const result = await menuHeaderRepo.createMenuHeader(variables)
 
-        expect(result.menu_header.menu_id).not.toBeNull()
-        expect(result.menu_header.name).not.toBeNull()
+        expect(result.menuHeader.menuId).not.toBeNull()
+        expect(result.menuHeader.name).not.toBeNull()
       }
     })
   })
@@ -26,15 +26,15 @@ export const setUpMenuHeadersForTestAccount = () =>
     it(`Create Menu Headers`, async () => {
       for (let i = 0; i < 25; i++) {
         const variables = {
-          menu_id: faker.random.number({ max: 10, min: 1 }),
+          menuId: faker.random.number({ max: 10, min: 1 }),
           name: faker.random.word(),
-          sub_header: faker.random.words(7),
+          description: faker.random.words(7),
         }
 
         const result = await menuHeaderRepo.createMenuHeader(variables)
 
-        expect(result.menu_header.menu_id).not.toBeNull()
-        expect(result.menu_header.name).not.toBeNull()
+        expect(result.menuHeader.menuId).not.toBeNull()
+        expect(result.menuHeader.name).not.toBeNull()
       }
     })
   })

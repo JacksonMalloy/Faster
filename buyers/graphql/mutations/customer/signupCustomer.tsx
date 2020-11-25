@@ -7,7 +7,7 @@ export const SIGNUP_CUSTOMER = gql`
       message
       success
       customer {
-        customer_id
+        customerId
         phone
         email
         name

@@ -9,7 +9,7 @@ const client = require('twilio')(accountSid, authToken)
 
 type CreateMessageArgs = {
   phone: string
-  customer_id: number
+  customerId: number
 }
 
 export default class TwilioRepository {
@@ -33,7 +33,7 @@ export default class TwilioRepository {
   ///////WRITES///////
   ////////////////////
 
-  async createMessage({ phone, customer_id }: CreateMessageArgs) {
+  async createMessage({ phone, customerId }: CreateMessageArgs) {
     function generateAccessCode() {
       return shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')).join('').substring(0, 4)
     }
@@ -60,10 +60,10 @@ export default class TwilioRepository {
 
       const { body, sid, direction } = data
 
-      const query = `INSERT INTO "fm"."sms" (body, sid, phone, direction, customer_id) VALUES ($1, $2, $3, $4, $5)
+      const query = `INSERT INTO "fm"."sms" (body, sid, phone, direction, customerId) VALUES ($1, $2, $3, $4, $5)
                       ON CONFLICT (phone) DO UPDATE SET body = excluded.body RETURNING *`
 
-      const params = [body, sid, phone, direction, customer_id]
+      const params = [body, sid, phone, direction, customerId]
 
       const result = await db.query(query, params)
 

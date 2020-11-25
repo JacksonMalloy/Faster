@@ -8,7 +8,7 @@ export const handleEditMenu = async (mutation, args) => {
     variables: variables,
     update: (store, { data }) => {
       try {
-        const variables = { tenant_id: tenantId }
+        const variables = { tenantId: tenantId }
 
         const menuData: any = store.readQuery({
           query: MENUS_BY_TENANT,
@@ -16,13 +16,13 @@ export const handleEditMenu = async (mutation, args) => {
         })
 
         const oldItem = menuData.menusByTenant.find(
-          (obj: { menu_id: any }) => obj.menu_id === data.editMenu.menu.menu_id
+          (obj: { menuId: any }) => obj.menuId === data.editMenu.menu.menuId
         )
         const newData = itemReplacer(menuData.menusByTenant, oldItem, data.editMenu.menu)
 
         store.writeQuery({
           query: MENUS_BY_TENANT,
-          variables: { tenant_id: tenantId },
+          variables: { tenantId: tenantId },
           data: {
             menusByTenant: [...newData],
           },
@@ -46,20 +46,20 @@ export const handleConnectImage = async (mutation, args) => {
 
       const menuData: any = store.readQuery({
         query: MENUS_BY_TENANT,
-        variables: { tenant_id: tenantId },
+        variables: { tenantId: tenantId },
       })
 
       console.log({ menuData })
 
       const oldItem = menuData.menusByTenant.find(
-        (obj: { menu_id: any }) => obj.menu_id === data.connectImageToMenu.connection.connect[0].menu_id
+        (obj: { menuId: any }) => obj.menuId === data.connectImageToMenu.connection.connect[0].menuId
       )
 
       const newData = itemReplacer(menuData.menusByTenant, oldItem, data.connectImageToMenu)
 
       store.writeQuery({
         query: MENUS_BY_TENANT,
-        variables: { tenant_id: tenantId },
+        variables: { tenantId: tenantId },
         data: {
           menusByTenant: [...newData],
         },
@@ -78,12 +78,12 @@ export const handleCreateMenu = async (mutation, args) => {
     update: (store, { data }) => {
       const menuData: any = store.readQuery({
         query: MENUS_BY_TENANT,
-        variables: { tenant_id: tenantId },
+        variables: { tenantId: tenantId },
       })
 
       store.writeQuery({
         query: MENUS_BY_TENANT,
-        variables: { tenant_id: tenantId },
+        variables: { tenantId: tenantId },
         data: {
           menusByTenant: [...menuData.menusByTenant, data.addMenu],
         },
@@ -95,20 +95,20 @@ export const handleCreateMenu = async (mutation, args) => {
 }
 
 export const handleDeleteMenu = async (mutation, args) => {
-  const { variables, tenant_id } = args
+  const { variables, tenantId } = args
   const data = await mutation({
     variables: variables,
     update: (store, { data }) => {
       const menuData: any = store.readQuery({
         query: MENUS_BY_TENANT,
-        variables: { tenant_id: tenant_id },
+        variables: { tenantId: tenantId },
       })
 
-      const newData = itemDeleter(menuData.menusByTenant, data.removeMenu.menu.menu_id)
+      const newData = itemDeleter(menuData.menusByTenant, data.removeMenu.menu.menuId)
 
       store.writeQuery({
         query: MENUS_BY_TENANT,
-        variables: { tenant_id: tenant_id },
+        variables: { tenantId: tenantId },
         data: {
           menusByTenant: [...newData],
         },
@@ -120,13 +120,13 @@ export const handleDeleteMenu = async (mutation, args) => {
 }
 
 export const handlePublishMenu = async (mutation, args) => {
-  const { variables, tenant_id } = args
+  const { variables, tenantId } = args
 
   const data = await mutation({
     variables: variables,
     update: (store, { data }) => {
       try {
-        const variables = { tenant_id: tenant_id }
+        const variables = { tenantId: tenantId }
 
         const menuData: any = store.readQuery({
           query: MENUS_BY_TENANT,
@@ -134,13 +134,13 @@ export const handlePublishMenu = async (mutation, args) => {
         })
 
         const oldItem = menuData.menusByTenant.find(
-          (obj: { menu_id: any }) => obj.menu_id === data.editMenu.menu.menu_id
+          (obj: { menuId: any }) => obj.menuId === data.editMenu.menu.menuId
         )
         const newData = itemReplacer(menuData.menusByTenant, oldItem, data.editMenu.menu)
 
         store.writeQuery({
           query: MENUS_BY_TENANT,
-          variables: { tenant_id: tenant_id },
+          variables: { tenantId: tenantId },
           data: {
             menusByTenant: [...newData],
           },

@@ -31,11 +31,11 @@ const useForm = ({ initialValues, onSubmit }) => {
 
   const validate = (name, value) => {
     switch (name) {
-      case 'tenant_name':
+      case 'tenantName':
         if (value.split('').length === 0) {
-          errors.tenant_name = 'Your company must have a name'
+          errors.tenantName = 'Your company must have a name'
         } else {
-          errors.tenant_name = ''
+          errors.tenantName = ''
         }
         break
       case 'address':
@@ -45,18 +45,18 @@ const useForm = ({ initialValues, onSubmit }) => {
           errors.address = ''
         }
         break
-      case 'country_region':
+      case 'countryRegion':
         if (value.split('').length === 0) {
-          errors.country_region = 'This field is required'
+          errors.countryRegion = 'This field is required'
         } else {
-          errors.country_region = ''
+          errors.countryRegion = ''
         }
         break
-      case 'postal_code':
+      case 'postalCode':
         if (value.split('').length === 0) {
-          errors.postal_code = 'This field is required'
+          errors.postalCode = 'This field is required'
         } else {
-          errors.postal_code = ''
+          errors.postalCode = ''
         }
         break
       case 'city':

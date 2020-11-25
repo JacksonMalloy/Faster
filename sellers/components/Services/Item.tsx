@@ -3,28 +3,28 @@ import { MENU_ITEMS_BY_MENU } from 'graphql/queries/menu-item/menuItemsByMenu'
 import { itemReplacer } from 'utils'
 
 export const handleCreateItem = async (mutation, args) => {
-  const { variables, menu_id } = args
+  const { variables, menuId } = args
 
   const data = await mutation({
     variables: variables,
     update: (store, { data }) => {
       const {
         addMenuItem: {
-          menu_item: { menu_id },
+          menuItem: { menuId },
         },
       } = data
 
       try {
         const menuItemData = store.readQuery({
           query: MENU_ITEMS_BY_MENU,
-          variables: { menu_id: menu_id },
+          variables: { menuId: menuId },
         })
 
         store.writeQuery({
           query: MENU_ITEMS_BY_MENU,
-          variables: { menu_id: menu_id },
+          variables: { menuId: menuId },
           data: {
-            menuItemsByMenu: [...menuItemData.menuItemsByMenu, data.addMenuItem.menu_item],
+            menuItemsByMenu: [...menuItemData.menuItemsByMenu, data.addMenuItem.menuItem],
           },
         })
       } catch (error) {
@@ -47,7 +47,7 @@ export const handleChoicesAndSelections = async (mutation, args) => {
 }
 
 export const handleEditItem = async (mutation, args) => {
-  const { variables, menu_id } = args
+  const { variables, menuId } = args
 
   const data = await mutation({
     variables: variables,
@@ -55,18 +55,18 @@ export const handleEditItem = async (mutation, args) => {
       try {
         const menuItemData = store.readQuery({
           query: MENU_ITEMS_BY_MENU,
-          variables: { menu_id: menu_id },
+          variables: { menuId: menuId },
         })
 
         const oldItem = menuItemData.menuItemsByMenu.find(
-          (obj: { item_id: number }) => obj.item_id === data.editMenuItem.menu_item.item_id
+          (obj: { itemId: number }) => obj.itemId === data.editMenuItem.menuItem.itemId
         )
 
-        const newData = itemReplacer(menuItemData.menuItemsByMenu, oldItem, data.editMenuItem.menu_item)
+        const newData = itemReplacer(menuItemData.menuItemsByMenu, oldItem, data.editMenuItem.menuItem)
 
         store.writeQuery({
           query: MENU_ITEMS_BY_MENU,
-          variables: { menu_id: menu_id },
+          variables: { menuId: menuId },
           data: {
             menuItemsByMenu: [...newData],
           },
@@ -81,7 +81,7 @@ export const handleEditItem = async (mutation, args) => {
 }
 
 export const handleConnectingImageToItem = async (mutation, args) => {
-  const { variables, menu_id } = args
+  const { variables, menuId } = args
 
   mutation({
     variables: variables,
@@ -89,18 +89,18 @@ export const handleConnectingImageToItem = async (mutation, args) => {
       try {
         const menuItemData = store.readQuery({
           query: MENU_ITEMS_BY_MENU,
-          variables: { menu_id: menu_id },
+          variables: { menuId: menuId },
         })
 
-        const oldItem = menuItemData.menu.menu_items.find(
-          (obj: { item_id: number }) => obj.item_id === data.connectImageToMenuItem.item_id
+        const oldItem = menuItemData.menu.menuItems.find(
+          (obj: { itemId: number }) => obj.itemId === data.connectImageToMenuItem.itemId
         )
 
-        const newData = itemReplacer(menuItemData.menu.menu_items, oldItem, data.connectImageToMenuItem.item_id)
+        const newData = itemReplacer(menuItemData.menu.menuItems, oldItem, data.connectImageToMenuItem.itemId)
 
         store.writeQuery({
           query: MENU_ITEMS_BY_MENU,
-          variables: { menu_id: menu_id },
+          variables: { menuId: menuId },
           data: {
             menu: [...newData],
           },
@@ -122,11 +122,11 @@ export const handleMenuChoiceItemConnections = async (mutations, args) => {
     connectMenuSelectionToMenuChoice,
   } = mutations
 
-  const choiceIDs = selectedItem.menu_choices.map((choice) => choice.choice_id)
+  const choiceIDs = selectedItem.menuChoices.map((choice) => choice.choiceId)
 
   const variables = {
-    item_id: selectedItem.item_id,
-    choice_ids: choiceIDs,
+    itemId: selectedItem.itemId,
+    choiceIds: choiceIDs,
   }
 
   const removeChoicesController = async () => {
@@ -148,11 +148,11 @@ export const handleMenuChoiceItemConnections = async (mutations, args) => {
 
   const removeSelectionsController = async () => {
     for (let choice of formChoices) {
-      const selectionIDs = choice.selections.map((selection) => selection.selection_id)
+      const selectionIDs = choice.selections.map((selection) => selection.selectionId)
 
       const variables = {
-        choice_id: choice.choice_id,
-        selection_ids: selectionIDs,
+        choiceId: choice.choiceId,
+        selectionIds: selectionIDs,
       }
 
       if (selectionIDs.length) {
@@ -174,11 +174,11 @@ export const handleMenuChoiceItemConnections = async (mutations, args) => {
 
   const connectChoicesController = async () => {
     if (formAddOns.length && formChoices.length) {
-      const choiceIDs = formChoices.map((choice) => choice.choice_id)
+      const choiceIDs = formChoices.map((choice) => choice.choiceId)
 
       const variables = {
-        item_id: selectedItem.item_id,
-        choice_ids: choiceIDs,
+        itemId: selectedItem.itemId,
+        choiceIds: choiceIDs,
       }
 
       if (choiceIDs.length) {
@@ -211,12 +211,12 @@ export const handleMenuChoiceItemConnections = async (mutations, args) => {
 
         // [1, 4, 16, 234, 56, 12]
         const arrayOfMenuSelectionIds = arrayOfMenuSelections.map(
-          (selection: { selection_id: number }) => selection.selection_id
+          (selection: { selectionId: number }) => selection.selectionId
         )
 
         const variables = {
-          choice_id: choice.choice_id,
-          selection_ids: arrayOfMenuSelectionIds,
+          choiceId: choice.choiceId,
+          selectionIds: arrayOfMenuSelectionIds,
         }
 
         try {

@@ -156,7 +156,7 @@ const MainNavigation = ({ children, permissions }: MainNavigationProps) => {
 
   const handleSignout = () => {
     // clear token
-    localStorage.setItem('auth_token', '')
+    localStorage.setItem('authToken', '')
     resetCaches()
     router.push('/')
   }

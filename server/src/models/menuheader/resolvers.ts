@@ -2,26 +2,26 @@ import MenuHeaderRepository from './repo'
 import { isAuthenticated, isAdmin, isDirector } from '../../utils'
 
 type CreateMenuHeaderArgs = {
-  menu_id: number
+  menuId: number
   name: string
-  sub_header: string
+  description: string
 }
 
 type UpdateMenuHeaderArgs = {
-  header_id: number
+  headerId: number
   name: string
-  sub_header: string
+  description: string
 }
 
 export const MenuHeaderQueries = {
-  menuHeader: async (parent: any, { header_id }: { header_id: number }, context: any, info: any) => {
+  menuHeader: async (parent: any, { headerId }: { headerId: number }, context: any, info: any) => {
     const menuHeaderRepository = new MenuHeaderRepository()
-    const menuHeader = await menuHeaderRepository.getMenuHeaderById(header_id)
+    const menuHeader = await menuHeaderRepository.getMenuHeaderById(headerId)
     return menuHeader
   },
-  menuHeadersByMenu: async (parent: any, { menu_id }: { menu_id: number }, context: any, info: any) => {
+  menuHeadersByMenu: async (parent: any, { menuId }: { menuId: number }, context: any, info: any) => {
     const menuHeaderRepository = new MenuHeaderRepository()
-    const menuHeaders = await menuHeaderRepository.getAllMenuHeadersByMenu(menu_id)
+    const menuHeaders = await menuHeaderRepository.getAllMenuHeadersByMenu(menuId)
     return menuHeaders
   },
 }
@@ -39,10 +39,10 @@ export const MenuHeaderMutations = {
     const menuHeader = await menuHeaderRepository.updateMenuHeader(args)
     return menuHeader
   },
-  removeMenuHeader: async (parent: any, { header_id }: { header_id: number }, context: any, info: any) => {
+  removeMenuHeader: async (parent: any, { headerId }: { headerId: number }, context: any, info: any) => {
     if (!isDirector(context)) return { code: 401, message: 'Not Authorized', success: false }
     const menuHeaderRepository = new MenuHeaderRepository()
-    const menuHeader = await menuHeaderRepository.deleteMenuHeader(header_id)
+    const menuHeader = await menuHeaderRepository.deleteMenuHeader(headerId)
     return menuHeader
   },
 }

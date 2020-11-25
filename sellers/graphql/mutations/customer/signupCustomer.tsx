@@ -7,12 +7,12 @@ export const SIGNUP_CUSTOMER = gql`
       message
       success
       customer {
-        customer_id
+        customerId
         phone
         email
         name
         permissions
-        created_at
+        createdAt
         table_id
         token
       }

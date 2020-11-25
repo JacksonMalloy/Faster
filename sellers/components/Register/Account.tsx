@@ -84,7 +84,7 @@ export const Account = ({ authToken, tenantId, setAuthToken }: AccountProps) => 
       const {
         data: {
           signupDirector: {
-            admin: { admin_id, token },
+            admin: { adminId, token },
             code,
             type,
             message,
@@ -112,9 +112,9 @@ export const Account = ({ authToken, tenantId, setAuthToken }: AccountProps) => 
       const connect = async (authToken: string) => {
         const data = await joinAdminToTenant({
           variables: {
-            admin_id: admin_id,
-            tenant_id: tenantId,
-            auth_token: authToken,
+            adminId: adminId,
+            tenantId: tenantId,
+            authToken: authToken,
           },
         })
 
@@ -123,7 +123,7 @@ export const Account = ({ authToken, tenantId, setAuthToken }: AccountProps) => 
 
       if (success && authToken) {
         // Set JWT before calling joinAdminToTenant
-        localStorage.setItem('auth_token', token)
+        localStorage.setItem('authToken', token)
         const connectResult = await connect(authToken)
 
         const {

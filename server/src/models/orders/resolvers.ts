@@ -12,11 +12,11 @@ export const OrderQueries = {
 const ORDER_CREATED = `ORDER_CREATED`
 
 type CreateOrderArgs = {
-  admin_id: number
-  customer_id: number
+  adminId: number
+  customerId: number
   total: string
   charge: string
-  tenant_id: number
+  tenantId: number
 }
 
 export const OrderMutations = {
@@ -40,7 +40,7 @@ export const OrderSubscriptions = {
   orderCreated: {
     subscribe: withFilter(
       (parent, args, { pubsub }, info) => pubsub.asyncIterator(ORDER_CREATED),
-      (payload, variables) => payload.orderCreated.tenant_id === parseInt(variables.tenant_id)
+      (payload, variables) => payload.orderCreated.tenantId === parseInt(variables.tenantId)
     ),
   },
 }

@@ -48,42 +48,34 @@ export const Tenant = ({ setFormPhase, setAuthToken, setTenantId }: TenantProps)
 
   const { values, errors, handleChange, handleBlur, handleSubmit } = useForm({
     onSubmit: ({ errors, values }: any) => {
-      const {
-        address,
-        city,
-        tenant_name,
-        tenant_phone,
-        tenant_website,
-        postal_code,
-        sub_address,
-      } = values
+      const { address, city, tenantName, tenant_phone, tenant_website, postalCode, subAddress } = values
 
       createTenant({
         variables: {
           address: address,
           city: city,
-          country_region: 'Canada',
-          name: tenant_name,
+          countryRegion: 'Canada',
+          name: tenantName,
           phone: tenant_phone,
-          website_url: tenant_website,
-          postal_code: postal_code,
-          sub_address: sub_address,
+          websiteUrl: tenant_website,
+          postalCode: postalCode,
+          subAddress: subAddress,
           province: province,
         },
         update: (store, { data }) => {
           const {
             createTenant: {
-              tenant: { auth_token },
+              tenant: { authToken },
             },
           } = data
-          setAuthToken(auth_token)
+          setAuthToken(authToken)
 
           const {
             createTenant: {
-              tenant: { tenant_id },
+              tenant: { tenantId },
             },
           } = data
-          setTenantId(tenant_id)
+          setTenantId(tenantId)
         },
       })
 
@@ -92,28 +84,28 @@ export const Tenant = ({ setFormPhase, setAuthToken, setTenantId }: TenantProps)
   })
 
   const hasErrors = () => {
-    if (!values.tenant_name) return true
+    if (!values.tenantName) return true
     if (!values.address) return true
     if (!values.city) return true
-    if (!values.postal_code) return true
+    if (!values.postalCode) return true
     if (!province) return true
 
     const postalCodeRegex = /^[ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy]{1}\d{1}[A-Za-z]{1}[ ]{0,1}\d{1}[A-Za-z]{1}\d{1}$/i
-    if (!postalCodeRegex.test(values.postal_code.trim())) return true
+    if (!postalCodeRegex.test(values.postalCode.trim())) return true
   }
 
   // NEED TO ADD PROVINCE!
   return (
     <StyledForm onSubmit={handleSubmit}>
       <Field
-        id="tenant_name"
-        name="tenant_name"
+        id="tenantName"
+        name="tenantName"
         type="text"
         placeholder=""
         label="Company Name"
         onChange={handleChange}
         onBlur={handleBlur}
-        value={values.tenant_name}
+        value={values.tenantName}
         error={errors.tenant_name}
       />
 
@@ -159,27 +151,27 @@ export const Tenant = ({ setFormPhase, setAuthToken, setTenantId }: TenantProps)
 
       <div className="group">
         <Field
-          id="sub_address"
-          name="sub_address"
+          id="subAddress"
+          name="subAddress"
           type="text"
           placeholder=""
           label="Apt, suite, etc (optional)"
           onChange={handleChange}
           onBlur={handleBlur}
-          value={values.sub_address}
-          error={errors.sub_address}
+          value={values.subAddress}
+          error={errors.subAddress}
         />
 
         <Field
-          id="postal_code"
-          name="postal_code"
+          id="postalCode"
+          name="postalCode"
           type="text"
           placeholder=""
           label="ZIP/Postal Code"
           onChange={handleChange}
           onBlur={handleBlur}
-          value={values.postal_code}
-          error={errors.postal_code}
+          value={values.postalCode}
+          error={errors.postalCode}
         />
       </div>
 

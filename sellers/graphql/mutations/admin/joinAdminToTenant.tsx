@@ -1,15 +1,15 @@
 import { gql } from '@apollo/client'
 
 export const JOIN_ADMIN_TO_TENANT = gql`
-  mutation($admin_id: ID!, $tenant_id: ID!, $auth_token: String!) {
-    joinAdminToTenant(admin_id: $admin_id, tenant_id: $tenant_id, auth_token: $auth_token) {
+  mutation($adminId: ID!, $tenantId: ID!, $authToken: String!) {
+    joinAdminToTenant(adminId: $adminId, tenantId: $tenantId, authToken: $authToken) {
       code
       message
       success
       connection {
         connect {
-          tenant_id
-          admin_id
+          tenantId
+          adminId
         }
       }
     }

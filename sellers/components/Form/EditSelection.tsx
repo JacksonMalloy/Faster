@@ -16,17 +16,17 @@ export const EditSelection = () => {
   const [editMenuSelection] = useMutation(EDIT_MENU_SELECTION)
   const initialValues = {
     name: '',
-    value_add: '',
-    selection_id: '',
+    valueAdd: '',
+    selectionId: '',
   }
 
   const { values, errors, handleChange, handleSubmit, initialize, handleBlur } = useForm({
     initialValues,
     onSubmit: async ({ values }) => {
       const variables = {
-        selection_id: selectedSelection.selection_id,
+        selectionId: selectedSelection.selectionId,
         name: values.name,
-        value_add: values.value_add,
+        valueAdd: values.valueAdd,
       }
       const args = { variables, tenantId }
 
@@ -37,7 +37,7 @@ export const EditSelection = () => {
   })
 
   useEffect(() => {
-    initialize({ name: selectedSelection?.name, value_add: selectedSelection?.value_add })
+    initialize({ name: selectedSelection?.name, valueAdd: selectedSelection?.valueAdd })
     // eslint-disable-next-line
   }, [initialize, selectedHeader])
 
@@ -66,14 +66,14 @@ export const EditSelection = () => {
         type="text"
       />
       <CurrencyField
-        id="value_add"
-        name="value_add"
+        id="valueAdd"
+        name="valueAdd"
         label="Additional Cost"
         placeholder=""
-        value={values.value_add}
+        value={values.valueAdd}
         onChange={handleChange}
         onBlur={handleBlur}
-        error={errors.value_add}
+        error={errors.valueAdd}
         type="text"
       />
       <div className="form-btns">

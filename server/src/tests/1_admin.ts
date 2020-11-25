@@ -41,7 +41,7 @@ export const getAdministrators = () =>
     it('Gets an administrator', async () => {
       const result = await adminRepo.getAdminById(5)
 
-      expect(result.admin_id).toEqual(5)
+      expect(result.adminId).toEqual(5)
       expect(result.permissions).toEqual('ADMIN')
     })
   })

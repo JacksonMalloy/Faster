@@ -29,10 +29,10 @@ grid-gap: 1rem; */
   }
 `
 
-const Staff = ({ tenant_id }) => {
+const Staff = ({ tenantId }) => {
   const { data, loading, error } = useQuery(ADMINS_BY_TENANT, {
     variables: {
-      tenant_id: tenant_id,
+      tenantId: tenantId,
     },
   })
 
@@ -42,7 +42,7 @@ const Staff = ({ tenant_id }) => {
       {data && data.adminsByTenant
         ? data.adminsByTenant.map((admin) => {
             return (
-              <div style={{ padding: '2rem' }} key={admin.admin_id}>
+              <div style={{ padding: '2rem' }} key={admin.adminId}>
                 <h3>{admin.name}</h3>
                 <span>{admin.email}</span>
                 <p>{admin.permissions}</p>

@@ -4,23 +4,23 @@ export const CREATE_TENANT = gql`
   mutation(
     $address: String!
     $city: String!
-    $country_region: String!
+    $countryRegion: String!
     $name: String!
     $phone: String
-    $website_url: String
-    $postal_code: String!
-    $sub_address: String
+    $websiteUrl: String
+    $postalCode: String!
+    $subAddress: String
     $province: String!
   ) {
     createTenant(
       address: $address
       city: $city
-      country_region: $country_region
+      countryRegion: $countryRegion
       name: $name
       phone: $phone
-      website_url: $website_url
-      postal_code: $postal_code
-      sub_address: $sub_address
+      websiteUrl: $websiteUrl
+      postalCode: $postalCode
+      subAddress: $subAddress
       province: $province
     ) {
       code
@@ -28,17 +28,17 @@ export const CREATE_TENANT = gql`
       message
       tenant {
         name
-        tenant_id
+        tenantId
         address
         city
-        country_region
+        countryRegion
         name
         phone
-        website_url
-        postal_code
-        sub_address
+        websiteUrl
+        postalCode
+        subAddress
         province
-        auth_token
+        authToken
       }
     }
   }

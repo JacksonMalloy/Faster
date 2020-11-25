@@ -1,29 +1,29 @@
 import { gql } from '@apollo/client'
 
 export const EDIT_MENU_ITEM = gql`
-  mutation($item_id: ID!, $menu_id: ID!, $name: String, $base_price: String, $description: String, $header_id: ID) {
+  mutation($itemId: ID!, $menuId: ID!, $name: String, $basePrice: String, $description: String, $headerId: ID) {
     editMenuItem(
-      item_id: $item_id
-      menu_id: $menu_id
+      itemId: $itemId
+      menuId: $menuId
       name: $name
-      base_price: $base_price
+      basePrice: $basePrice
       description: $description
-      header_id: $header_id
+      headerId: $headerId
     ) {
       code
       message
       success
-      menu_item {
-        item_id
-        header_id
-        menu_id
-        base_price
+      menuItem {
+        itemId
+        headerId
+        menuId
+        basePrice
         description
         name
-        menu_choices {
-          choice_id
+        menuChoices {
+          choiceId
           selections {
-            selection_id
+            selectionId
           }
         }
       }

@@ -32,22 +32,22 @@ const StyledContainer = styled.section`
 `
 
 const Menu = ({ accessCode, menuId }) => {
-  const { loading, error, data } = useQuery(MENU, { variables: { menu_id: menuId } })
+  const { loading, error, data } = useQuery(MENU, { variables: { menuId: menuId } })
   if (loading) return <p>Loading...</p>
   if (error) return <p>Error :(</p>
 
-  const items = data.menu.menu_items.slice()
+  const items = data.menu.menuItems.slice()
   const result = []
   const map = new Map()
 
   // Set up array of unique Menu Headers
   for (const item of items) {
-    if (!map.has(item.menu_header.header_id)) {
-      map.set(item.menu_header.header_id, true) // set any value to Map
+    if (!map.has(item.menuHeader.headerId)) {
+      map.set(item.menuHeader.headerId, true) // set any value to Map
       result.push({
-        header_id: item.menu_header.header_id,
-        name: item.menu_header.name,
-        sub_header: item.menu_header.sub_header,
+        headerId: item.menuHeader.headerId,
+        name: item.menuHeader.name,
+        description: item.menuHeader.description,
       })
     }
   }
@@ -57,15 +57,15 @@ const Menu = ({ accessCode, menuId }) => {
   // Create array of Item Sets beneath Headers
   for (const header of result) {
     const itemSet = items
-      .filter((item) => item.menu_header.header_id === header.header_id)
+      .filter((item) => item.menuHeader.headerId === header.headerId)
       .map((item, i) => {
         return (
           <StyledItemLink
-            href={`/${accessCode}/menu/${menuId}/item/${item.item_id}`}
+            href={`/${accessCode}/menu/${menuId}/item/${item.itemId}`}
             key={`${i}-${accessCode}-${menuId}`}
           >
             <article>
-              {item.image && item.image.image_id && (
+              {item.image && item.image.imageId && (
                 <header>
                   <div>Image Here</div>
                 </header>
@@ -73,7 +73,7 @@ const Menu = ({ accessCode, menuId }) => {
 
               <h3>{item.name}</h3>
               <p>{item.description}</p>
-              <span>{item.base_price}</span>
+              <span>{item.basePrice}</span>
             </article>
           </StyledItemLink>
         )
@@ -84,7 +84,7 @@ const Menu = ({ accessCode, menuId }) => {
         <StyledContainer>
           <header>
             <h2>{header.name}</h2>
-            <p>{header.sub_header}</p>
+            <p>{header.description}</p>
           </header>
           {itemSet}
         </StyledContainer>
@@ -107,31 +107,31 @@ const Menu = ({ accessCode, menuId }) => {
 export default Menu
 
 const MENU = gql`
-  query($menu_id: ID!) {
-    menu(menu_id: $menu_id) {
-      menu_id
-      tenant_id
-      updated_at
+  query($menuId: ID!) {
+    menu(menuId: $menuId) {
+      menuId
+      tenantId
+      updatedAt
       title
       __typename
       image {
-        image_id
-        image_url
+        imageId
+        imageUrl
         __typename
       }
-      menu_items {
-        item_id
-        base_price
+      menuItems {
+        itemId
+        basePrice
         description
         name
         image {
-          image_id
-          image_url
+          imageId
+          imageUrl
         }
-        menu_header {
-          header_id
+        menuHeader {
+          headerId
           name
-          sub_header
+          description
         }
       }
     }

@@ -1,15 +1,15 @@
 import { gql } from '@apollo/client'
 
 export const ADMINS_BY_TENANT = gql`
-  query($tenant_id: ID!) {
-    adminsByTenant(tenant_id: $tenant_id) {
-      admin_id
-      tenant_id
+  query($tenantId: ID!) {
+    adminsByTenant(tenantId: $tenantId) {
+      adminId
+      tenantId
       phone
       email
       name
       permissions
-      created_at
+      createdAt
     }
   }
 `

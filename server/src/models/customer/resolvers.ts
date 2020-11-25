@@ -14,24 +14,24 @@ type LoginArgs = {
 }
 
 type ConnectCustomerWithOrgArgs = {
-  customer_id: number
-  tenant_id: number
+  customerId: number
+  tenantId: number
 }
 
 export const CustomerQueries = {
-  customer: async (parent: any, { customer_id }: { customer_id: number }, context: any, info: any) => {
+  customer: async (parent: any, { customerId }: { customerId: number }, context: any, info: any) => {
     const customerRepository = new CustomerRepository()
-    const data = await customerRepository.getCustomerById(customer_id)
+    const data = await customerRepository.getCustomerById(customerId)
     return data
   },
   customersByTenant: async (
     parent: any,
-    { tenant_id }: { tenant_id: number },
+    { tenantId }: { tenantId: number },
     context: any,
     info: any
   ) => {
     const customerRepository = new CustomerRepository()
-    const data = await customerRepository.getCustomersByTenant(tenant_id)
+    const data = await customerRepository.getCustomersByTenant(tenantId)
     return data
   },
 }
@@ -47,9 +47,9 @@ export const CustomerMutations = {
     const data = await customerRepository.loginCustomer(args)
     return data
   },
-  removeCustomer: async (parent: any, { customer_id }: { customer_id: number }, context: any, info: any) => {
+  removeCustomer: async (parent: any, { customerId }: { customerId: number }, context: any, info: any) => {
     const customerRepository = new CustomerRepository()
-    const data = await customerRepository.deleteCustomer(customer_id)
+    const data = await customerRepository.deleteCustomer(customerId)
     return data
   },
   joinCustomerToTenant: async (parent: any, args: ConnectCustomerWithOrgArgs, context: any, info: any) => {

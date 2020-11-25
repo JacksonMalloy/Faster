@@ -36,7 +36,7 @@ const StyledAccountWrapper = styled.section`
 `
 
 const Account = ({ tenantId }) => {
-  const { data, loading, error } = useQuery(TENANT, { variables: { tenant_id: tenantId } })
+  const { data, loading, error } = useQuery(TENANT, { variables: { tenantId: tenantId } })
 
   if (loading) {
     return <Skeleton width="100%" height="3rem" />

@@ -3,16 +3,16 @@ import { gql } from '@apollo/client'
 export const ACTIVE_USER_CUSTOMER = gql`
   query {
     activeUserCustomer {
-      customer_id
+      customerId
       phone
       email
       name
       permissions
-      created_at
+      createdAt
       token
       tenants {
         name
-        tenant_id
+        tenantId
       }
     }
   }

@@ -9,19 +9,19 @@ export const handleDeleteSelection = async (mutation, args) => {
     // update: (store, { data }) => {
     //   const menuHeaderData: any = store.readQuery({
     //     query: MENU_HEADERS_BY_MENU,
-    //     variables: { selection_id: menuId },
+    //     variables: { selectionId: menuId },
     //   })
 
     //   console.log({ menuHeaderData })
     //   console.log({ data })
 
-    //   const newData = itemDeleter(menuHeaderData.menuSelectionsByTenant, data.removeMenuHeader.menu_header.selection_id)
+    //   const newData = itemDeleter(menuHeaderData.menuSelectionsByTenant, data.removeMenuHeader.menuHeader.selectionId)
 
     //   console.log({ newData })
 
     //   store.writeQuery({
     //     query: MENU_HEADERS_BY_MENU,
-    //     variables: { selection_id: menuId },
+    //     variables: { selectionId: menuId },
     //     data: {
     //       menuSelectionsByTenant: [...newData],
     //     },
@@ -38,7 +38,7 @@ export const handleEditSelection = async (mutation, args) => {
   const data = await mutation({
     variables: variables,
     update: (store, { data }) => {
-      const variables = { tenant_id: tenantId }
+      const variables = { tenantId: tenantId }
 
       const selectionData: any = store.readQuery({
         query: MENU_SELECTIONS_BY_TENANT,
@@ -46,15 +46,10 @@ export const handleEditSelection = async (mutation, args) => {
       })
 
       const oldItem = selectionData.menuSelectionsByTenant.find(
-        (obj: { selection_id: number }) =>
-          obj.selection_id === data.editMenuSelection.menu_selection.selection_id
+        (obj: { selectionId: number }) => obj.selectionId === data.editMenuSelection.menuSelection.selectionId
       )
 
-      const newData = itemReplacer(
-        selectionData.menuSelectionsByTenant,
-        oldItem,
-        data.editMenuSelection.menu_selection
-      )
+      const newData = itemReplacer(selectionData.menuSelectionsByTenant, oldItem, data.editMenuSelection.menuSelection)
 
       store.writeQuery({
         query: MENU_SELECTIONS_BY_TENANT,
@@ -76,7 +71,7 @@ export const handleCreateSelection = async (mutation, args) => {
     variables: variables,
     update: (store, { data }) => {
       try {
-        const variables = { tenant_id: tenantId }
+        const variables = { tenantId: tenantId }
 
         const selectionData: any = store.readQuery({
           query: MENU_SELECTIONS_BY_TENANT,

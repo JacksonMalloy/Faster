@@ -39,7 +39,7 @@ export const getUser = async (req: Request) => {
       const { userId } = <any>jwt.verify(token, APP_SECRET)
 
       // Query User
-      const query = `SELECT permissions, customer_id FROM "fm"."customers" WHERE customer_id = $1`
+      const query = `SELECT permissions, customerId FROM "fm"."customers" WHERE customerId = $1`
       const params = [userId]
 
       try {
@@ -56,7 +56,7 @@ export const getUser = async (req: Request) => {
       const { userId } = <any>jwt.verify(token, APP_SECRET)
 
       // Query User
-      const query = `SELECT permissions, admin_id, tenant_id FROM "fm"."admins" WHERE admin_id = $1`
+      const query = `SELECT permissions, adminId, tenantId FROM "fm"."admins" WHERE adminId = $1`
       const params = [userId]
 
       try {
@@ -107,9 +107,9 @@ export const isDirector = ({ user }: any) => {
 }
 
 export const isOwner = ({ user }: any, result: any[] | undefined) => {
-  const [{ tenant_id }]: any = result
+  const [{ tenantId }]: any = result
 
-  if (user.tenant_id === tenant_id) {
+  if (user.tenantId === tenantId) {
     return true
   }
 

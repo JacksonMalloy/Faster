@@ -2,43 +2,38 @@ import MenuRepository from './repo'
 import { isAuthenticated, isAdmin, isDirector } from '../../utils'
 
 export const MenuQueries = {
-  menu: async (parent: any, { menu_id }: { menu_id: number }, context: any, info: any) => {
+  menu: async (parent: any, { menuId }: { menuId: number }, context: any, info: any) => {
     const menuRepo = new MenuRepository()
-    const data = await menuRepo.getMenuById(menu_id)
+    const data = await menuRepo.getMenuById(menuId)
     return data
   },
-  menusByTenant: async (
-    parent: any,
-    { tenant_id }: { tenant_id: number },
-    context: any,
-    info: any
-  ) => {
+  menusByTenant: async (parent: any, { tenantId }: { tenantId: number }, context: any, info: any) => {
     const menuRepo = new MenuRepository()
-    const data = await menuRepo.getAllMenusByTenant(tenant_id)
+    const data = await menuRepo.getAllMenusByTenant(tenantId)
     return data
   },
   searchMenus: async (
     parent: any,
-    { tenant_id, search_query }: { tenant_id: number; search_query: string },
+    { tenantId, searchQuery }: { tenantId: number; searchQuery: string },
     context: any,
     info: any
   ) => {
     const menuRepo = new MenuRepository()
-    const data = await menuRepo.getAllMenusByTenant(tenant_id)
+    const data = await menuRepo.getAllMenusByTenant(tenantId)
 
-    const searchData = data.filter((data) => data.title.toLowerCase().includes(search_query.toLowerCase()))
+    const searchData = data.filter((data) => data.title.toLowerCase().includes(searchQuery.toLowerCase()))
 
     return searchData
   },
 }
 
 type CreateMenuArgs = {
-  tenant_id: number
+  tenantId: number
   title: string
 }
 
 type UpdateMenuArgs = {
-  menu_id: number
+  menuId: number
   title: number
   published: boolean
 }
@@ -56,7 +51,7 @@ export const MenuMutations = {
     const data = await menuRepo.updateMenu(args)
     return data
   },
-  removeMenu: async (parent: any, args: { menu_id: number }, context: any, info: any) => {
+  removeMenu: async (parent: any, args: { menuId: number }, context: any, info: any) => {
     if (!isDirector(context)) return { code: 401, message: 'Not Authorized', success: false }
     const menuRepo = new MenuRepository()
     const data = await menuRepo.deleteMenu(args)

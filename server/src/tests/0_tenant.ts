@@ -3,7 +3,7 @@ import pool from '../db/config'
 import faker from 'faker'
 import AdminRepository from '../models/admin/repo'
 import CustomerRepository from '../models/customer/repo'
-import 'jest';
+import 'jest'
 
 const adminRepo = new AdminRepository()
 const tenantRepo = new TenantRepository()
@@ -17,11 +17,11 @@ export const registerTenants = () =>
           name: faker.company.companyName(),
           address: faker.address.streetAddress(),
           city: faker.address.city(),
-          country_region: faker.address.country(),
+          countryRegion: faker.address.country(),
           phone: faker.phone.phoneNumberFormat(),
-          website_url: faker.internet.domainName(),
-          postal_code: faker.address.zipCode(),
-          sub_address: faker.address.secondaryAddress(),
+          websiteUrl: faker.internet.domainName(),
+          postalCode: faker.address.zipCode(),
+          subAddress: faker.address.secondaryAddress(),
           province: faker.address.state(),
           pin: faker.random.number(4),
         }
@@ -31,9 +31,9 @@ export const registerTenants = () =>
         expect(result.tenant.name).not.toBeNull()
         expect(result.tenant.address).not.toBeNull()
         expect(result.tenant.city).not.toBeNull()
-        expect(result.tenant.country_region).not.toBeNull()
+        expect(result.tenant.countryRegion).not.toBeNull()
         expect(result.tenant.phone).not.toBeNull()
-        expect(result.tenant.postal_code).not.toBeNull()
+        expect(result.tenant.postalCode).not.toBeNull()
         expect(result.tenant.province).not.toBeNull()
       }
     })
@@ -46,11 +46,11 @@ export const setUpTestAccount = () =>
         name: faker.company.companyName(),
         address: faker.address.streetAddress(),
         city: faker.address.city(),
-        country_region: faker.address.country(),
+        countryRegion: faker.address.country(),
         phone: faker.phone.phoneNumberFormat(),
-        website_url: faker.internet.domainName(),
-        postal_code: faker.address.zipCode(),
-        sub_address: faker.address.secondaryAddress(),
+        websiteUrl: faker.internet.domainName(),
+        postalCode: faker.address.zipCode(),
+        subAddress: faker.address.secondaryAddress(),
         province: faker.address.state(),
       }
 
@@ -68,14 +68,14 @@ export const setUpTestAccount = () =>
       expect(adminResult.admin.permissions).toEqual('DIRECTOR')
       expect(adminResult.admin.password).not.toEqual(adminVariables.password)
 
-      const connectAdminId = await adminResult.admin.admin_id
-      const connectToken = await orgResult.tenant.auth_token
-      const connectOrgId = await orgResult.tenant.tenant_id
+      const connectAdminId = await adminResult.admin.adminId
+      const connectToken = await orgResult.tenant.authToken
+      const connectOrgId = await orgResult.tenant.tenantId
 
       const connectVariables = {
-        admin_id: connectAdminId,
-        tenant_id: connectOrgId,
-        auth_token: connectToken,
+        adminId: connectAdminId,
+        tenantId: connectOrgId,
+        authToken: connectToken,
       }
 
       const connectResult = await adminRepo.registerAdminToTenant(connectVariables)
@@ -90,7 +90,7 @@ export const setUpTestCustomerAccount = () =>
         phone: '+16045059772',
         pin: '1Q2W',
         email: 'test@faster.com',
-        name: 'jackson'
+        name: 'jackson',
       }
 
       const customerResult = await customerRepo.registerCustomer(customerVariables)
@@ -101,8 +101,8 @@ export const setUpTestCustomerAccount = () =>
       // Grab 5 tenant ID's
       for (let i = 0; i < 4; i++) {
         const connectVariables = {
-          customer_id: customerResult.customer.customer_id,
-          tenant_id: 1 + i,
+          customerId: customerResult.customer.customerId,
+          tenantId: 1 + i,
         }
 
         const connectResult = await customerRepo.connectCustomerToTenant(connectVariables)
@@ -117,7 +117,7 @@ export const getTenantById = () =>
       const result = await tenantRepo.getTenantById(1)
       // console.log({ result })
 
-      expect(result.tenant_id).toEqual(1)
+      expect(result.tenantId).toEqual(1)
     })
   })
 
