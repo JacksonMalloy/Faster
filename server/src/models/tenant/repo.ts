@@ -87,7 +87,7 @@ export default class TenantRepository {
 
     try {
       const result = await db.query(query, params)
-      const tenantId = result.rows[0].tenantId
+      const tenantId = result.rows[0].tenant_id
       const admins = await getAdminsByTenant(tenantId)
       const directors = await getDirectorsByTenant(tenantId)
 

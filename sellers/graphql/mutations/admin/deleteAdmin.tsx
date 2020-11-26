@@ -6,9 +6,6 @@ export const REMOVE_ADMIN = gql`
       code
       message
       success
-      admin {
-        adminId
-      }
     }
   }
 `

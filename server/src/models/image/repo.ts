@@ -97,8 +97,8 @@ export default class ImageRepository {
       if (!result.rowCount) {
         throw new Error('An Image with that ID does not exist!')
       } else {
-        const cloudinary_id = result.rows[0].cloudinary_id
-        deleteFromCloudinary(cloudinary_id)
+        const cloudId = result.rows[0].cloudinary_id
+        deleteFromCloudinary(cloudId)
       }
     } catch (error) {
       throw error

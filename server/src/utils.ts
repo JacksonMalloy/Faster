@@ -36,16 +36,15 @@ export const getUser = async (req: Request) => {
     const token = Authorization.replace('Bearer ', '')
 
     if (referrer === 'http://buy.faster.menu:8080') {
-      const { userId } = <any>jwt.verify(token, APP_SECRET)
+      const { userId } = jwt.verify(token, APP_SECRET) as any
 
       // Query User
-      const query = `SELECT permissions, customerId FROM "fm"."customers" WHERE customerId = $1`
+      const query = `SELECT permissions, customer_id FROM "fm"."customers" WHERE customer_id = $1`
       const params = [userId]
 
       try {
         const result = await db.query(query, params)
-
-        return result.rows[0]
+        return keysToCamel(result.rows[0])
       } catch (error) {
         console.log(error)
         return null
@@ -53,15 +52,17 @@ export const getUser = async (req: Request) => {
     }
 
     if (referrer === 'http://sell.faster.menu:8080') {
-      const { userId } = <any>jwt.verify(token, APP_SECRET)
+      const { userId } = jwt.verify(token, APP_SECRET) as any
 
       // Query User
-      const query = `SELECT permissions, adminId, tenantId FROM "fm"."admins" WHERE adminId = $1`
+      const query = `SELECT permissions, admin_id, tenant_id FROM "fm"."admins" WHERE admin_id = $1`
       const params = [userId]
 
       try {
         const result = await db.query(query, params)
-        return result.rows[0]
+        console.log(result.rows[0])
+
+        return keysToCamel(result.rows[0])
       } catch (error) {
         console.log(error)
         return null

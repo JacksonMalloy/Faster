@@ -2,9 +2,10 @@ import DataLoader from 'dataloader'
 // const jwt = require('jsonwebtoken')
 // const APP_SECRET = 'appsecret321'
 import db from './db/config'
+import { keysToCamel } from './utils'
 
 export function createLoaders(user: any) {
-  console.log('USER HERE: ', user)
+  // console.log('USER HERE: ', user)
 
   const getMenuItemChoices = async (ids: readonly unknown[]) => {
     const query = `SELECT
@@ -25,7 +26,8 @@ export function createLoaders(user: any) {
       const result = await db.query(query, params)
 
       console.log(result.rows)
-      return result.rows
+
+      return keysToCamel(result.rows)
     } catch (error) {
       console.log(error)
       throw error

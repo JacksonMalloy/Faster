@@ -6,9 +6,6 @@ export const REMOVE_MENU_HEADER = gql`
       code
       success
       message
-      menuHeader {
-        headerId
-      }
     }
   }
 `

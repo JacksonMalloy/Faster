@@ -6,9 +6,6 @@ export const REMOVE_CUSTOMER = gql`
       code
       success
       message
-      customer {
-        customerId
-      }
     }
   }
 `

@@ -6,9 +6,6 @@ export const REMOVE_MENU_CHOICE = gql`
       code
       message
       success
-      menuChoice {
-        choiceId
-      }
     }
   }
 `

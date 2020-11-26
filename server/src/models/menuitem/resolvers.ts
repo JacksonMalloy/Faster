@@ -1,5 +1,5 @@
 import MenuItemRepository from './repo'
-import { isAuthenticated, isAdmin, isDirector, isOwner } from '../../utils'
+import { isAuthenticated, isAdmin, isDirector, isOwner, keysToCamel } from '../../utils'
 import db from '../../db/config'
 
 type CreateItemArgs = {
@@ -50,7 +50,7 @@ export const MenuItemMutations = {
         const params = [menuId]
         const result = await db.query(query, params)
 
-        return result.rows
+        return keysToCamel(result.rows)
       } catch (error) {
         console.log(error)
       }

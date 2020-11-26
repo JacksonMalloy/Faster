@@ -23,7 +23,7 @@ export default class TwilioRepository {
 
   //   try {
   //     const result = await db.query(query)
-  //     return result.rows
+  //     return keysToCamel(result.rows)
   //   } catch (error) {
   //     //console.log(error)
   //     throw error

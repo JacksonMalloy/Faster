@@ -75,7 +75,8 @@ export default class AdminRepository {
         }
       }
 
-      const token = createToken(keysToCamel(result.rows[0]).adminId)
+      const adminId = result.rows[0].admin_id
+      const token = createToken(adminId)
 
       return {
         code: 201,
@@ -154,7 +155,8 @@ export default class AdminRepository {
 
     try {
       const result = await db.query(query, params)
-      const token = createToken(result.rows[0].adminId)
+      const adminId = result.rows[0].admin_id
+      const token = createToken(adminId)
 
       return {
         code: 201,
@@ -198,7 +200,8 @@ export default class AdminRepository {
         }
       }
 
-      const token = createToken(result.rows[0].adminId)
+      const adminId = result.rows[0].admin_id
+      const token = createToken(adminId)
 
       return {
         code: 200,
@@ -216,17 +219,19 @@ export default class AdminRepository {
   }
 
   async registerAdminToTenant({ adminId, tenantId, authToken }: AdminToOrgArgs) {
-    const query = `UPDATE "fm"."admins" SET tenantId = $1 WHERE adminId = $2 RETURNING *`
+    const query = `UPDATE "fm"."admins" SET tenant_id = $1 WHERE admin_id = $2 RETURNING *`
     const params = [tenantId, adminId]
 
     const getTenantAuthToken = async (tenantId: number) => {
-      const query = `SELECT authToken FROM "fm"."tenants" WHERE tenantId = $1`
+      const query = `SELECT auth_token FROM "fm"."tenants" WHERE tenant_id = $1`
       const params = [tenantId]
 
       try {
         const result = await db.query(query, params)
 
-        return result.rows[0].authToken
+        const authToken = result.rows[0].auth_token
+
+        return authToken
       } catch (error) {
         throw error
       }
@@ -250,7 +255,7 @@ export default class AdminRepository {
           message: 'Successfully joined tenant!',
           success: true,
           connection: {
-            connect: result.rows,
+            connect: keysToCamel(result.rows),
           },
         }
       }
@@ -264,7 +269,7 @@ export default class AdminRepository {
   }
 
   async deleteAdmin(adminId: number) {
-    const query = `DELETE FROM "fm"."admins" WHERE adminId = $1`
+    const query = `DELETE FROM "fm"."admins" WHERE admin_id = $1`
     const params = [adminId]
 
     try {
@@ -306,7 +311,7 @@ export default class AdminRepository {
       try {
         const result = await db.query(query, params)
 
-        return result.rows
+        return keysToCamel(result.rows)
       } catch (error) {
         throw error
       }

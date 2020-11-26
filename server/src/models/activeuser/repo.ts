@@ -8,6 +8,7 @@ export default class ActiveUserRepository {
 
     try {
       const result = await db.query(query, params)
+
       return keysToCamel(result.rows[0])
     } catch (error) {
       throw error
@@ -45,7 +46,7 @@ export default class ActiveUserRepository {
 
     try {
       const result = await db.query(query, params)
-      const customerId = result.rows[0].customerId
+      const customerId = result.rows[0].customer_id
       const tenants = await getTenantsByCustomerId(customerId)
 
       return Object.assign(keysToCamel(result.rows[0]), { tenants })

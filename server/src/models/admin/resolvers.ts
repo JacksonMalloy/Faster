@@ -17,7 +17,6 @@ export const AdminQueries = {
     const data = await adminRepo.getAdminsByTenant(tenantId)
     return data
   },
-  // activeAdmin: () => {},
 }
 
 type AdminToOrgArgs = {

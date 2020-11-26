@@ -14,7 +14,6 @@ export const SIGNUP_DIRECTOR = gql`
         email
         name
         permissions
-        createdAt
         token
       }
     }

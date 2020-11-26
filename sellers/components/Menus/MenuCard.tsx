@@ -48,7 +48,7 @@ export const MenuCard = ({ menu, image, setIsRouting }: CardProps) => {
 
   const { published, title, menuId, tenantId } = menu
 
-  const deleteMenu = async () => {
+  const handleDelete = async () => {
     const variables = { menuId: menuId }
     const args = { variables, tenantId }
     const data = await handleDeleteMenu(deleteMenu, args).then(() => {
@@ -56,7 +56,7 @@ export const MenuCard = ({ menu, image, setIsRouting }: CardProps) => {
     })
   }
 
-  const publishMenu = async () => {
+  const handlePublish = async () => {
     const variables = { menuId: menuId, published: !published }
     const args = { variables, tenantId }
     const data = await handlePublishMenu(updateMenu, args).then(() => {
@@ -91,10 +91,10 @@ export const MenuCard = ({ menu, image, setIsRouting }: CardProps) => {
           <Button onClick={handleRouteChange} value="view">
             View
           </Button>
-          <Button onClick={publishMenu} value="publish">
+          <Button onClick={handlePublish} value="publish">
             Publish
           </Button>
-          <Button onClick={deleteMenu} value="delete">
+          <Button onClick={handleDelete} value="delete">
             Delete
           </Button>
         </section>

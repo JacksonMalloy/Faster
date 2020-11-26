@@ -80,7 +80,7 @@ export default class CustomerRepository {
 
     try {
       const result = await db.query(query, params)
-      const customerId = result.rows[0].customerId
+      const customerId = result.rows[0].customer_id
       const tenants = await getTenantsByCustomerId(customerId)
 
       return Object.assign(keysToCamel(result.rows[0]), { tenants })
@@ -237,7 +237,7 @@ export default class CustomerRepository {
         }
       }
 
-      const token = createToken(keysToCamel(result.rows[0]).customerId)
+      const token = createToken(result.rows[0].customer_id)
 
       return {
         code: 200,

@@ -13,6 +13,7 @@ import { StripeMutations } from './models/stripe/resolvers'
 import { TwilioMutations } from './models/twilio/resolvers'
 
 import db from './db/config'
+import { keysToCamel } from './utils'
 
 export const resolvers = {
   Query: {
@@ -50,25 +51,25 @@ export const resolvers = {
                       o.address,
                       o.city,
                       o.phone,
-                      o.websiteUrl,
-                      o.postalCode,
+                      o.website_url,
+                      o.postal_code,
                       o.province,
-                      o.subAddress,
-                      o.countryRegion,
+                      o.sub_address,
+                      o.country_region,
                       o.name
                       FROM "fm"."tenants" o
                       INNER JOIN "fm"."admins" a
-                      ON o.tenantId = a.tenantId
-                      WHERE a.adminId = $1`
+                      ON o.tenant_id = a.tenant_id
+                      WHERE a.admin_id = $1`
 
       const params = [parent.adminId]
 
       try {
         const result = await db.query(query, params)
 
-        return result.rows[0]
+        return keysToCamel(result.rows[0])
       } catch (error) {
-           throw error
+        throw error
       }
     },
   },
@@ -81,19 +82,18 @@ export const resolvers = {
                 "fm"."customers_to_tenants" c2o
           INNER JOIN
                 "fm"."customers" c
-              ON c2o.customerId = c.customerId
+              ON c2o.customer_id = c.customer_id
           INNER JOIN
               "fm"."tenants" o
-              ON c2o.tenantId = o.tenantId
-          WHERE c.customerId = $1`
+              ON c2o.tenant_id = o.tenant_id
+          WHERE c.customer_id = $1`
       const params = [parent.customerId]
 
       try {
         const result = await db.query(query, params)
-        //console.log(result.rows)
-        return result.rows
+        return keysToCamel(result.rows)
       } catch (error) {
-           throw error
+        throw error
       }
     },
   },
@@ -101,44 +101,41 @@ export const resolvers = {
   Tenant: {
     menus: async (parent: { tenantId: number }, args: any, context: any, info: any) => {
       const query = `SELECT * FROM "fm"."menus"
-                    WHERE tenantId = $1 AND published = false`
+                    WHERE tenant_id = $1 AND published = false`
 
       const params = [parent.tenantId]
 
       try {
         const result = await db.query(query, params)
-        //console.log(result.rows)
-        return result.rows
+        return keysToCamel(result.rows)
       } catch (error) {
-           throw error
+        throw error
       }
     },
   },
   Menu: {
     image: async (parent: { menuId: number }, args: any, context: any, info: any) => {
       const query = `SELECT * FROM "fm"."images"
-                    WHERE menuId = $1`
+                    WHERE menu_id = $1`
 
       const params = [parent.menuId]
 
       try {
         const result = await db.query(query, params)
-        //console.log(result.rows)
-        return result.rows[0]
+        return keysToCamel(result.rows[0])
       } catch (error) {
-           throw error
+        throw error
       }
     },
     menuItems: async (parent: { menuId: number }, args: any, context: any, info: any) => {
-      const query = `SELECT * FROM "fm"."items" WHERE menuId = $1`
+      const query = `SELECT * FROM "fm"."items" WHERE menu_id = $1`
       const params = [parent.menuId]
 
       try {
         const result = await db.query(query, params)
-
-        return result.rows
+        return keysToCamel(result.rows)
       } catch (error) {
-           throw error
+        throw error
       }
     },
   },
@@ -151,19 +148,19 @@ export const resolvers = {
                       "fm"."choices" c
                     INNER JOIN
                       "fm"."choices_to_items" mci
-                    ON c.choiceId = mci.choiceId
+                    ON c.choice_id = mci.choice_id
                     INNER JOIN
                       "fm"."items" i
-                      ON mci.itemId = i.itemId
-                    WHERE i.itemId = $1`
+                      ON mci.item_id = i.item_id
+                    WHERE i.item_id = $1`
 
       const params = [parent.itemId]
 
       try {
         const result = await db.query(query, params)
-        return result.rows
+        return keysToCamel(result.rows)
       } catch (error) {
-           throw error
+        throw error
       }
     },
     menuHeader: async (parent: { headerId: number }, args: any, context: any, info: any) => {
@@ -172,15 +169,14 @@ export const resolvers = {
 
       // console.log({ menuChoice })
 
-      const query = `SELECT * FROM "fm"."headers" WHERE headerId = $1`
+      const query = `SELECT * FROM "fm"."headers" WHERE header_id = $1`
       const params = [parent.headerId]
 
       try {
         const result = await db.query(query, params)
-        //console.log(result.rows)
-        return result.rows[0]
+        return keysToCamel(result.rows[0])
       } catch (error) {
-           throw error
+        throw error
       }
     },
   },
@@ -188,17 +184,17 @@ export const resolvers = {
     selections: async (parent: { choiceId: number }, args: any, context: any, info: any) => {
       const query = `SELECT * FROM "fm"."selections" s
                        INNER JOIN "fm"."selections_to_choices" msc
-                        ON s.selectionId = msc.selectionId
+                        ON s.selection_id = msc.selection_id
                         INNER JOIN  "fm"."choices" c
-                        ON msc.choiceId = c.choiceId
-                        WHERE c.choiceId = $1`
+                        ON msc.choice_id = c.choice_id
+                        WHERE c.choice_id = $1`
       const params = [parent.choiceId]
 
       try {
         const result = await db.query(query, params)
-        return result.rows
+        return keysToCamel(result.rows)
       } catch (error) {
-           throw error
+        throw error
       }
     },
   },
@@ -206,17 +202,17 @@ export const resolvers = {
     menuItems: async (parent: { headerId: number }, args: any, context: any, info: any) => {
       const query = `SELECT * FROM "fm"."items" mi INNER JOIN
                     "fm"."headers" mh
-                    ON mi.headerId = mh.headerId
-                    WHERE mh.headerId = $1`
+                    ON mi.header_id = mh.header_id
+                    WHERE mh.header_id = $1`
 
       const params = [parent.headerId]
 
       try {
         const result = await db.query(query, params)
 
-        return result.rows
+        return keysToCamel(result.rows)
       } catch (error) {
-           throw error
+        throw error
       }
     },
   },
