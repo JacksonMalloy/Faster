@@ -9,7 +9,7 @@ export const ADMINS_BY_TENANT = gql`
       email
       name
       permissions
-      createdAt
+      # #createdAt
     }
   }
 `

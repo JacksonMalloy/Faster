@@ -9,7 +9,7 @@ export const EDIT_MENU = gql`
       menu {
         menuId
         tenantId
-        createdAt
+        #createdAt
         updatedAt
         published
         title

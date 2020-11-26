@@ -8,7 +8,7 @@ export const CUSTOMERS_BY_TENANT = gql`
       email
       name
       permissions
-      createdAt
+      # #createdAt
       table_id
     }
   }

@@ -16,6 +16,8 @@ const MenusPage = () => {
     fetchPolicy: 'network-only',
   })
 
+  console.log({ userData })
+
   if (userLoading) {
     return (
       <MainNavigation>

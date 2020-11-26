@@ -5,7 +5,7 @@ export const MENU = gql`
     menu(menuId: $menuId) {
       menuId
       tenantId
-      createdAt
+      #createdAt
       updatedAt
       published
       title

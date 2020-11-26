@@ -8,7 +8,7 @@ export const CUSTOMER = gql`
       email
       name
       permissions
-      createdAt
+      #createdAt
       table_id
       token
       tenants {

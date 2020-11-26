@@ -9,7 +9,8 @@ export const ACTIVE_USER_ADMIN = gql`
       email
       name
       permissions
-      createdAt
+      # passing timestampz through API can cause weird bugs
+      # #createdAt
       token
     }
   }

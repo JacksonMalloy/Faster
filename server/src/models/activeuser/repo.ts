@@ -9,6 +9,8 @@ export default class ActiveUserRepository {
     try {
       const result = await db.query(query, params)
 
+      console.log(result.rows[0])
+
       return keysToCamel(result.rows[0])
     } catch (error) {
       throw error

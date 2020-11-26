@@ -12,7 +12,7 @@ export const SIGNUP_CUSTOMER = gql`
         email
         name
         permissions
-        createdAt
+        #createdAt
         table_id
         token
       }

@@ -8,5 +8,7 @@ export const context = async ({ req }: any) => {
   const user = await getUser(req)
   const loaders = createLoaders(user)
 
+  console.log({ user })
+
   return { user, pubsub, loaders }
 }

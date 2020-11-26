@@ -13,7 +13,7 @@ export const SIGNIN_ADMIN = gql`
         email
         name
         permissions
-        createdAt
+        #createdAt
         token
       }
     }
