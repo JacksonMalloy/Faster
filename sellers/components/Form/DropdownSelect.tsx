@@ -38,7 +38,7 @@ const DropDownSelect = ({
     setSelectedHeader,
     setSelectedSelection,
     setSelectedChoice,
-    setFormView,
+    setSecondaryFormView,
     openToast,
     menuId,
   } = useUI()
@@ -163,10 +163,7 @@ const DropDownSelect = ({
         }
         return false
       case 'CHOICE':
-        if (
-          formChoices &&
-          formChoices.some((current) => current.choiceId === item.choiceId && current.UUID === UUID)
-        ) {
+        if (formChoices && formChoices.some((current) => current.choiceId === item.choiceId && current.UUID === UUID)) {
           return true
         }
         return false
@@ -197,17 +194,18 @@ const DropDownSelect = ({
   }, [open])
 
   const changeView = (event) => {
+    console.log('clicked')
     event.preventDefault()
 
     switch (variant) {
       case 'HEADER':
-        setFormView('CREATE_HEADER_VIEW')
+        setSecondaryFormView('CREATE_HEADER_VIEW')
         break
       case 'CHOICE':
-        setFormView('CREATE_CHOICE_VIEW')
+        setSecondaryFormView('CREATE_CHOICE_VIEW')
         break
       case 'SELECTION':
-        setFormView('CREATE_SELECTION_VIEW')
+        setSecondaryFormView('CREATE_SELECTION_VIEW')
         break
       default:
         break
@@ -257,17 +255,17 @@ const DropDownSelect = ({
     switch (variant) {
       case 'CHOICE':
         setSelectedChoice(item)
-        setFormView('EDIT_CHOICE_VIEW')
+        setSecondaryFormView('EDIT_CHOICE_VIEW')
         break
 
       case 'SELECTION':
         setSelectedSelection(item)
-        setFormView('EDIT_SELECTION_VIEW')
+        setSecondaryFormView('EDIT_SELECTION_VIEW')
         break
 
       case 'HEADER':
         setSelectedHeader(item)
-        setFormView('EDIT_HEADER_VIEW')
+        setSecondaryFormView('EDIT_HEADER_VIEW')
         break
 
       default:
@@ -365,6 +363,8 @@ const DropDownSelect = ({
                 <Tools className="action edit-action" onClick={() => handleEdit(item)} />
               </li>
             ))}
+
+            <Plus onClick={changeView} />
           </ul>
         )}
       </main>

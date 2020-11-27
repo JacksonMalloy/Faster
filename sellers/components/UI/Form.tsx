@@ -2,6 +2,16 @@ import styled from 'styled-components'
 
 const StyledCreateMenuForm = styled.form`
   z-index: 10;
+  box-shadow: 2px 2px 2px 2px #f4f4f4;
+  position: fixed;
+  overflow-y: auto;
+  overflow-x: hidden;
+  top: 100px;
+  left: ${({ secondary }) => (secondary ? '60%' : '300px')};
+  right: ${({ secondary }) => (secondary ? '0' : '40%')};
+  height: calc(100vh - 100px);
+  margin: 0.5rem;
+  background-color: white;
 
   .form-img {
     width: 100%;
@@ -45,8 +55,12 @@ const StyledCreateMenuForm = styled.form`
   }
 `
 
-const Form = ({ children, onSubmit }: any) => {
-  return <StyledCreateMenuForm onSubmit={onSubmit}>{children}</StyledCreateMenuForm>
+const Form = ({ children, onSubmit, secondary }: any) => {
+  return (
+    <StyledCreateMenuForm onSubmit={onSubmit} secondary={secondary}>
+      {children}
+    </StyledCreateMenuForm>
+  )
 }
 
 export default Form

@@ -12,7 +12,7 @@ import { handleEditSelection } from 'components/Services/Selection'
 import { CurrencyField } from '../common/CurrencyField'
 
 export const EditSelection = () => {
-  const { tenantId, reset, openToast, selectedHeader, selectedSelection, setFormView } = useUI()
+  const { tenantId, reset, openToast, selectedHeader, selectedSelection, setSecondaryFormView } = useUI()
   const [updateMenuSelection] = useMutation(EDIT_MENU_SELECTION)
   const initialValues = {
     name: '',
@@ -32,7 +32,7 @@ export const EditSelection = () => {
 
       const { data } = await handleEditSelection(updateMenuSelection, args)
 
-      setFormView('CREATE_ITEM_VIEW')
+      setSecondaryFormView('')
     },
   })
 
@@ -42,7 +42,7 @@ export const EditSelection = () => {
   }, [initialize, selectedHeader])
 
   const handleCancel = () => {
-    setFormView('CREATE_ITEM_VIEW')
+    setSecondaryFormView('')
   }
 
   const hasErrors = () => {
@@ -50,7 +50,7 @@ export const EditSelection = () => {
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} secondary>
       <h1>Edit Selection</h1>
 
       <Field

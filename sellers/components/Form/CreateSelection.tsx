@@ -16,7 +16,7 @@ import { CurrencyField } from '../common/CurrencyField'
 export const CreateSelection = () => {
   const [createMenuSelection, { data }] = useMutation(ADD_MENU_SELECTION)
 
-  const { tenantId, menuId, setFormView } = useUI()
+  const { tenantId, menuId, setSecondaryFormView } = useUI()
 
   const { values, errors, handleChange, handleBlur, handleSubmit } = useForm({
     onSubmit: async ({ errors, values }) => {
@@ -28,7 +28,7 @@ export const CreateSelection = () => {
       const args = { variables, tenantId }
       const { data } = await handleCreateSelection(createMenuSelection, args)
 
-      setFormView('CREATE_ITEM_VIEW')
+      setSecondaryFormView('')
     },
 
     // $tenantId: ID!
@@ -38,7 +38,7 @@ export const CreateSelection = () => {
 
   const handleCancel = (event) => {
     event.preventDefault()
-    setFormView('CREATE_ITEM_VIEW')
+    setSecondaryFormView('')
   }
 
   const hasErrors = () => {
@@ -46,7 +46,7 @@ export const CreateSelection = () => {
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} secondary>
       <h1>Create Selection</h1>
 
       <Field

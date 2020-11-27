@@ -40,12 +40,13 @@ const StyledDropdown = styled.div`
     .dd-list {
       padding: 1rem;
       margin: 0;
-      width: 500px;
       overflow-y: scroll;
       margin-top: 1rem;
+
       position: fixed;
-      top: 70px;
-      right: 25px;
+      right: 0;
+      left: 60%;
+      top: 100px;
       background-color: white;
       height: 100%;
       z-index: 9;

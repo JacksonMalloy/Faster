@@ -9,14 +9,15 @@ const StyledHeader = styled.header`
   top: 0;
   right: 0;
   left: 300px;
-  background-color: white;
-  color: black;
+  background-color: black;
+  color: white;
   z-index: 99;
   width: 100%;
   padding: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 100px;
 
   @media (max-width: 900px) {
     padding-left: 6rem;

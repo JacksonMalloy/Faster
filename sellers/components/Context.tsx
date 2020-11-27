@@ -20,6 +20,7 @@ export interface State {
 
   displayToast: boolean
   formView: string
+  secondaryFormView: string
 }
 
 const initialState = {
@@ -42,13 +43,12 @@ const initialState = {
 
   displayToast: false,
   formView: 'CREATE_MENU_VIEW',
+  secondaryFormView: '',
 }
 
-type FORM_VIEWS =
-  | 'CREATE_MENU_VIEW'
-  | 'EDIT_MENU_VIEW'
-  | 'CREATE_ITEM_VIEW'
-  | 'EDIT_ITEM_VIEW'
+type FORM_VIEWS = 'CREATE_MENU_VIEW' | 'EDIT_MENU_VIEW' | 'CREATE_ITEM_VIEW' | 'EDIT_ITEM_VIEW'
+
+type SECONDARY_FORM_VIEWS =
   | 'CREATE_CHOICE_VIEW'
   | 'EDIT_CHOICE_VIEW'
   | 'CREATE_SELECTION_VIEW'
@@ -70,6 +70,10 @@ type Action =
   | {
       type: 'SET_FORM_VIEW'
       view: FORM_VIEWS
+    }
+  | {
+      type: 'SET_SECONDARY_FORM_VIEW'
+      view: SECONDARY_FORM_VIEWS
     }
   | {
       type: 'SET_TENANT_ID'
@@ -175,6 +179,12 @@ function uiReducer(state: State, action: Action) {
       return {
         ...state,
         formView: action.view,
+      }
+    }
+    case 'SET_SECONDARY_FORM_VIEW': {
+      return {
+        ...state,
+        secondaryFormView: action.view,
       }
     }
     case 'SET_TENANT_ID': {
@@ -335,6 +345,8 @@ export const UIProvider: FC = (props) => {
   const closeToast = () => dispatch({ type: 'CLOSE_TOAST' })
   const openToast = (message: string, variant: TOAST_VARIANTS) => dispatch({ type: 'OPEN_TOAST', message, variant })
   const setFormView = (view: FORM_VIEWS) => dispatch({ type: 'SET_FORM_VIEW', view })
+  const setSecondaryFormView = (view: SECONDARY_FORM_VIEWS) => dispatch({ type: 'SET_SECONDARY_FORM_VIEW', view })
+
   const setFormHeader = (header: any) => dispatch({ type: 'SET_FORM_HEADER', header })
   const setFormImage = (image: any) => dispatch({ type: 'SET_UPLOADED_FORM_IMAGE', image })
   const setFormAddOns = (formAddOn: any) =>
@@ -367,6 +379,7 @@ export const UIProvider: FC = (props) => {
       closeToast,
 
       setFormView,
+      setSecondaryFormView,
       setFormImage,
 
       // HEADER

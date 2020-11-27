@@ -193,13 +193,13 @@ const Navigation = ({ children, permissions }: MainNavigationProps) => {
 export default Navigation
 
 const StyledGrid = styled.main`
-  display: grid;
-  grid-template-columns: minmax(200px, 300px) 1fr;
+  /* display: grid;
+  grid-template-columns: minmax(200px, 300px) 1fr 1fr;
   box-sizing: border-box;
 
-  main {
-    grid-column: 2;
-  }
+  /* main {
+    grid-column: 3 / 4;
+  } */ */
 `
 
 const StyledBody = styled.main``

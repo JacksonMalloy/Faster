@@ -10,7 +10,7 @@ import { EDIT_MENU_CHOICE } from 'graphql/mutations/menu-choice/updateMenuChoice
 import { handleEditChoice } from 'components/Services/Choice'
 
 export const EditChoice = () => {
-  const { tenantId, reset, openToast, selectedHeader, selectedChoice, setFormView } = useUI()
+  const { tenantId, reset, openToast, selectedHeader, selectedChoice, setSecondaryFormView } = useUI()
   const [updateMenuChoice] = useMutation(EDIT_MENU_CHOICE)
   const initialValues = {
     header: '',
@@ -28,7 +28,7 @@ export const EditChoice = () => {
       const args = { variables, tenantId }
       const { data } = await handleEditChoice(updateMenuChoice, args)
 
-      setFormView('CREATE_ITEM_VIEW')
+      setSecondaryFormView('')
     },
   })
 
@@ -38,7 +38,7 @@ export const EditChoice = () => {
   }, [initialize, selectedHeader])
 
   const handleCancel = () => {
-    setFormView('CREATE_ITEM_VIEW')
+    setSecondaryFormView('')
   }
 
   const hasErrors = () => {
@@ -47,7 +47,7 @@ export const EditChoice = () => {
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} secondary>
       <h1>Edit Choice</h1>
 
       <Field

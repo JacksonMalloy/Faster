@@ -13,7 +13,7 @@ import { handleCreateChoice } from 'components/Services/Choice'
 export const CreateChoice = () => {
   const [createMenuChoice, { data }] = useMutation(ADD_MENU_CHOICE)
 
-  const { tenantId, menuId, setFormView } = useUI()
+  const { tenantId, menuId, setSecondaryFormView } = useUI()
 
   const { values, errors, handleChange, handleBlur, handleSubmit } = useForm({
     onSubmit: async ({ errors, values }) => {
@@ -26,7 +26,7 @@ export const CreateChoice = () => {
       const args = { variables, tenantId }
       const { data } = await handleCreateChoice(createMenuChoice, args)
 
-      setFormView('CREATE_ITEM_VIEW')
+      setSecondaryFormView('')
     },
 
     // $tenantId: ID!
@@ -37,7 +37,7 @@ export const CreateChoice = () => {
 
   const handleCancel = (event) => {
     event.preventDefault()
-    setFormView('CREATE_ITEM_VIEW')
+    setSecondaryFormView('')
   }
 
   const hasErrors = () => {
@@ -46,7 +46,7 @@ export const CreateChoice = () => {
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} secondary>
       <h1>Create Choice</h1>
       <Field
         id="header"

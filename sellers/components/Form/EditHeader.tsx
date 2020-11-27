@@ -9,7 +9,7 @@ import { EDIT_MENU_HEADER } from 'graphql/mutations/menu-header/updateMenuHeader
 import { handleEditHeader } from 'components/Services/Header'
 
 export const EditHeader = () => {
-  const { tenantId, menuId, reset, openToast, selectedHeader, setFormView } = useUI()
+  const { tenantId, menuId, reset, openToast, selectedHeader, setSecondaryFormView } = useUI()
   const [updateMenuHeader] = useMutation(EDIT_MENU_HEADER)
   const initialValues = {
     header: '',
@@ -29,7 +29,7 @@ export const EditHeader = () => {
       const args = { variables, menuId }
       const { data } = await handleEditHeader(updateMenuHeader, args)
 
-      setFormView('CREATE_ITEM_VIEW')
+      setSecondaryFormView('')
     },
   })
 
@@ -38,7 +38,7 @@ export const EditHeader = () => {
   }, [initialize, selectedHeader])
 
   const handleCancel = () => {
-    setFormView('CREATE_ITEM_VIEW')
+    setSecondaryFormView('')
   }
 
   const hasErrors = () => {
@@ -47,7 +47,7 @@ export const EditHeader = () => {
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} secondary>
       <h1>Edit Header</h1>
 
       <Field

@@ -17,6 +17,7 @@ import { useRouter } from 'next/router'
 import { useUI } from '../Context'
 import { Container, Grid } from 'components/UI'
 import Skeleton from 'components/UI/Skeleton'
+import SecondaryForm from 'components/Form/SecondaryForm'
 
 type MenuProps = {
   id: number
@@ -97,6 +98,7 @@ const Menu = ({ id, tenantId }: MenuProps) => {
             : null}
         </Grid>
         <Form menuId={id} />
+        <SecondaryForm menuId={id} />
       </Container>
     </>
   )

@@ -15,7 +15,7 @@ import { Form } from 'components/UI'
 export const CreateHeader = () => {
   const [createMenuHeader] = useMutation(ADD_MENU_HEADER)
 
-  const { tenantId, menuId, setFormView } = useUI()
+  const { tenantId, menuId, setFormView, setSecondaryFormView } = useUI()
 
   const { values, errors, handleChange, handleBlur, handleSubmit } = useForm({
     onSubmit: async ({ errors, values }) => {
@@ -43,13 +43,13 @@ export const CreateHeader = () => {
         },
       })
 
-      setFormView('CREATE_ITEM_VIEW')
+      setFormView('')
     },
   })
 
   const handleCancel = (event) => {
     event.preventDefault()
-    setFormView('CREATE_ITEM_VIEW')
+    setSecondaryFormView('')
   }
 
   const hasErrors = () => {
@@ -58,7 +58,7 @@ export const CreateHeader = () => {
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} secondary>
       <h1>Create Header</h1>
 
       <Field

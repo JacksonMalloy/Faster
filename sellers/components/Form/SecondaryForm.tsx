@@ -22,8 +22,8 @@ type FormProps = {
   }
 }
 
-const Form = ({ menu }: FormProps) => {
-  const { formView, setSelectedMenu } = useUI()
+const SecondaryForm = ({ menu }: FormProps) => {
+  const { secondaryFormView, setSelectedMenu } = useUI()
 
   useEffect(() => {
     setSelectedMenu(menu)
@@ -31,21 +31,25 @@ const Form = ({ menu }: FormProps) => {
   },[])
 
   const renderFormView = () => {
-    switch (formView) {
-      case 'CREATE_MENU_VIEW':
-        return <CreateMenu />
-      case 'EDIT_MENU_VIEW':
-        return <EditMenu />
-      case 'CREATE_ITEM_VIEW':
-        return <CreateItem />
-      case 'EDIT_ITEM_VIEW':
-        return <EditItem />
+    switch (secondaryFormView) {
+      case 'CREATE_CHOICE_VIEW':
+        return <CreateChoice />
+      case 'EDIT_CHOICE_VIEW':
+        return <EditChoice />
+      case 'CREATE_HEADER_VIEW':
+        return <CreateHeader />
+      case 'EDIT_HEADER_VIEW':
+        return <EditHeader />
+      case 'CREATE_SELECTION_VIEW':
+        return <CreateSelection />
+      case 'EDIT_SELECTION_VIEW':
+        return <EditSelection />
       default:
-        break
+        return null
     }
   }
 
   return renderFormView()
 }
 
-export default Form
+export default SecondaryForm
