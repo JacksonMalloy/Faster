@@ -1,14 +1,6 @@
 import styled from 'styled-components'
 
 const StyledCreateMenuForm = styled.form`
-  width: 500px;
-  position: fixed;
-  right: 1.5rem;
-  top: 5.5rem;
-  bottom: 0rem;
-  height: 100vh + 1000px; /* viewport height */
-  overflow-y: scroll;
-  overflow-x: hidden;
   z-index: 10;
 
   .form-img {

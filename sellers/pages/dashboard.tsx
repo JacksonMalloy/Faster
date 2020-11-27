@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client'
 
 import Login from 'components/Login'
 import { MainLayout } from 'components/common/layout/MainLayout'
-import MainNavigation from 'components/MainNavigation'
+import MainNavigation from 'components/Navigation'
 import { Dashboard } from 'components/Dashboard/Dashboard'
 
 import { ACTIVE_USER_ADMIN } from 'graphql/queries/active-user/activeUserAdmin'

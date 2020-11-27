@@ -39,18 +39,17 @@ const StyledNav = styled.nav`
   flex-direction: column;
   width: 300px;
   background-color: #f5f5f5;
-  position: absolute;
+  position: fixed;
   min-height: 100vh;
   overflow: none;
   top: 0;
   left: 0;
   padding: 1rem;
   z-index: 9;
-  position: fixed;
 
-  @media (max-width: 900px) {
+  /* @media (max-width: 900px) {
     width: 100px;
-  }
+  } */
 
   header {
     width: 100%;
@@ -151,7 +150,7 @@ type MainNavigationProps = {
   permissions?: string
 }
 
-const MainNavigation = ({ children, permissions }: MainNavigationProps) => {
+const Navigation = ({ children, permissions }: MainNavigationProps) => {
   const router = useRouter()
 
   const handleSignout = () => {
@@ -162,18 +161,11 @@ const MainNavigation = ({ children, permissions }: MainNavigationProps) => {
   }
 
   return (
-    <>
+    <StyledGrid>
       <StyledNav>
         <header>
           <h1 className="logo">FASTER</h1>
         </header>
-        {/* 
-        <ActiveLink href="/dashboard">
-          <>
-            <Versions />
-            <p className="hide">Dashboard</p>
-          </>
-        </ActiveLink> */}
 
         <ActiveLink href="/menus">
           <>
@@ -182,27 +174,6 @@ const MainNavigation = ({ children, permissions }: MainNavigationProps) => {
           </>
         </ActiveLink>
 
-        {/* <ActiveLink href="/orders">
-          <>
-            <CreditCard />
-            <p className="hide">Orders</p>
-          </>
-        </ActiveLink> */}
-
-        {/* <ActiveLink href="/analytics">
-          <>
-            <Graph />
-            <p className="hide">Analytics</p>
-          </>
-        </ActiveLink> */}
-
-        {/* <ActiveLink href="/staff">
-          <>
-            <Person />
-            <p className="hide">Staff</p>
-          </>
-        </ActiveLink> */}
-
         <ActiveLink href="/account">
           <>
             <Settings />
@@ -210,20 +181,25 @@ const MainNavigation = ({ children, permissions }: MainNavigationProps) => {
           </>
         </ActiveLink>
 
-        {/* {permissions === 'DIRECTOR' && ( */}
-        {/* <ActiveLink href="/gallery">
-          <>
-            <FileMedia />
-            <p className="hide">Gallery</p>
-          </>
-        </ActiveLink> */}
         <Button value="button" onClick={handleSignout}>
           Logout
         </Button>
       </StyledNav>
-      {children}
-    </>
+      <StyledBody>{children}</StyledBody>
+    </StyledGrid>
   )
 }
 
-export default MainNavigation
+export default Navigation
+
+const StyledGrid = styled.main`
+  display: grid;
+  grid-template-columns: minmax(200px, 300px) 1fr;
+  box-sizing: border-box;
+
+  main {
+    grid-column: 2;
+  }
+`
+
+const StyledBody = styled.main``

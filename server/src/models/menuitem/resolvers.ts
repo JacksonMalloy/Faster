@@ -43,9 +43,9 @@ export const MenuItemMutations = {
 
     const getTenantId = async ({ menuId }: { menuId: number }) => {
       try {
-        const query = `SELECT tenantId
+        const query = `SELECT tenant_id
                       FROM "fm"."menus"
-                      WHERE menuId = $1`
+                      WHERE menu_id = $1`
 
         const params = [menuId]
         const result = await db.query(query, params)

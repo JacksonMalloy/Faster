@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import MainNavigation from 'components/MainNavigation'
+import MainNavigation from 'components/Navigation'
 
 import styled from 'styled-components'
 

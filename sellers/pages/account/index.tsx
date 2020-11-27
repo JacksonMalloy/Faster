@@ -1,4 +1,4 @@
-import MainNavigation from 'components/MainNavigation'
+import MainNavigation from 'components/Navigation'
 
 import { useQuery } from '@apollo/client'
 import { MainLayout } from 'components/common/layout/MainLayout'

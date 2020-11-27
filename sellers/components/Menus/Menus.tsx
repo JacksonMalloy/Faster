@@ -3,12 +3,12 @@ import { useQuery } from '@apollo/client'
 import { MenuCard } from 'components/Menus/MenuCard'
 import Form from 'components/Form'
 import { MENUS_BY_TENANT } from 'graphql/queries/menu/menusByTenant'
-import { Alert } from 'components/common/Alert'
 import DashboardHeader from 'components/common/DashboardHeader'
 import { QAtools } from 'components/QAtools'
 import { Container, Grid } from '../UI'
 import { useUI } from '../Context'
 import Skeleton from 'components/UI/Skeleton'
+import styled from 'styled-components'
 
 type MenusProps = {
   tenantId: number
@@ -53,6 +53,7 @@ const Menus = ({ tenantId }: MenusProps) => {
         <DashboardHeader setSearch={setSearch} search={search} />
 
         <Container>
+          <Form />
           <Grid>
             <Skeleton width="100%" height="10rem" />
             <Skeleton width="100%" height="10rem" />
@@ -60,7 +61,6 @@ const Menus = ({ tenantId }: MenusProps) => {
             <Skeleton width="100%" height="10rem" />
             <Skeleton width="100%" height="10rem" />
           </Grid>
-          <Form />
         </Container>
       </>
     )
@@ -71,8 +71,8 @@ const Menus = ({ tenantId }: MenusProps) => {
         <DashboardHeader setSearch={setSearch} search={search} />
 
         <Container>
-          <Grid>ERROR</Grid>
           <Form />
+          <Grid>ERROR</Grid>
         </Container>
       </>
     )
@@ -83,18 +83,19 @@ const Menus = ({ tenantId }: MenusProps) => {
         <DashboardHeader setSearch={setSearch} search={search} />
 
         <Container>
-          <Grid>Not Found</Grid>
           <Form />
+          <Grid>Not Found</Grid>
         </Container>
       </>
     )
 
   return (
     <>
-      <QAtools />
-      <DashboardHeader setSearch={setSearch} search={search} />
-      <Alert />
-      <Container>
+      {/* Main */}
+      <StyledGrid>
+        <DashboardHeader setSearch={setSearch} search={search} />
+
+        <Form />
         <Grid>
           {!isRouting && (
             <>
@@ -114,10 +115,15 @@ const Menus = ({ tenantId }: MenusProps) => {
             </>
           )}
         </Grid>
-        <Form />
-      </Container>
+      </StyledGrid>
     </>
   )
 }
 
 export default Menus
+
+const StyledGrid = styled.main`
+  padding-top: 100px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+`

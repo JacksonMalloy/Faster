@@ -1,4 +1,4 @@
-import MainNavigation from 'components/MainNavigation'
+import MainNavigation from 'components/Navigation'
 import Orders from 'components/Orders'
 
 import { useQuery } from '@apollo/client'

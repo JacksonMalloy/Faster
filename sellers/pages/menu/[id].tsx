@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import MainNavigation from 'components/MainNavigation'
+import MainNavigation from 'components/Navigation'
 import Menu from 'components/Menu'
 import { useRouter } from 'next/router'
 import { MainLayout } from 'components/common/layout/MainLayout'

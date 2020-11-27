@@ -1,4 +1,4 @@
-import MainNavigation from 'components/MainNavigation'
+import Navigation from 'components/Navigation'
 import Menus from 'components/Menus'
 
 import { useQuery } from '@apollo/client'
@@ -6,21 +6,22 @@ import { MainLayout } from 'components/common/layout/MainLayout'
 import Login from 'components/Login'
 // GraphQL
 import { ACTIVE_USER_ADMIN } from 'graphql/queries/active-user/activeUserAdmin'
-import { useEffect, useState } from 'react'
 import Skeleton from 'components/UI/Skeleton'
 import DashboardHeader from 'components/common/DashboardHeader'
 import { Container, Form, Grid } from 'components/UI'
+import { Alert } from '../components/common/Alert'
 
 const MenusPage = () => {
   const { loading: userLoading, data: userData } = useQuery(ACTIVE_USER_ADMIN, {
     fetchPolicy: 'network-only',
   })
 
-  console.log({ userData })
-
+  // WARNING: Bugs when adding stateful components when loading.
+  // Dispatching state to the provider is asyncronous which may lead
+  // to object type errors inside of the stateful components.
   if (userLoading) {
     return (
-      <MainNavigation>
+      <Navigation>
         <DashboardHeader />
         <Container>
           <Grid>
@@ -37,20 +38,22 @@ const MenusPage = () => {
             </div>
           </Form>
         </Container>
-      </MainNavigation>
+      </Navigation>
     )
   }
 
   if (userData.activeUserAdmin) {
     return (
-      <MainNavigation permissions={userData.activeUserAdmin.permissions}>
+      <Navigation permissions={userData.activeUserAdmin.permissions}>
+        <Alert />
         <Menus tenantId={userData.activeUserAdmin.tenantId} />
-      </MainNavigation>
+      </Navigation>
     )
   }
 
   return (
     <MainLayout>
+      <Alert />
       <Login />
     </MainLayout>
   )

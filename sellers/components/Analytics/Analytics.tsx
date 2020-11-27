@@ -1,5 +1,5 @@
 import React from 'react'
-import MainNavigation from 'components/MainNavigation'
+import MainNavigation from 'components/Navigation'
 import styled from 'styled-components'
 
 const StyledContainer = styled.section`

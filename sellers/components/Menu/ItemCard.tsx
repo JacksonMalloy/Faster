@@ -54,7 +54,7 @@ export const ItemCard = ({ item }: CardProps) => {
     fetchPolicy: 'network-only',
   })
 
-  const deleteMenuItem = () => {
+  const deleteItem = () => {
     deleteMenuItem({
       variables: { itemId: itemId },
       update: (store, { data }) => {
@@ -160,7 +160,7 @@ export const ItemCard = ({ item }: CardProps) => {
             Edit
           </Button>
 
-          <Button value="delete" onClick={deleteMenuItem}>
+          <Button value="delete" onClick={deleteItem}>
             Delete
           </Button>
         </section>

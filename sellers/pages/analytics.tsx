@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client'
 
 import Analytics from 'components/Analytics'
-import MainNavigation from 'components/MainNavigation'
+import MainNavigation from 'components/Navigation'
 import { MainLayout } from 'components/common/layout/MainLayout'
 import Login from 'components/Login'
 

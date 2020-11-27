@@ -8,12 +8,12 @@ const StyledHeader = styled.header`
   position: fixed;
   top: 0;
   right: 0;
-  left: 0;
+  left: 300px;
   background-color: white;
   color: black;
-  z-index: 2;
+  z-index: 99;
   width: 100%;
-  padding-left: 300px;
+  padding: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
